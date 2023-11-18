@@ -1,45 +1,50 @@
 <template>
     <div class="room_page">
-        <div class="grid h-screen place-items-center bg-yellow-50">
-            <div class="w-full h-full xl:w-3/4 rounded-lg">
-                <div class="grid grid-cols-1 xl:grid-cols-5 mt-6">
+        <!-- class="grid h-screen place-items-center bg-yellow-50" -->
+        <!-- class="w-full h-full xl:w-3/4 rounded-lg" -->
+        <div>
+            <div class="bg-blue-50 py-6 px-14 min-h-screen">
 
+                <!-- Display title app -->
+                <div class="flex text-center items-center justify-center">
+                    <img width="48" height="48" src="https://img.icons8.com/emoji/48/four-leaf-clover.png" alt="four-leaf-clover"/>
+                    <h1 class="text-4xl font-bold text-blue-500">Lucky App</h1>
+                    <img width="48" height="48" src="https://img.icons8.com/emoji/48/four-leaf-clover.png" alt="four-leaf-clover"/>
+                </div>
+
+                <!-- Display all list boards -->
+                <div class="bg-white mb-6 rounded-xl drop-shadow-md py-3 px-6">
+                    
+                    <!-- Display title of boards -->
+                    <h3 class="text-xl text-left font-semibold text-gray-600 my-3">
+                        Pick your board here
+                    </h3>
+
+
+                    <div class="flex gap-4 max-w-full overflow-x-auto">
+                        <div v-for="board in boards"
+                            :key="board.id"
+                            @click=" board.username === null ? handleChangeBoard(board.id) : null"
+                            :class="{
+                                'hover:cursor-pointer': !!(board.username === null),
+                                'opacity-60': !!(board.username !== null),
+                                'text-center': true,
+                            }">
+                            <img
+                                :style="{'background': board.color}"
+                                class="w-14 h-14 p-2 rounded-full text-white mx-auto"
+                                src="https://img.icons8.com/external-smashingstocks-hand-drawn-black-smashing-stocks/99/external-Board-education-smashingstocks-hand-drawn-black-smashing-stocks.png"
+                                alt="board image"/>
+                            <h4 class="font-semibold">
+                                {{ board.username }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-5">
                     <!-- Left side -->
                     <div class="col-span-2">
-
-                        <!-- Display all list boards -->
-                        <div class="bg-white mb-6 rounded-xl drop-shadow-md py-3 px-6">
-                            
-                            <!-- Display title of boards -->
-                            <h3 class="text-xl text-left font-semibold text-gray-600 my-3">
-                                Pick your board here
-                            </h3>
-
-
-                            <div class="flex gap-4 max-w-full overflow-x-auto">
-                                <div v-for="board in boards"
-                                    :key="board.id"
-                                    @click=" board.username === null ? handleChangeBoard(board.id) : null"
-                                    :class="{
-                                        'hover:cursor-pointer': !!(board.username === null),
-                                        'opacity-60': !!(board.username !== null),
-                                        'text-center': true,
-                                    }">
-                                    <svg 
-                                    :style="{'background': board.color}"
-                                    :class="`w-14 h-14 p-3 rounded-full text-white mx-auto`"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                                    </svg>
-                                    <label class="text-md font-semibold text-yellow-600 mt-2">
-                                        {{ board.username }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Display personal user's information -->
                         <div class="bg-white mb-6 rounded-xl drop-shadow-md py-3 px-6 text-left">
 
@@ -70,9 +75,8 @@
                     <div class="col-span-3 xl:ml-6">
 
                         <!-- Display all users joined -->
-                        <div class="bg-white mb-6 rounded-xl drop-shadow-md py-3 px-6">
+                        <!-- <div class="bg-white mb-6 rounded-xl drop-shadow-md py-3 px-6">
                             
-                            <!-- Display title of boards -->
                             <h3 class="text-xl text-left font-semibold text-gray-600 my-3">
                                 All users
                             </h3>
@@ -90,9 +94,9 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <!-- Display action block -->
+                        <!-- Display number and admin block -->
                         <div class="bg-white mb-6 rounded-xl drop-shadow-md py-3 px-6 text-left">
 
                             <!-- Display clear board function -->
@@ -118,7 +122,7 @@
                             
                             <!-- Display random number -->
                             <div class="clear-right mx-auto text-center">
-                                <div class="text-8xl font-bold text-yellow-600 py-8">
+                                <div class="text-9xl font-bold text-yellow-600 py-8">
                                     {{ randomNumber }}
                                 </div>
                             </div>
@@ -143,48 +147,84 @@
                                     </button>
                                 </div>
                             </div>
-
-                            <!-- Display called numbers -->
-                            <div>
-                                <h3 class="font-semibold text-lg text-gray-600 my-3">
-                                    Called number
-                                </h3>
-                                <div class="flex flex-wrap h-auto max-h-52 overflow-y-auto">
-                                    <span v-for="(number, index) in calledNumbers" :key="index" 
-                                    class="bg-blue-400 rounded-full py-1 px-3 text-white mr-1 mt-1">
-                                        {{ number }} 
-                                    </span>
-                                </div>        
-                            </div>
                         </div>
+                        
+                        <!-- Display chat box and called numbers -->
+                        <!-- class="bg-white mb-6 rounded-xl drop-shadow-md py-3 px-6" -->
+                        <div >
 
-                        <!-- Display chat box -->
-                        <div class="bg-white mb-6 rounded-xl drop-shadow-md py-3 px-6">
-                            <h3 class="font-bold text-xl text-gray-700 my-5">
-                                Chat Box
-                            </h3>
+                            <div class="grid grid-cols-2">
+                                <!-- Display called number -->
+                                <div class="col-span-1 bg-white mr-6 rounded-xl drop-shadow-md p-5">
+                                    <h3 class="font-bold text-xl text-gray-700">
+                                        Called Number
+                                    </h3>
+                                    <div 
+                                    v-if="!!(calledNumbers.length ===0)"
+                                    class="flex items-center justify-center h-52 text-gray-600">
+                                        Check the called numbers here!
+                                    </div>
+                                    <div class="flex flex-wrap h-auto max-h-52 overflow-y-auto">
+                                        <span v-for="(number, index) in calledNumbers" :key="index" 
+                                        class="bg-blue-400 rounded-full py-1 px-3 text-white mr-1 mt-1">
+                                            {{ number }} 
+                                        </span>
+                                    </div>        
+                                </div>
 
-                            <!-- Display list messages -->
-                            <div id="chat-box" class="h-auto max-h-48 overflow-y-auto">
-                                <p v-for="(m, index) in messages" :key="index"
-                                    :class="{
-                                        'italic text-gray-400': !!(m.username === 'BotChat'),
-                                        'text-left': true,
-                                        'text-right': !!(m.username === route.query.username)
-                                    }"
-                                >
-                                    <strong v-show="!!(m.username !== route.query.username)">
-                                        {{ m.username }}:
-                                    </strong>
-                                    {{ m.message }}
-                                </p>
+                                <!-- Display chat box -->
+                                <div class="col-span-1 bg-white rounded-xl drop-shadow-md p-4">
+                                    <h3 class="font-bold text-xl text-gray-700">
+                                        Chat Box
+                                    </h3>
+        
+                                    <!-- Display list messages -->
+                                    <div 
+                                    :class="isCurrentUserAdmin ? 'h-52' : 'h-56'"
+                                    class="relative w-full">
+                                        <div id="chat-box" class="max-h-36 mb-5 overflow-y-auto">
+                                            <p v-for="(m, index) in messages" 
+                                                :key="index"
+                                                :class="{
+                                                    'italic text-gray-400': !!(m.username === 'BotChat'),
+                                                    'text-left px-3': true,
+                                                    'text-right': !!(m.username === route.query.username)
+                                                }"
+                                            >
+                                                <strong v-show="!!(m.username !== route.query.username)">
+                                                    {{ m.username }}:
+                                                </strong>
+                                                {{ m.message }}
+                                            </p>
+                                        </div>
+                                        <div class="absolute bottom-2 w-full">
+                                            <input
+                                                v-model="message"
+                                                @keyup="handleTypingEvent($event)"
+                                                @keyup.enter="handleSendMessage"
+                                                class="shadow-md border rounded-full w-full my-3 py-2 px-6 text-gray-700 focus:outline-none"
+                                                type="text"
+                                                placeholder="tap enter to send">
+                                        </div>
+                                        <p 
+                                        v-if="!!(typing.usernameList.length !== 0)"
+                                        class="absolute bottom-0 left-6 w-full text-left italic">
+                                            <span v-if="!!(typing.usernameList.length === 1)">
+                                                {{ typing.usernameList[0] }} is typing
+                                            </span>
+                                            <span v-if="!!(typing.usernameList.length > 1)">
+                                                <label v-for="name in typing.usernameList"
+                                                :key="name">
+                                                    {{ name }} 
+                                                </label>
+                                                are typing...
+                                            </span>
+                                        </p>
+                                    </div>
+
+                                </div>
                             </div>
-                            <input
-                                v-model="message"
-                                @keyup.enter="handleSendMessage"
-                                class="shadow appearance-none border rounded-xl w-full my-3 p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                type="text"
-                                placeholder="tap enter to send">
+
                         </div>
                     </div>
                 </div>
@@ -193,7 +233,7 @@
     </div>
 </template>
 <script setup lang="ts">
-    import { ref, onMounted, computed } from 'vue';
+    import { ref, onMounted, computed, reactive } from 'vue';
     import BoardComponent from '@/components/BoardComponent.vue';
     import { useStoreData } from '@/stores/store';
     import { useRoute } from 'vue-router'
@@ -209,6 +249,11 @@
     const store = useStoreData();
     const route = useRoute();
     const isClearBoard = ref(false);
+    const typing = reactive({
+        isTyping: false as boolean,
+        timeout: undefined as any,
+        usernameList: [] as string[],
+    })
 
     //store data
     const { users, boards, currentBoard, socketIO } = storeToRefs(store);
@@ -269,7 +314,25 @@
         })
         
         socketIO.value.on('someoneSendMessageToAll', (data) => {
+            //add new message
             messages.value.push({ ...data });
+
+            //scroll to bottom when submit chatting
+            setTimeout(() => {
+                const el = document.getElementById('chat-box');
+                if (el) {
+                    el.scrollTop = el.scrollHeight;
+                }
+            }, 0)
+        })
+
+        socketIO.value.on('someoneTypingMessage', (username) => {
+            typing.usernameList.push(username);
+        })
+
+        socketIO.value.on('someoneNoLongerTyping', (username) => {
+            const index = typing.usernameList.indexOf(username);
+            typing.usernameList.splice(index, 1);
         })
 
         socketIO.value.on('endGame', (username) => {
@@ -355,14 +418,31 @@
             message: message.value
         }))
         message.value = "";
+    }
 
-        //scroll to bottom when submit chatting
-        setTimeout(()=>{
-            const el = document.getElementById('chat-box');
-            if (el) {
-                el.scrollTop = el.scrollHeight;
+    function timeoutFunction(){
+        typing.isTyping = false;
+        socketIO.value.emit("noLongerTypingMessage", ({
+            username: route.query.username,
+            room: route.query.room
+        }))
+    }
+    function handleTypingEvent(event: any) {
+        if(event.keyCode !== 13){
+            if(!typing.isTyping){
+                typing.isTyping = true;
+                socketIO.value.emit("typingMessage", ({
+                    username: route.query.username,
+                    room: route.query.room
+                }))
+                clearTimeout(typing.timeout);
+                typing.timeout = setTimeout(timeoutFunction, 600);
+            }else{
+                clearTimeout(typing.timeout);
+                typing.timeout = setTimeout(timeoutFunction, 600);
             }
-        }, 100)
+        }
+
     }
 
     function handleTakeAdmin(){
