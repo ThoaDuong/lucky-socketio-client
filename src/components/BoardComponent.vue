@@ -1,21 +1,27 @@
 <template>
     <table class="table-auto mx-auto text-center">
         <tbody class="border-2 border-gray-600">
-            <tr v-for="(row, rowIndex) in props.boardNumber" :key="rowIndex">
+            <tr v-for="(row, rowIndex) in props.boardNumber" :key="rowIndex"
+            :class="{
+                'border-b-2 border-gray-600': rowIndex === 2 || rowIndex === 5,
+            }">
                 <td v-for="(number, index) in row"
                     @click="handleClickSquare(number)"
                     :key="index"
                     :style="{'background': number !== null ? props.color : 'rgb(212 212 216)'}"
                     :class="{
-                        'relative': true,
-                        'text-white text-lg border px-2 py-3 hover:cursor-pointer': number !== null,
-                        'text-lg border px-4 py-3': number === null,
+                        'relative py-[2.5%]': true,
+                        'text-white text-lg border px-2 hover:cursor-pointer': number !== null,
+                        'text-lg border px-4': number === null,
                         'px-3': number && number < 10,
                     }"
                     >
                     <span>{{ number }}</span>
-                    <span v-if="activeBoard[rowIndex].indexOf(number) !== -1" class="absolute top-6 left-0.5 border-t-2 rotate-45 border-gray-500 px-4"></span>
-                    <span v-if="activeBoard[rowIndex].indexOf(number) !== -1" class="absolute top-6 left-0.5 border-t-2 rotate-[-45deg] border-gray-500 px-4"></span>
+                    <!-- <span v-if="activeBoard[rowIndex].indexOf(number) !== -1" class="absolute top-6 left-0.5 border-t-2 rotate-45 border-gray-500 px-4"></span>
+                    <span v-if="activeBoard[rowIndex].indexOf(number) !== -1" class="absolute top-6 left-0.5 border-t-2 rotate-[-45deg] border-gray-500 px-4"></span> -->
+                    <img v-if="activeBoard[rowIndex].indexOf(number) !== -1" 
+                        class="w-11 h-11 absolute top-0 left-0 opacity-80"
+                        src="https://img.icons8.com/pulsar-line/48/hand-drawn-star.png" alt="star"/>
                 </td>
             </tr>
         </tbody>
@@ -31,7 +37,7 @@
         color: string|undefined,
         checkClearBoard: boolean
     }>();
-    const emit = defineEmits(['winGame', 'resetClearBoard']);
+    const emit = defineEmits(['winGame', 'resetClearBoard', 'gonnaWin']);
 
     const activeBoard = ref<(number | null)[][]>([[], [], [], [], [], [], [], [], []]);
     
@@ -46,7 +52,7 @@
         }
     })
 
-    watch(() => props.checkClearBoard, (newValue, oldValue) => {
+    watch(() => props.checkClearBoard, (newValue) => {
         if(newValue){
             clearActiveBoard();
             emit('resetClearBoard');
@@ -69,10 +75,17 @@
     }
 
     function handleAddNumber(tempActiveBoard: (number | null)[], number: number){
-        if(tempActiveBoard.length < 1){
-            tempActiveBoard.push(number);
-        }else{
-            checkWinGame(tempActiveBoard, number);
+        switch(tempActiveBoard.length){
+            case 3:
+                tempActiveBoard.push(number);
+                //alert 3
+                emit('gonnaWin');
+                break;
+            case 4:
+                checkWinGame(tempActiveBoard, number);
+                break;
+            default:
+                tempActiveBoard.push(number);
         }
     }
 

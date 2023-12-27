@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { io } from "socket.io-client";
 import { User } from "@/interfaces/User";
 import { Board } from "@/interfaces/Board";
+import { BoardRoom } from "@/interfaces/BoardRoom";
 
 const uri = 'http://localhost:8000';
 const headers = {
@@ -14,6 +15,7 @@ export const useStoreData = defineStore('storeData', {
             users: [] as User[],
             boards: [] as Board[],
             currentBoard: null as Board|null,
+            boards_room: [] as BoardRoom[]
         }
     },
     getters: {
@@ -41,23 +43,12 @@ export const useStoreData = defineStore('storeData', {
             })
             this.boards = await response.json();
         },
-        async getBoardByUsernameFromAPI (username: string) {
-            const response = await fetch(`${uri}/boards/${username}`, {
+        async getBoardsRoomFromAPI () {
+            const response = await fetch(`${uri}/boards_room`, {
                 method: 'GET',
                 headers: headers
             })
-            this.currentBoard = await response.json();
+            this.boards_room = await response.json();
         },
-        async updateUsernameInBoardFromAPI (username: string, targetBoardId: number) {
-            const bodyData = {
-                username,
-                targetBoardId
-            }
-            await fetch(`${uri}/boards/`, {
-                method: 'PUT',
-                headers: headers,
-                body: JSON.stringify(bodyData)
-            })
-        }
     }
 })

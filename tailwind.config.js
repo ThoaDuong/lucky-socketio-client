@@ -6,6 +6,9 @@ export default {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                'flex': ['"IBM Plex Serif"', 'serif']
+            },
             gridTemplateRows: {
                 '10': 'repeat(10, minmax(0, 1fr))',
             },
@@ -15,12 +18,15 @@ export default {
                 'span-9': 'span 9 / span 9',
                 'span-10': 'span 10 / span 10',
             },
+            screens: {
+                'ipad': {'raw': '((min-height:768px)and(min-width:1024px))'},
+                'desktop': {'raw': '(min-height:1024px)'}
+            },
             lineHeight: {
-                '14': '3.5rem',
             },
             animation: {
-                marquee: 'marquee 25s linear infinite',
-                marquee2: 'marquee2 25s linear infinite',
+                marquee: 'marquee 20s linear infinite',
+                marquee2: 'marquee2 20s linear infinite',
             },
             keyframes: {
                 marquee: {
