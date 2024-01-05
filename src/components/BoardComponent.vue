@@ -5,20 +5,21 @@
             :class="{
                 'border-b-2 border-gray-600': rowIndex === 2 || rowIndex === 5,
             }">
+                <!-- #DDDDDD -->
                 <td v-for="(number, index) in row"
                     @click="handleClickSquare(number)"
                     :key="index"
-                    :style="{'background': number !== null ? props.color : 'rgb(212 212 216)'}"
+                    :style="{'background': number !== null ? props.color : '#F1EAFF'}"
                     :class="{
-                        'relative py-[2.5%]': true,
+                        'relative py-[3%]': true,
                         'text-white text-lg border px-2 hover:cursor-pointer': number !== null,
                         'text-lg border px-4': number === null,
-                        'px-3': number && number < 10,
+                        'px-3': number && number < 20,
                     }"
                     >
                     <span>{{ number }}</span>
-                    <!-- <span v-if="activeBoard[rowIndex].indexOf(number) !== -1" class="absolute top-6 left-0.5 border-t-2 rotate-45 border-gray-500 px-4"></span>
-                    <span v-if="activeBoard[rowIndex].indexOf(number) !== -1" class="absolute top-6 left-0.5 border-t-2 rotate-[-45deg] border-gray-500 px-4"></span> -->
+                    
+                    <!-- show star for selected -->
                     <img v-if="activeBoard[rowIndex].indexOf(number) !== -1" 
                         class="w-11 h-11 absolute top-0 left-0 opacity-80"
                         src="https://img.icons8.com/pulsar-line/48/hand-drawn-star.png" alt="star"/>

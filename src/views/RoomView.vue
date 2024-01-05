@@ -8,7 +8,7 @@
         -->
 
         <!-- Full screen -->
-        <div class="w-full h-screen max-h-screen 2xl:w-[80%] overflow-y-auto xl:overflow-y-hidden grid grid-cols-12 p-3 gap-3">
+        <div class="w-full h-screen max-h-screen 2xl:w-[80%] overflow-y-auto xl:overflow-y-hidden grid grid-cols-12 p-2 gap-2">
             <!-- Left side -->
             <div class="
                 col-span-12 
@@ -16,27 +16,27 @@
                 xl:col-span-3">
                 <div class="h-full">
                     <!-- Logo block -->
-                    <div class="h-[80px] bg-gray-200 rounded-xl flex mb-3">
+                    <div class="h-[80px] bg-base rounded-xl flex mb-2">
                         <div class="px-4 pt-1">
-                            <img class="w-20 h-20" src="https://i.imgur.com/hB1TKLR.png" alt="Lootoo"/>
+                            <img class="w-16 h-16" src="https://i.imgur.com/hB1TKLR.png" alt="Lootoo"/>
                         </div>
-                        <h1 class="font-rubik text-5xl text-yellow-500 font-bold h-full flex items-center">LooToo</h1>
+                        <h1 class="font-rubik text-4xl text-yellow-500 font-bold h-full flex items-center">LooToo</h1>
                     </div>
                     <!-- User information block -->
-                    <div class="h-[100px] mb-3 py-3 flex items-center bg-gray-200 rounded-xl">
+                    <div class="h-[100px] mb-2 flex items-center bg-base rounded-xl">
                         <div class="px-4">
                             <img class="w-16 h-16" src="https://img.icons8.com/clouds/100/corgi.png" alt="Temporary profile picture"/>
                         </div>
                         <div class="text-left">
-                            <h3 class="text-lg font-semibold drop-shadow-lg text-blue-500">{{ route.query.username }}</h3>
+                            <h3 class="text-lg font-semibold drop-shadow-lg text-happy-blue">{{ route.query.username }}</h3>
                             <p class="text-sm"><strong>Role:</strong>
-                                {{ isCurrentUserAdmin ? 'Host' : 'Member' }}
+                                {{ isCurrentUserAdmin ? 'Host' : 'Player' }}
                             </p>
                             <p class="text-sm"><strong>Room Code:</strong> {{ route.query.room }}</p>
                         </div>
                     </div>
                     <!-- Boards list block -->
-                    <div class="h-[250px] md:h-[calc(100vh-230px)] bg-gray-200 rounded-xl">
+                    <div class="h-[250px] md:h-[calc(100vh-212px)] bg-base rounded-xl">
                         <h3 class="content-title">
                             Select board here
                         </h3>
@@ -59,7 +59,7 @@
                                     <img
                                     :style="{'background': board.color}"
                                     class="w-14 h-14 p-2 rounded-full text-white mx-auto"
-                                    src="https://img.icons8.com/clouds/100/document.png"
+                                    src="https://img.icons8.com/matisse/100/paper.png"
                                     alt="board image"/>
                                 </div>
                                 <div class="col-span-2 text-left">
@@ -80,29 +80,34 @@
                 xl:col-span-9">
                 <div class="h-full">
                     <!-- Dynamic banner block -->
-                    <div class="hidden md:block h-[80px] bg-gray-200 rounded-xl overflow-x-hidden mb-3 px-3">
-                        <div class="relative h-full flex justify-center items-center font-doodle text-blue-400 text-xl">
-                            Welcome to the party! Get ready for some fun.
-                            <!-- <div class="animate-marquee whitespace-nowrap">
-                                <span class="mx-4 text-xl">No refresh during play</span>
-                                <span class="mx-4 text-xl"> - </span>
-                                <span class="mx-4 text-xl">Happy new year</span>
-                                <span class="mx-4 text-xl"> - </span>
+                    <div class="hidden md:block h-[80px] bg-base rounded-xl overflow-x-hidden mb-2 px-3">
+                        <div class="relative h-full flex justify-right items-center font-doodle text-xl">
+                            <!-- Welcome to the party! Get ready for some fun. -->
+                        
+                            <div class="animate-marquee whitespace-nowrap">
+                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
+                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
+                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
                             </div>
                             <div class="absolute animate-marquee2 whitespace-nowrap">
-                                <span class="mx-4 text-xl">No refresh during play</span>
-                                <span class="mx-4 text-xl"> - </span>
-                                <span class="mx-4 text-xl">Happy new year</span>
-                                <span class="mx-4 text-xl"> - </span>
-                            </div> -->
+                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
+                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
+                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="h-[100px] mb-3">
-                        <div class="h-full grid grid-cols-3 gap-3">
+                    <div class="h-[100px] mb-2">
+                        <div class="h-full grid grid-cols-3 gap-2">
                             <!-- Called numbers block -->
-                            <div class="h-full col-span-3 xl:col-span-2 bg-gray-200 rounded-xl overflow-x-hidden">
+                            <div class="h-full col-span-3 xl:col-span-2 bg-base rounded-xl overflow-x-hidden">
                                 <div class="h-full mx-5 flex justify-right items-center overflow-x-auto">
-                                    <div class="flex items-center bg-blue-400 rounded-full py-2 px-4">
+                                    <div class="flex items-center bg-happy-blue rounded-full py-2 px-4">
                                         <!-- Random number -->
                                         <div class="block w-20">
                                             <span class="text-xl font-semibold">
@@ -112,50 +117,51 @@
                                         </div>
                                         <!-- List called numbers -->
                                         <div class="block">
-                                            <div class="bg-yellow-400 w-14 h-14 flex justify-center items-center rounded-full text-2xl font-semibold">
+                                            <div class="bg-happy-yellow w-14 h-14 flex justify-center items-center rounded-full text-2xl font-semibold">
                                                 {{calledNumbers[0] ? calledNumbers[0] : 0}}
                                             </div>
                                         </div>
                                     </div>
                                     <div v-for="(number, index) in [...calledNumbers.filter((n, index) => index !== 0)]" 
                                         :key="index">
-                                        <div class="bg-yellow-400 w-12 h-12 flex justify-center items-center rounded-full mx-1 text-xl font-semibold">
+                                        <div class="bg-happy-yellow w-12 h-12 flex justify-center items-center rounded-full mx-1 text-xl font-semibold">
                                             {{ number }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- Admin action block -->
-                            <div class="h-full col-span-3 xl:col-span-1 hidden xl:block bg-gray-200 rounded-xl">
+                            <div class="h-full col-span-3 xl:col-span-1 hidden xl:block bg-base rounded-xl">
                                 
                                 <div class="h-full flex justify-center items-center">
                                     <!-- Take host option -->
-                                    <div v-if="!isExistUserAdmin">
+                                    <div v-if="!isCurrentUserAdmin">
                                         <button @click="handleTakeAdmin"
+                                        :disabled="isExistUserAdmin"
                                         :class="{
                                             'opacity-70': isExistUserAdmin
                                         }"
-                                        class="rounded-full bg-blue-400 text-white py-1 px-3 text-sm">
+                                        class="rounded-full bg-happy-blue text-white py-1 px-3 text-sm">
                                             <img class="w-5 h-5 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-host-award-events-flaticons-lineal-color-flat-icons.png" alt="host"/>
                                             <span>Take Host</span>
                                         </button>
                                     </div>
                                     
                                     <!-- Admin action -->
-                                    <div v-if="isCurrentUserAdmin">
+                                    <div v-else>
                                         <div class="text-center">
                                             <button @click="handleReleaseAdmin"
-                                                class="rounded-full bg-blue-400 text-white mx-1 py-1 px-3 text-sm">
+                                                class="rounded-full bg-happy-blue text-white mx-1 py-1 px-3 text-sm">
                                                 <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/delete-sign.png" alt="close-sign"/>
                                                 <span>Release Host</span>
                                             </button>
                                             <button @click="handleStopClear"
-                                                class="rounded-full bg-orange-500 text-white mx-1 py-1 px-3 text-sm">
+                                                class="rounded-full bg-happy-red text-white mx-1 py-1 px-3 text-sm">
                                                 <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-tal-revivo-filled-tal-revivo/24/external-exiting-from-shopping-mall-with-arrow-outside-mall-filled-tal-revivo.png" alt="suicide"/>
                                                 <span>End Game</span>
                                             </button>
                                             <button @click="handleNextNumber"
-                                                class="rounded-full bg-green-500 text-white mt-2 py-1 px-4 text-md font-semibold">
+                                                class="rounded-full bg-happy-green text-white mt-2 py-1 px-4 text-md font-semibold">
                                                 <img class="w-[1.4rem] h-[1.4rem] mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/forward.png" alt="forward"/>
                                                 <span>Next Number</span>
                                             </button>
@@ -165,13 +171,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="h-auto xl:h-[calc(100vh-230px)]">
-                        <div class="grid grid-cols-3 gap-3">
+                    <div class="h-auto xl:h-[calc(100vh-212px)]">
+                        <div class="grid grid-cols-3 gap-2">
                             <!-- Display current board -->
-                            <div class="h-full col-span-3 xl:col-span-2 bg-gray-200 rounded-xl">
+                            <div class="h-full col-span-3 xl:col-span-2 bg-base rounded-xl flex justify-center items-center overflow-y-auto">
 
                                 <!-- Display current board -->
-                                <div class="my-3 clear-right">
+                                <div class="my-4 xl:my-1">
                                     <BoardComponent 
                                         :boardNumber="currentBoard?.numbers" 
                                         :color="currentBoard?.color"
@@ -184,15 +190,15 @@
                                 </div>
                             </div>
                             <!-- ChatBox block -->
-                            <div class="h-full col-span-3 xl:col-span-1 bg-gray-200 rounded-xl">
+                            <div class="h-full col-span-3 xl:col-span-1 bg-base rounded-xl">
                                 <h3 class="content-title">
                                     Chat Box
                                 </h3>
                                 <!-- Display chat box -->
                                 <div class="
                                     relative w-full h-[220px] 
-                                    md:h-[calc(100vh-250px-80px-52px-350px)] 
-                                    xl:h-[calc(100vh-230px-44px)]">
+                                    md:h-[calc(100vh-212px-87px-106px-350px)] 
+                                    xl:h-[calc(100vh-212px-44px)]">
                                     <div id="chat-box" class="
                                         h-[150px] overflow-y-auto
                                         md:h-[calc(100%-100px)] 
@@ -211,20 +217,20 @@
                                                 <div class="text-left font-semibold text-xs text-orange-900 opacity-40 ml-3 mb-[-3px]">
                                                     {{ m.username }}
                                                 </div>
-                                                <div class="w-fit px-4 py-1 text-sm bg-green-400 rounded-full text-left">
+                                                <div class="w-fit px-4 py-1 text-sm bg-happy-green rounded-full text-left">
                                                     {{ m.message }}
                                                 </div>
                                             </div>
                                             <div v-else
                                             class="flex justify-end my-2">
-                                                <div class="w-fit px-4 py-1 text-sm bg-blue-400 rounded-full text-right">
+                                                <div class="w-fit px-4 py-1 text-sm bg-happy-blue rounded-full text-right">
                                                     {{ m.message }}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="absolute bottom-50px md:bottom-[10%] w-full">
-                                        <div class="w-4/5 mx-auto">
+                                        <div class="w-4/5 mx-auto text-sm">
                                             <input
                                                 v-model="message"
                                                 @keyup="handleTypingEvent($event)"
@@ -277,24 +283,28 @@
     const message = ref<string>("");
     const store = useStoreData();
     const route = useRoute();
-    const isClearBoard = ref(false);
+    const isClearBoard = ref<boolean>(false);
     const typing = reactive({
         isTyping: false as boolean,
-        timeout: undefined as any,
+        timeout: undefined as number | undefined,
         usernameList: [] as string[],
     })
-    const timeoutScroll = ref<any>();
+    const timeoutScroll = ref<number>();
     const customBoards = ref<Board[]>([]);
 
     //store data
     const { users, boards, boards_room, socketIO } = storeToRefs(store);
 
     const isCurrentUserAdmin = computed(() => {
-        const user  = users.value.find(user => user.username === route.query.username);
+        const user  = users.value.find(user => 
+            user.username === route.query.username && user.room === route.query.room
+        );
         return !!(user?.isAdmin); 
     })
     const isExistUserAdmin = computed(() => {
-        const index = users.value.findIndex(user => user.isAdmin === true); 
+        const index = users.value.findIndex(user => 
+            user.isAdmin === true && user.room === route.query.room
+        ); 
         return !!(index !==-1);
     })
     const countCalledNumbers = computed(() => calledNumbers.value.length);
@@ -500,8 +510,8 @@
         }))
     }
 
-    function handleTypingEvent(event: any) {
-        if(event.keyCode !== 13){
+    function handleTypingEvent(event: KeyboardEvent) {
+        if(event.key !== 'Enter'){
             if(!typing.isTyping){
                 typing.isTyping = true;
                 socketIO.value.emit("typingMessage", ({

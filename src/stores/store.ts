@@ -20,12 +20,8 @@ export const useStoreData = defineStore('storeData', {
     },
     getters: {
         //no need
-        // getUsers(): User[] {
-        //     return this.users;
-        // }
     },
     actions: {
-        
         // USER API
         async getUsersFromAPI () {
             const response = await fetch(`${uri}/users`, {
@@ -43,6 +39,8 @@ export const useStoreData = defineStore('storeData', {
             })
             this.boards = await response.json();
         },
+
+        //BOARD ROOM API
         async getBoardsRoomFromAPI () {
             const response = await fetch(`${uri}/boards_room`, {
                 method: 'GET',

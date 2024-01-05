@@ -20,4 +20,29 @@
     .content-title{
         @apply font-semibold text-lg py-2 px-4 text-left;
     }
+    .text-happy-yellow{
+        color: #FCE22A
+    }
+    .text-happy-red{
+        color: #FF8080
+    }
+    .text-happy-blue{
+        color: #95BDFF
+    }
+    .bg-happy-blue{
+        background-color: #95BDFF;
+    }
+    .bg-happy-yellow{
+        background-color: #FCE22A;
+    }
+    .bg-happy-red{
+        background-color: #FF8080;
+    }
+    .bg-happy-green{
+        background-color: #00DFA2;
+    }
+    .bg-base{
+        background-color: #F1EAFF; 
+        /* EBE3D5 */
+    }
 </style>

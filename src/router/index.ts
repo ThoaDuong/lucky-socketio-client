@@ -27,7 +27,7 @@ router.beforeEach((to, from) => {
         const { username, room } = to.query;
         if(from.name !== 'login' ||
             !username || username.length > 20 ||
-            !room || room.length > 10){
+            !room || room.length > 11){
             return { name: 'login' };
         }
         return true;
