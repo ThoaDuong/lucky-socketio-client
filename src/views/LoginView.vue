@@ -1,10 +1,10 @@
 <template>
     <div class="home_page">
         <!-- Display all screen, yellow one -->
-        <div class="h-screen flex justify-center items-center rounded-none bg-pink-50 xl:bg-yellow-50">
+        <div class="h-screen flex justify-center items-center rounded-none bg-login xl:bg-base">
             
             <!-- Display 3/4 screen, pink one -->
-            <div class="w-full h-fit p-10 xl:w-fit xl:h-fit xl:px-20 xl:drop-shadow-lg bg-pink-50 rounded-lg">
+            <div class="w-full h-fit p-10 xl:w-fit xl:h-fit xl:px-20 xl:drop-shadow-lg bg-login rounded-lg">
                 
                 <!-- Display main title -->
                 <div class="text-center">

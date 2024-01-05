@@ -6,6 +6,9 @@ export default {
     ],
     theme: {
         extend: {
+            colors: {
+                base: '#F1EAFF'
+            },
             fontFamily: {
                 'flex': ['"IBM Plex Serif"', 'serif']
             },

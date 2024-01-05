@@ -45,4 +45,8 @@
         background-color: #F1EAFF; 
         /* EBE3D5 */
     }
+    .bg-login{
+        background-color: #7ED7C1; 
+        /* EBE3D5 */
+    }
 </style>
