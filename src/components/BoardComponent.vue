@@ -14,7 +14,7 @@
                         'relative py-[3%]': true,
                         'text-white text-lg border px-1 md:px-2 hover:cursor-pointer': number !== null,
                         'text-lg border px-4': number === null,
-                        'px-3': number && number < 20,
+                        'px-2 md:px-3': number && number < 20,
                     }"
                     >
                     <span>{{ number }}</span>

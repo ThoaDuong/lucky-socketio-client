@@ -8,7 +8,7 @@
         -->
 
         <!-- Full screen -->
-        <div class="w-full h-screen max-h-screen 2xl:w-[80%] overflow-y-auto xl:overflow-y-hidden grid grid-cols-12 p-2 gap-2">
+        <div class="w-full h-screen max-h-screen 2xl:w-[80%] xl:overflow-y-hidden grid grid-cols-12 p-2 gap-2">
             <!-- Left side -->
             <div class="
                 col-span-12 
@@ -196,11 +196,11 @@
                                 </h3>
                                 <!-- Display chat box | md:h-[calc(100vh-212px-87px-106px-350px)]  -->
                                 <div class="
-                                    relative w-full h-[220px] 
+                                    relative w-full h-[320px] 
                                     md:min-h-[300px] md:h-[calc(100vh-212px-595px)] 
                                     xl:h-[calc(100vh-212px-44px)]">
                                     <div id="chat-box" class="
-                                        h-[150px] overflow-y-auto
+                                        h-[250px] overflow-y-auto
                                         md:h-[calc(100%-80px)] 
                                         xl:h-[calc(100vh-230px-32%)]">
                                         <div v-for="(m, index) in messages" 

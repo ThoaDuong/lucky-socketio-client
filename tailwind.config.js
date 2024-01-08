@@ -7,7 +7,12 @@ export default {
     theme: {
         extend: {
             colors: {
-                base: '#F1EAFF'
+                'base': '#F1EAFF',
+                'happy-yellow': '#FCE22A',
+                'happy-red': '#FF8080',
+                'happy-blue': '#95BDFF',
+                'happy-green': '#00DFA2',
+                'login': '#7ED7C1'
             },
             fontFamily: {
                 'flex': ['"IBM Plex Serif"', 'serif']
