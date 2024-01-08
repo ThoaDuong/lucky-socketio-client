@@ -201,7 +201,7 @@
                                     xl:h-[calc(100vh-212px-44px)]">
                                     <div id="chat-box" class="
                                         h-[150px] overflow-y-auto
-                                        md:h-[calc(100%-100px)] 
+                                        md:h-[calc(100%-80px)] 
                                         xl:h-[calc(100vh-230px-32%)]">
                                         <div v-for="(m, index) in messages" 
                                         :key="index"
@@ -243,7 +243,6 @@
                                     <!-- Display typing -->
                                     <p 
                                     class="absolute bottom-[3%] xl:bottom-[5%] left-8 w-full mx-6 text-left text-sm">
-                                        hihi testing
                                         <span v-if="!!(typing.usernameList.length === 1)">
                                             {{ typing.usernameList[0] }} is typing
                                         </span>
