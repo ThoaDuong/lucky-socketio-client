@@ -76,8 +76,8 @@
             <!-- Right side -->
             <div class="
                 col-span-12 
-                md:col-span-8 
-                xl:col-span-9">
+                md:col-span-8 md:overflow-y-auto
+                xl:col-span-9 xl:overflow-y-hidden">
                 <div class="h-full">
                     <!-- Dynamic banner block -->
                     <div class="hidden md:block h-[80px] bg-base rounded-xl overflow-x-hidden mb-2 px-3">
@@ -102,10 +102,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="h-[100px] mb-2">
+                    <div class="h-auto xl:h-[100px] mb-2">
                         <div class="h-full grid grid-cols-3 gap-2">
                             <!-- Called numbers block -->
-                            <div class="h-full col-span-3 xl:col-span-2 bg-base rounded-xl overflow-x-hidden">
+                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-2 bg-base rounded-xl overflow-x-hidden">
                                 <div class="h-full mx-5 flex justify-right items-center overflow-x-auto">
                                     <div class="flex items-center bg-happy-blue rounded-full py-2 px-4">
                                         <!-- Random number -->
@@ -130,8 +130,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Admin action block -->
-                            <div class="h-full col-span-3 xl:col-span-1 hidden xl:block bg-base rounded-xl">
+                            <!-- Admin action block | hidden xl:block -->
+                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-1 block bg-base rounded-xl">
                                 
                                 <div class="h-full flex justify-center items-center">
                                     <!-- Take host option -->
@@ -194,10 +194,10 @@
                                 <h3 class="content-title">
                                     Chat Box
                                 </h3>
-                                <!-- Display chat box -->
+                                <!-- Display chat box | md:h-[calc(100vh-212px-87px-106px-350px)]  -->
                                 <div class="
                                     relative w-full h-[220px] 
-                                    md:h-[calc(100vh-212px-87px-106px-350px)] 
+                                    md:min-h-[300px] md:h-[calc(100vh-212px-595px)] 
                                     xl:h-[calc(100vh-212px-44px)]">
                                     <div id="chat-box" class="
                                         h-[150px] overflow-y-auto
@@ -241,9 +241,9 @@
                                         </div>
                                     </div>
                                     <!-- Display typing -->
-                                    <!-- v-if="!!(typing.usernameList.length !== 0)" -->
                                     <p 
-                                    class="absolute bottom-[3%] xl:bottom-[5%] left-8 w-full mx-6 text-left">
+                                    class="absolute bottom-[3%] xl:bottom-[5%] left-8 w-full mx-6 text-left text-sm">
+                                        hihi testing
                                         <span v-if="!!(typing.usernameList.length === 1)">
                                             {{ typing.usernameList[0] }} is typing
                                         </span>

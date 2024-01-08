@@ -19,7 +19,7 @@
                 <!-- Display main icon -->
                 <div class="flex justify-center items-center mt-4">
                     <div class="flex justify-center items-center mt-10" data-v-inspector="app.vue:3:9"></div>
-                    <img class="w-32 h-fit" src="https://i.imgur.com/hB1TKLR.png" alt="lootoo"/>
+                    <img class="w-32 h-auto" src="https://i.imgur.com/hB1TKLR.png" alt="lootoo"/>
                 </div>
 
                 <!-- Display login form -->

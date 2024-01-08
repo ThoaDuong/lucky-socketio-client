@@ -12,7 +12,7 @@
                     :style="{'background': number !== null ? props.color : '#F1EAFF'}"
                     :class="{
                         'relative py-[3%]': true,
-                        'text-white text-lg border px-2 hover:cursor-pointer': number !== null,
+                        'text-white text-lg border px-1 md:px-2 hover:cursor-pointer': number !== null,
                         'text-lg border px-4': number === null,
                         'px-3': number && number < 20,
                     }"
