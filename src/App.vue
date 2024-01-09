@@ -20,4 +20,29 @@
     .content-title{
         @apply font-semibold text-lg py-2 px-4 text-left;
     }
+    .swal2-confirm{
+        font-size: 12px !important;
+        padding: 3px 10px  !important;
+        background-color: #00DFA2 !important;
+        border-radius: 99px !important;
+    }
+    .swal2-cancel{
+        font-size: 12px !important;
+        padding: 3px 10px  !important;
+        background-color: #FF8080 !important;
+        border-radius: 99px !important;
+    }
+    .swal2-title{
+        font-size: 20px !important;
+        padding-top: 5px !important;
+    }
+    #swal2-html-container{
+        font-size: 14px !important;
+        font-weight: bold !important;
+        margin-bottom: 0px !important;
+        margin-top: 20px !important;
+    }
+    .swal2-image{
+        margin-top: 10px !important;
+    }
 </style>

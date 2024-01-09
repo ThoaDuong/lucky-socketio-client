@@ -101,12 +101,12 @@
 
     function  alertWinGame(){
         Swal.fire({
-            title: 'Congratulation!',
+            title: 'Congratulation! You won',
             confirmButtonText: 'End Game',
-            imageUrl: "https://img.freepik.com/premium-vector/you-win-sign-pop-art-style_175838-498.jpg?w=360",
-            imageWidth: 200,
-            imageHeight: 200,
-            imageAlt: "Win game image"
+            imageUrl: "https://img.icons8.com/external-filled-outline-geotatah/64/external-best-friend-best-friend-forever-filled-outline-filled-outline-geotatah-6.png",
+            imageWidth: 100,
+            imageHeight: 100,
+            padding: '1rem',
         })
     }
     
@@ -115,6 +115,8 @@
             title: 'Oh no!',
             text: `Misunderstanding! The numbers: ${missingNumbers.toString()} have not being called`,
             icon: 'error',
+            imageWidth: 60,
+            imageHeight: 60,
             confirmButtonText: 'Continue'
         })
     }

@@ -44,10 +44,10 @@
                         <div class="h-[70%] md:h-[84%] overflow-y-auto">
                             <div
                             v-for="board in customBoards" :key="board.id"
-                            @click="board.username === null ? handleChangeBoard(board.id) : null"
+                            @click="board.username === null && !isGameStarted ? handleChangeBoard(board.id) : null"
                             :class="{
-                                'hover:cursor-pointer': !!(board.username === null),
-                                'opacity-60': !!(board.username !== null),
+                                'hover:cursor-pointer': !!(board.username === null && !isGameStarted),
+                                'opacity-60': !!(board.username !== null || isGameStarted),
                                 'grid grid-cols-3 pb-1': true,
                             }">
                                 <div class="col-span-1 mx-auto text-center">
@@ -130,7 +130,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Admin action block | hidden xl:block -->
+                            <!-- Admin action block -->
                             <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-1 block bg-base rounded-xl">
                                 
                                 <div class="h-full flex justify-center items-center">
@@ -141,7 +141,7 @@
                                         :class="{
                                             'opacity-70': isExistUserAdmin
                                         }"
-                                        class="rounded-full bg-happy-blue text-white py-1 px-3 text-sm">
+                                        class="rounded-full bg-happy-blue text-white py-1 px-3 text-sm font-semibold">
                                             <img class="w-5 h-5 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-host-award-events-flaticons-lineal-color-flat-icons.png" alt="host"/>
                                             <span>Take Host</span>
                                         </button>
@@ -151,18 +151,23 @@
                                     <div v-else>
                                         <div class="text-center">
                                             <button @click="handleReleaseAdmin"
-                                                class="rounded-full bg-happy-blue text-white mx-1 py-1 px-3 text-sm">
+                                                class="rounded-full bg-happy-blue text-white mx-1 py-1 px-3 text-sm font-semibold">
                                                 <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/delete-sign.png" alt="close-sign"/>
-                                                <span>Release Host</span>
+                                                <span>Release</span>
                                             </button>
                                             <button @click="handleStopClear"
-                                                class="rounded-full bg-happy-red text-white mx-1 py-1 px-3 text-sm">
+                                                class="rounded-full bg-happy-red text-white mx-1 py-1 px-3 text-sm font-semibold">
                                                 <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-tal-revivo-filled-tal-revivo/24/external-exiting-from-shopping-mall-with-arrow-outside-mall-filled-tal-revivo.png" alt="suicide"/>
-                                                <span>End Game</span>
+                                                <span>End</span>
+                                            </button>
+                                            <button @click="isVoiceOn = !isVoiceOn"
+                                                class="rounded-full bg-happy-green text-white mx-1 py-1 px-3 text-sm font-semibold">
+                                                <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
+                                                <span>{{ isVoiceOn ? 'On' : 'Off' }}</span>
                                             </button>
                                             <button @click="handleNextNumber"
-                                                class="rounded-full bg-happy-green text-white mt-2 py-1 px-4 text-md font-semibold">
-                                                <img class="w-[1.4rem] h-[1.4rem] mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/forward.png" alt="forward"/>
+                                                class="rounded-full bg-happy-green text-white mt-2 mx-1 py-1 px-3 text-sm font-semibold">
+                                                <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/forward.png" alt="forward"/>
                                                 <span>Next Number</span>
                                             </button>
                                         </div>
@@ -275,6 +280,12 @@
     import { Board } from '@/interfaces/Board';
     import { BoardRoom } from '@/interfaces/BoardRoom';
 
+    declare global {
+        interface Window {
+            responsiveVoice?: any;
+        }
+    }
+
     //static variable
     const randomNumber = ref<number>(0);
     const calledNumbers = ref<(number | null)[]>([]);
@@ -290,10 +301,12 @@
     })
     const timeoutScroll = ref<number>();
     const customBoards = ref<Board[]>([]);
+    const isVoiceOn = ref<boolean>(true);
 
     //store data
     const { users, boards, boards_room, socketIO } = storeToRefs(store);
 
+    const isGameStarted = computed(() => calledNumbers.value.length > 0 ? true : false);
     const isCurrentUserAdmin = computed(() => {
         const user  = users.value.find(user => 
             user.username === route.query.username && user.room === route.query.room
@@ -399,12 +412,18 @@
         socketIO.value.on('endGame', (username) => {
             //user win game, alert to all
             Swal.fire({
-                title: `${username} won`,
+                title: `${username} won! Better luck next time.`,
                 confirmButtonText: 'End Game',
-                imageUrl: "https://i.imgur.com/lbdhOxl.png",
-                imageWidth: 200,
-                imageHeight: 200,
-                imageAlt: "Win game image"
+                imageUrl: "https://img.icons8.com/external-wanicon-lineal-color-wanicon/64/external-shamrock-st-patrick-day-wanicon-lineal-color-wanicon.png",
+                imageWidth: 100,
+                imageHeight: 100,
+                padding: '1rem',
+            })
+            
+            //Sent message for the others except the winner.
+            messages.value.push({
+                username: 'BotChat',
+                message: `${username} won!!!`
             })
 
             //clear numbers and boards
@@ -414,9 +433,18 @@
         socketIO.value.on('someoneGonnaWinToAll', (username) => {
             messages.value.push({
                 username: 'BotChat',
-                message: `${username} just got 4 numbers in a row`
+                message: `${username} - just got 4 numbers in a row`
             })
-        })
+
+            Swal.fire({
+                position: "top-end",
+                text: `${username} - just got 4 numbers in a row`,
+                showConfirmButton: false,
+                backdrop: false,
+                timer: 3000
+            });
+        })  
+            
 
         socketIO.value.on('someoneTakeAdminToAll', () => {
             store.getUsersFromAPI();
@@ -438,15 +466,27 @@
         }, 0)
     }
 
+    function handleSpeakNumber(number: number){
+        //responsiveVoice import at index.html
+        const text = number.toString();
+        window.responsiveVoice.speak(text, "Vietnamese Female", {volume: 4, rate: 1.2});
+    }
+
     function handleNextNumber(){
         let randomTemp = 0;
         let calledNumbersTemp = [...calledNumbers.value];
         do{
             randomTemp = Math.floor(Math.random() * 90 + 1);
         }while(calledNumbersTemp.indexOf(randomTemp) !== -1);
+        
+        //speak random number
+        if(isVoiceOn.value){
+            handleSpeakNumber(randomTemp);
+        }
+
         //add random number to first position of list called
         calledNumbersTemp.unshift(randomTemp);
-
+        
         //send socket event
         socketIO.value.emit('changeRandomNumber', { 
             randomNumber: randomTemp,
@@ -545,6 +585,12 @@
 
     //handle function from BoardComponent
     function handleWinGame(){
+        //Sent message for current user (the winner)
+        messages.value.push({
+            username: 'BotChat',
+            message: `${route.query.username} won!!!`
+        })
+
         socketIO.value.emit('someoneWinGame', {
             username: route.query.username,
             room: route.query.room
