@@ -431,11 +431,13 @@
         })
 
         socketIO.value.on('someoneGonnaWinToAll', (username) => {
+            //add to chatbox
             messages.value.push({
                 username: 'BotChat',
                 message: `${username} - just got 4 numbers in a row`
             })
 
+            //show popup
             Swal.fire({
                 position: "top-end",
                 text: `${username} - just got 4 numbers in a row`,
