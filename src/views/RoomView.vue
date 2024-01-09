@@ -135,7 +135,7 @@
                                 
                                 <div class="h-full flex justify-center items-center">
                                     <!-- Take host option -->
-                                    <div v-if="!isCurrentUserAdmin">
+                                    <div v-if="!isCurrentUserAdmin" class="text-center">
                                         <button @click="handleTakeAdmin"
                                         :disabled="isExistUserAdmin"
                                         :class="{
@@ -145,7 +145,13 @@
                                             <img class="w-5 h-5 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-host-award-events-flaticons-lineal-color-flat-icons.png" alt="host"/>
                                             <span>Take Host</span>
                                         </button>
+                                        <button @click="isVoiceOn = !isVoiceOn"
+                                            class="rounded-full bg-happy-green text-white mx-1 py-1 px-3 text-sm font-semibold">
+                                            <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
+                                            <span>{{ isVoiceOn ? 'On' : 'Off' }}</span>
+                                        </button>
                                     </div>
+                                    
                                     
                                     <!-- Admin action -->
                                     <div v-else>
@@ -355,6 +361,9 @@
             message: `Welcome ${usernameRoute}!`
         })
         handleScrollToBottom();
+        window.responsiveVoice.setDefaultVoice("Vietnamese Female");
+        window.responsiveVoice.setDefaultRate(1.2);
+
 
         //listen socket.io connection
         socketIO.value.on('someoneJoinRoom', (username) => {
@@ -386,6 +395,10 @@
         socketIO.value.on('updateRandomNumber', (data) => {
             randomNumber.value = data.randomNumber;
             calledNumbers.value = data.calledNumbers;
+
+            if(isVoiceOn.value){
+                handleSpeakNumber(data.randomNumber);
+            }
         })
 
         socketIO.value.on('updateStopAndClear', () => {
@@ -470,8 +483,8 @@
 
     function handleSpeakNumber(number: number){
         //responsiveVoice import at index.html
-        const text = number.toString();
-        window.responsiveVoice.speak(text, "Vietnamese Female", {volume: 4, rate: 1.2});
+        // window.responsiveVoice.speak(number.toString(), "Vietnamese Female", {pitch: 1, volume: 4, rate: 1.2});
+        window.responsiveVoice.speak(number.toString());
     }
 
     function handleNextNumber(){
@@ -514,7 +527,6 @@
             confirmButtonText: 'Yes, I am sure!',
             cancelButtonText: "No, cancel it!",
         }).then((result) => {
-            console.log('res', result);
             if (result.isConfirmed){
                 //send socket event when confirm
                 socketIO.value.emit('changeStopAndClear', (route.query.room));
