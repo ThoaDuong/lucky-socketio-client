@@ -258,9 +258,10 @@
                                             {{ typing.usernameList[0] }} is typing
                                         </span>
                                         <span v-if="!!(typing.usernameList.length > 1)">
-                                            <label v-for="name in typing.usernameList"
-                                            :key="name">
-                                                {{ name }} 
+                                            <label v-for="(name, index) in typing.usernameList"
+                                            :key="index">
+                                                <span>{{ name }}</span> 
+                                                <span v-show="typing.usernameList.length-1 !== index">, </span> 
                                             </label>
                                             are typing...
                                         </span>
@@ -308,6 +309,10 @@
     const timeoutScroll = ref<number>();
     const customBoards = ref<Board[]>([]);
     const isVoiceOn = ref<boolean>(true);
+    // musicTrack: new Audio("@/assets/background_music.mp3") as HTMLAudioElement,
+    // const backgroundMusic = reactive({
+    //     isOn: true as boolean,
+    // })
 
     //store data
     const { users, boards, boards_room, socketIO } = storeToRefs(store);
@@ -361,9 +366,15 @@
             message: `Welcome ${usernameRoute}!`
         })
         handleScrollToBottom();
+        
+        //set default for responsive voice
         window.responsiveVoice.setDefaultVoice("Vietnamese Female");
         window.responsiveVoice.setDefaultRate(1.2);
 
+        //set background music
+        //if(backgroundMusic.isOn){
+            //backgroundMusic.musicTrack.play();
+        //}
 
         //listen socket.io connection
         socketIO.value.on('someoneJoinRoom', (username) => {

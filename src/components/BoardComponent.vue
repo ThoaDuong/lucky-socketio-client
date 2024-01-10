@@ -78,9 +78,7 @@
     function handleAddNumber(tempActiveBoard: (number | null)[], number: number){
         switch(tempActiveBoard.length){
             case 3:
-                tempActiveBoard.push(number);
-                //alert 3
-                emit('gonnaWin');
+                checkGonnaWin(tempActiveBoard, number);
                 break;
             case 4:
                 checkWinGame(tempActiveBoard, number);
@@ -101,7 +99,7 @@
 
     function  alertWinGame(){
         Swal.fire({
-            title: 'Congratulation! You won',
+            title: 'Congratulations! You won',
             confirmButtonText: 'End Game',
             imageUrl: "https://img.icons8.com/external-filled-outline-geotatah/64/external-best-friend-best-friend-forever-filled-outline-filled-outline-geotatah-6.png",
             imageWidth: 100,
@@ -110,7 +108,7 @@
         })
     }
     
-    function  alertInValidWinGame(missingNumbers: number[]){
+    function  alertInValidCalledNumbers(missingNumbers: number[]){
         Swal.fire({
             title: 'Oh no!',
             text: `Misunderstanding! The numbers: ${missingNumbers.toString()} have not being called`,
@@ -121,8 +119,7 @@
         })
     }
 
-    function checkWinGame(tempActiveBoard: (number | null)[], number: number){
-        //check all number is called
+    function checkNumbersCalled(tempActiveBoard: (number | null)[], number: number): number[]{
         let missingNumbers: number[] = [];
         props.calledNumbers.indexOf(number) ? missingNumbers.push(number) : null;
         tempActiveBoard.forEach(numberActive => {
@@ -133,14 +130,35 @@
                 }
             }
         })
+        return missingNumbers;
+    }
+
+    function checkWinGame(tempActiveBoard: (number | null)[], number: number){
+        //check all number is called
+        const missingNumbers: number[] = checkNumbersCalled(tempActiveBoard, number);
+
         //is valid win game
         if(missingNumbers.length > 0){
-            alertInValidWinGame(missingNumbers);
+            alertInValidCalledNumbers(missingNumbers);
         }else{
             //emit function to parent component to handle: RoomView
             emit('winGame');
             alertWinGame();
             clearActiveBoard();
+        }
+    }
+
+    function checkGonnaWin(tempActiveBoard: (number | null)[], number: number){
+        //check all number is called
+        const missingNumbers: number[] = checkNumbersCalled(tempActiveBoard, number);
+
+        //is valid win game
+        if(missingNumbers.length > 0){
+            alertInValidCalledNumbers(missingNumbers);
+        }else{
+            //emit function to parent component to handle: RoomView
+            emit('gonnaWin');
+            tempActiveBoard.push(number);
         }
     }
 </script>
