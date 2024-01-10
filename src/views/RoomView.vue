@@ -28,7 +28,17 @@
                             <img class="w-16 h-16" src="https://img.icons8.com/clouds/100/corgi.png" alt="Temporary profile picture"/>
                         </div>
                         <div class="text-left">
-                            <h3 class="text-lg font-semibold drop-shadow-lg text-happy-blue">{{ route.query.username }}</h3>
+                            <div class="flex gap-2">
+                                <h3 class="text-lg font-semibold drop-shadow-lg text-happy-blue">{{ route.query.username }}</h3>
+                                <button v-if="backgroundMusic.isOn"
+                                    @click="handleToggleBackgroundMusic()">
+                                    <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
+                                </button>
+                                <button v-else
+                                    @click="handleToggleBackgroundMusic()">
+                                    <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/mute.png" alt="mute"/>
+                                </button>
+                            </div>
                             <p class="text-sm"><strong>Role:</strong>
                                 {{ isCurrentUserAdmin ? 'Host' : 'Player' }}
                             </p>
@@ -147,7 +157,8 @@
                                         </button>
                                         <button @click="isVoiceOn = !isVoiceOn"
                                             class="rounded-full bg-happy-green text-white mx-1 py-1 px-3 text-sm font-semibold">
-                                            <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
+                                            <img v-show="isVoiceOn" class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
+                                            <img v-show="!isVoiceOn" class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/mute.png" alt="mute"/>
                                             <span>{{ isVoiceOn ? 'On' : 'Off' }}</span>
                                         </button>
                                     </div>
@@ -309,10 +320,10 @@
     const timeoutScroll = ref<number>();
     const customBoards = ref<Board[]>([]);
     const isVoiceOn = ref<boolean>(true);
-    // musicTrack: new Audio("@/assets/background_music.mp3") as HTMLAudioElement,
-    // const backgroundMusic = reactive({
-    //     isOn: true as boolean,
-    // })
+    const backgroundMusic = reactive({
+        isOn: true as boolean,
+        musicTrack: new Audio(require("@/assets/background_music.mp3")) as HTMLAudioElement,
+    })
 
     //store data
     const { users, boards, boards_room, socketIO } = storeToRefs(store);
@@ -372,9 +383,11 @@
         window.responsiveVoice.setDefaultRate(1.2);
 
         //set background music
-        //if(backgroundMusic.isOn){
-            //backgroundMusic.musicTrack.play();
-        //}
+        if(backgroundMusic.isOn){
+            backgroundMusic.musicTrack.play();
+            backgroundMusic.musicTrack.loop = true;
+            backgroundMusic.musicTrack.volume = 0.3;
+        }
 
         //listen socket.io connection
         socketIO.value.on('someoneJoinRoom', (username) => {
@@ -461,6 +474,9 @@
                 message: `${username} - just got 4 numbers in a row`
             })
 
+            //scroll chatbox to bottom
+            handleScrollToBottom();
+
             //show popup
             Swal.fire({
                 position: "top-end",
@@ -482,6 +498,15 @@
     })
 
     //handle function
+    function handleToggleBackgroundMusic(){
+        backgroundMusic.isOn = !backgroundMusic.isOn;
+        if(backgroundMusic.isOn){
+            backgroundMusic.musicTrack.play();
+        } else{
+            backgroundMusic.musicTrack.pause();
+        }
+    }
+
     function handleScrollToBottom(){
         clearTimeout(timeoutScroll.value);
         timeoutScroll.value = setTimeout(() => {
