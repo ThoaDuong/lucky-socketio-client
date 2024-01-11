@@ -346,6 +346,17 @@
         return customBoards.value.find(b => b.username === route.query.username);
     })
 
+    watch(isGameStarted, (isGameStartedNew) => {
+        if(isCurrentUserAdmin.value){
+            const room = route.query.room ? route.query.room.toString() : '';
+            if(isGameStartedNew){
+                store.addStartedRoom(room);
+            } else{
+                store.removeStartedRoom(room);
+            }
+        }
+    })
+
     //to handle in watch when boards or boards_room change
     const twoVariable = computed<[Board[], BoardRoom[]]>(() => [boards.value, boards_room.value]);
     watch(twoVariable, async (newValue) => {
@@ -368,13 +379,12 @@
     //lifecycle hook
     onMounted(() => {
         //initial api data from back-end
-        const usernameRoute = route.query.username ? route.query.username.toString() : '';
         store.getUsersFromAPI();
         store.getBoardsFromAPI();
         store.getBoardsRoomFromAPI();
         messages.value.push({
             username: 'BotChat',
-            message: `Welcome ${usernameRoute}!`
+            message: `Welcome ${route.query.username}!`
         })
         handleScrollToBottom();
         
@@ -408,7 +418,7 @@
 
         socketIO.value.on('someoneLeaveRoom', (username) => {
             store.getUsersFromAPI();
-            store.getBoardsFromAPI();
+            // store.getBoardsFromAPI(); - not reset all boards
             store.getBoardsRoomFromAPI();
             messages.value.push({
                 username: 'BotChat',
@@ -651,7 +661,9 @@
     function handleGonnaWin(){
         socketIO.value.emit('gonnaWin', ({
             username: route.query.username,
-            room: route.query.room
+            room: route.query.room,
+            
         }))
+        console.log('hihhhi', randomNumber.value);
     }
 </script>

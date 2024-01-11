@@ -38,7 +38,7 @@
                                     </div>
                                     <input
                                         v-model="state.username"
-                                        class="w-full md:w-56 border border-gray-500 py-2 px-4 rounded-xl"
+                                        class="w-full md:w-60 border border-gray-500 py-2 px-4 rounded-xl"
                                         placeholder="User2508"
                                         type="text"
                                         name="name"
@@ -63,7 +63,7 @@
                                     </div>
                                     <input
                                         v-model="state.room"
-                                        class="w-full md:w-56 border border-gray-500 py-2 px-4 rounded-xl"
+                                        class="w-full md:w-60 border border-gray-500 py-2 px-4 rounded-xl"
                                         placeholder="room1"
                                         type="text"
                                         name="room"
@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-    import { reactive, ref, watch } from 'vue';
+    import { reactive, watch } from 'vue';
     import { useStoreData } from '@/stores/store';
     import { useRouter } from 'vue-router';
     import { storeToRefs } from 'pinia';
@@ -115,13 +115,17 @@
         room: false as boolean,
         roomErrorMessage: '' as string,
     })
-    const isLoading = ref(false);
+    const isLoading = reactive({
+        users: false as boolean,
+        listStartedRoom: false as boolean,
+    });
+
     const router = useRouter();
     const store = useStoreData();
-    const { users } = storeToRefs(store);
+    const { users, listStartedRoom } = storeToRefs(store);
 
 
-
+    //check users when done loading
     watch(users, (newUsers) => {
         //check validate when users change
         let isUsernameExist = newUsers.findIndex(user => user.username === state.username);
@@ -134,11 +138,22 @@
             validate.room = true;
             validate.roomErrorMessage = "This room was full";
         }
-        isLoading.value = false;
+        isLoading.users = false;
     })
 
-    watch(isLoading, (newValue, oldValue) => {
-        if(newValue === false && oldValue === true){
+    //check listStartedRoom when done loading
+    watch(listStartedRoom, (newList => {
+        if(newList && newList.findIndex(room => room === state.room) !== -1){
+            validate.room = true;
+            validate.roomErrorMessage = "Game in progress";
+        }
+        isLoading.listStartedRoom = false;
+    }))
+
+    watch(isLoading, (newValue) => {
+        if(newValue.users === false && newValue.listStartedRoom === false){
+
+        // if(newValue === false && oldValue === true){
             if(!validate.room && !validate.username){
                 successLogin();
             }   
@@ -175,7 +190,9 @@
         resetValidated();
 
         store.getUsersFromAPI();
-        isLoading.value = true;
+        isLoading.users = true;
+        store.getListStartedRoom();
+        isLoading.listStartedRoom = true;
 
         checkValidInputsLogin();
     }
