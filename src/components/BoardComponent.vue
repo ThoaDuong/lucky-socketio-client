@@ -82,10 +82,10 @@
 
     function handleAddNumber(tempActiveBoard: (number | null)[], number: number, arrayNumberHasSelected: (number|null)[]){
         switch(tempActiveBoard.length){
-            case 0:
+            case 3:
                 checkGonnaWin(tempActiveBoard, number, arrayNumberHasSelected);
                 break;
-            case 1:
+            case 4:
                 checkWinGame(tempActiveBoard, number);
                 break;
             default:
