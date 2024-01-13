@@ -456,23 +456,32 @@
             typing.usernameList.splice(index, 1);
         })
 
-        socketIO.value.on('endGame', (username) => {
+        socketIO.value.on('winGameOne', (username) => {
             //user win game, alert to all
-            Swal.fire({
-                title: `${username} won! Better luck next time.`,
-                confirmButtonText: 'End Game',
-                imageUrl: "https://img.icons8.com/external-wanicon-lineal-color-wanicon/64/external-shamrock-st-patrick-day-wanicon-lineal-color-wanicon.png",
-                imageWidth: 100,
-                imageHeight: 100,
-                padding: '1rem',
-            })
-            
-            //Sent message for the others except the winner.
+            route.query.username === username ? alertWinGame("You") : alertLuckNextTime(username);
+            console.log(users)
+
+            //Sent message for the others
             messages.value.push({
                 username: 'BotChat',
                 message: `${username} won!!!`
             })
+            //clear numbers and boards
+            changeStopAndClear();
+        })
 
+        socketIO.value.on('winGameMultiple', (usernameList) => {
+            //user win game, alert to all
+            const isWin = usernameList.includes(route.query.username);
+            isWin ? alertWinGame(usernameList) : alertLuckNextTime(usernameList);
+
+            console.log(users)
+            
+            //Sent message for the others
+            messages.value.push({
+                username: 'BotChat',
+                message: `${usernameList} won!!!`
+            })
             //clear numbers and boards
             changeStopAndClear();
         })
@@ -643,27 +652,44 @@
         })
     }
 
-    //handle function from BoardComponent
-    function handleWinGame(){
-        //Sent message for current user (the winner)
-        messages.value.push({
-            username: 'BotChat',
-            message: `${route.query.username} won!!!`
+    function alertLuckNextTime(username: string) {
+        Swal.fire({
+            title: `${username} won! Better luck next time.`,
+            confirmButtonText: 'End Game',
+            imageUrl: "https://img.icons8.com/external-wanicon-lineal-color-wanicon/64/external-shamrock-st-patrick-day-wanicon-lineal-color-wanicon.png",
+            imageWidth: 100,
+            imageHeight: 100,
+            padding: '1rem',
         })
-
-        socketIO.value.emit('someoneWinGame', {
-            username: route.query.username,
-            room: route.query.room
-        })
-        changeStopAndClear();
     }
 
-    function handleGonnaWin(){
+    function alertWinGame (username: string) {
+        Swal.fire({
+            title: `Congratulations! ${username} won`,
+            confirmButtonText: 'End Game',
+            imageUrl: "https://img.icons8.com/external-filled-outline-geotatah/64/external-best-friend-best-friend-forever-filled-outline-filled-outline-geotatah-6.png",
+            imageWidth: 100,
+            imageHeight: 100,
+            padding: '1rem',
+        })
+    }
+
+    //handle function from BoardComponent
+    function handleWinGame(winNumber: number){
+        console.log('win number', winNumber);
+        socketIO.value.emit('someoneWinGame', {
+            username: route.query.username,
+            room: route.query.room,
+            winNumber: winNumber,
+        })
+    }
+
+    function handleGonnaWin(waitingNumber: number){
+        console.log('number', waitingNumber)
         socketIO.value.emit('gonnaWin', ({
             username: route.query.username,
             room: route.query.room,
-            
+            waitingNumber: waitingNumber
         }))
-        console.log('hihhhi', randomNumber.value);
     }
 </script>

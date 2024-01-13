@@ -67,20 +67,25 @@
         props.boardNumber?.map((row, rowIndex) => {
             row.map(number => {
                 if(number === calledNumber){
+                    // tempActiveBoard: list array with selected numbers
                     let tempActiveBoard: (number | null)[] = activeBoard.value[rowIndex];
                     let index = tempActiveBoard.indexOf(number);
-                    index === -1 ? handleAddNumber(tempActiveBoard, number) : handleRemoveNumber(tempActiveBoard, index);
+
+                    // row: list array with numbers has selected number (include waiting number)
+
+                    // check if not existed: add else: remove
+                    index === -1 ? handleAddNumber(tempActiveBoard, number, row) : handleRemoveNumber(tempActiveBoard, index);
                 }
             })  
         })
     }
 
-    function handleAddNumber(tempActiveBoard: (number | null)[], number: number){
+    function handleAddNumber(tempActiveBoard: (number | null)[], number: number, arrayNumberHasSelected: (number|null)[]){
         switch(tempActiveBoard.length){
-            case 3:
-                checkGonnaWin(tempActiveBoard, number);
+            case 0:
+                checkGonnaWin(tempActiveBoard, number, arrayNumberHasSelected);
                 break;
-            case 4:
+            case 1:
                 checkWinGame(tempActiveBoard, number);
                 break;
             default:
@@ -96,17 +101,6 @@
         let value: (number | null)[][] = [[], [], [], [], [], [], [], [], []];
         activeBoard.value = value;
     }
-
-    function  alertWinGame(){
-        Swal.fire({
-            title: 'Congratulations! You won',
-            confirmButtonText: 'End Game',
-            imageUrl: "https://img.icons8.com/external-filled-outline-geotatah/64/external-best-friend-best-friend-forever-filled-outline-filled-outline-geotatah-6.png",
-            imageWidth: 100,
-            imageHeight: 100,
-            padding: '1rem',
-        })
-    }
     
     function  alertInValidCalledNumbers(missingNumbers: number[]){
         Swal.fire({
@@ -119,9 +113,13 @@
         })
     }
 
-    function checkNumbersCalled(tempActiveBoard: (number | null)[], number: number): number[]{
+    function checkMissingNumbers(tempActiveBoard: (number | null)[], number: number): number[]{
         let missingNumbers: number[] = [];
-        props.calledNumbers.indexOf(number) ? missingNumbers.push(number) : null;
+
+        // check if selected number not exist in called numbers => add to missing
+        props.calledNumbers.indexOf(number) === -1 ? missingNumbers.push(number) : null;
+
+        // check if list selected numbers (not include selected) not exist in called numbers => add to missing
         tempActiveBoard.forEach(numberActive => {
             if(numberActive){
                 let index = props.calledNumbers.indexOf(numberActive);
@@ -135,30 +133,43 @@
 
     function checkWinGame(tempActiveBoard: (number | null)[], number: number){
         //check all number is called
-        const missingNumbers: number[] = checkNumbersCalled(tempActiveBoard, number);
+        const missingNumbers: number[] = checkMissingNumbers(tempActiveBoard, number);
 
         //is valid win game
         if(missingNumbers.length > 0){
             alertInValidCalledNumbers(missingNumbers);
         }else{
             //emit function to parent component to handle: RoomView
-            emit('winGame');
-            alertWinGame();
-            clearActiveBoard();
+            emit('winGame', number);
         }
     }
 
-    function checkGonnaWin(tempActiveBoard: (number | null)[], number: number){
+    function findWaitingNumber(tempActiveBoard: (number|null)[], arrayNumberHasSelected: (number|null)[]){
+        let waitingNumber = -1;
+        arrayNumberHasSelected.forEach(rowNumber => {
+            if(rowNumber !== null){
+                let index = tempActiveBoard.indexOf(rowNumber);
+                if(index === -1){
+                    waitingNumber = rowNumber;
+                }
+            }
+        })
+        return waitingNumber;
+    }
+
+    function checkGonnaWin(tempActiveBoard: (number | null)[], number: number, arrayNumberHasSelected: (number|null)[]){
         //check all number is called
-        const missingNumbers: number[] = checkNumbersCalled(tempActiveBoard, number);
+        const missingNumbers: number[] = checkMissingNumbers(tempActiveBoard, number);
 
         //is valid win game
         if(missingNumbers.length > 0){
             alertInValidCalledNumbers(missingNumbers);
         }else{
-            //emit function to parent component to handle: RoomView
-            emit('gonnaWin');
             tempActiveBoard.push(number);
+            const waitingNumber = findWaitingNumber(tempActiveBoard, arrayNumberHasSelected);
+
+            //emit function to parent component to handle: RoomView
+            emit('gonnaWin', waitingNumber);
         }
     }
 </script>
