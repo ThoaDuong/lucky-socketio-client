@@ -23,7 +23,7 @@
                         <h1 class="font-rubik text-4xl text-yellow-500 font-bold h-full flex items-center">LooToo</h1>
                     </div>
                     <!-- User information block -->
-                    <div class="h-[100px] mb-2 flex items-center bg-base rounded-xl">
+                    <div class="h-[100px] w-full mb-2 flex items-center bg-base rounded-xl relative">
                         <div class="px-4">
                             <img class="w-16 h-16" src="https://img.icons8.com/clouds/100/corgi.png" alt="Temporary profile picture"/>
                         </div>
@@ -44,6 +44,11 @@
                             </p>
                             <p class="text-sm"><strong>Room Code:</strong> {{ route.query.room }}</p>
                         </div>
+                        <button @click="handleLeaveRoom()"
+                            class="absolute top-2 right-2 rounded-full bg-happy-red text-white py-1 px-3 text-sm font-semibold">
+                            <span>Leave</span>
+                            <img class="w-4 h-4 mt-0.5 ml-1 float-right" src="https://img.icons8.com/external-tal-revivo-filled-tal-revivo/24/external-exiting-from-shopping-mall-with-arrow-outside-mall-filled-tal-revivo.png" alt="suicide"/>
+                        </button>
                     </div>
                     <!-- Boards list block -->
                     <div class="h-[250px] md:h-[calc(100vh-212px)] bg-base rounded-xl">
@@ -152,8 +157,9 @@
                                             'opacity-70': isExistUserAdmin
                                         }"
                                         class="rounded-full bg-happy-blue text-white py-1 px-3 text-sm font-semibold">
-                                            <img class="w-5 h-5 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-host-award-events-flaticons-lineal-color-flat-icons.png" alt="host"/>
-                                            <span>Take Host</span>
+                                            <!-- <img class="w-5 h-5 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-host-award-events-flaticons-lineal-color-flat-icons.png" alt="host"/> -->
+                                            <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-yogi-aprelliyanto-glyph-yogi-aprelliyanto/32/external-lock-web-programming-yogi-aprelliyanto-glyph-yogi-aprelliyanto.png" alt="host"/>
+                                            <span>Host</span>
                                         </button>
                                         <button @click="isVoiceOn = !isVoiceOn"
                                             class="rounded-full bg-happy-green text-white mx-1 py-1 px-3 text-sm font-semibold">
@@ -169,12 +175,14 @@
                                         <div class="text-center">
                                             <button @click="handleReleaseAdmin"
                                                 class="rounded-full bg-happy-blue text-white mx-1 py-1 px-3 text-sm font-semibold">
-                                                <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/delete-sign.png" alt="close-sign"/>
+                                                <!-- <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/delete-sign.png" alt="close-sign"/> -->
+                                                <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-yogi-aprelliyanto-glyph-yogi-aprelliyanto/32/external-unlock-web-programming-yogi-aprelliyanto-glyph-yogi-aprelliyanto.png" alt="close-sign"/>
                                                 <span>Release</span>
                                             </button>
                                             <button @click="handleStopClear"
                                                 class="rounded-full bg-happy-red text-white mx-1 py-1 px-3 text-sm font-semibold">
-                                                <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-tal-revivo-filled-tal-revivo/24/external-exiting-from-shopping-mall-with-arrow-outside-mall-filled-tal-revivo.png" alt="suicide"/>
+                                                <!-- <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-tal-revivo-filled-tal-revivo/24/external-exiting-from-shopping-mall-with-arrow-outside-mall-filled-tal-revivo.png" alt="suicide"/> -->
+                                                <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/delete-sign.png" alt="close-sign"/>
                                                 <span>End</span>
                                             </button>
                                             <button @click="isVoiceOn = !isVoiceOn"
@@ -251,20 +259,34 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="absolute bottom-50px md:bottom-[10%] w-full">
-                                        <div class="w-4/5 mx-auto text-sm">
+                                    <div class="absolute bottom-[40px] xl:bottom-[60px] w-full">
+                                        <div class="w-[90%] mx-auto text-sm">
                                             <input
-                                                v-model="message"
-                                                @keyup="handleTypingEvent($event)"
-                                                @keyup.enter="handleSendMessage"
-                                                class="shadow-md border rounded-full w-full py-2 px-6 text-gray-700 focus:outline-none"
-                                                type="text"
-                                                placeholder="tap enter to send">
+                                            v-model="message"
+                                            @keyup="handleTypingEvent($event)"
+                                            @keyup.enter="handleSendMessage"
+                                            ref="typingInputRef"
+                                            class="shadow-md border rounded-full w-full py-2 pl-5 pr-12 xl:pr-10 text-gray-700 focus:outline-none"
+                                            type="text"
+                                            placeholder="tap enter to send">
                                         </div>
+                                    </div>
+                                    <div @click="isShowEmoji = !isShowEmoji" 
+                                        class="absolute bottom-[38px] xl:bottom-[58px] right-[40px] xl:right-[30px]">
+                                        <button><img class="w-7 h-7" src="https://img.icons8.com/emoji/48/smiling-face-with-smiling-eyes.png" alt="smile"/></button>
+                                    </div>
+                                    <div v-show="isShowEmoji" 
+                                        class="absolute bottom-[80px] xl:bottom-[100px] right-[25px]">
+                                        <EmojiPicker 
+                                            :hide-group-names="true"
+                                            :disable-sticky-group-names="true"
+                                            :disable-skin-tones="true"
+                                            :display-recent="true"
+                                            @select="handleSelectEmoji" />
                                     </div>
                                     <!-- Display typing -->
                                     <p 
-                                    class="absolute bottom-[3%] xl:bottom-[5%] left-8 w-full mx-6 text-left text-sm">
+                                    class="absolute bottom-[15px] xl:bottom-[35px] left-8 mx-6 text-left text-sm">
                                         <span v-if="!!(typing.usernameList.length === 1)">
                                             {{ typing.usernameList[0] }} is typing
                                         </span>
@@ -288,15 +310,17 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, computed, reactive, watch } from 'vue';
+    import { ref, onMounted, computed, reactive, watch, Ref } from 'vue';
     import BoardComponent from '@/components/BoardComponent.vue';
     import Swal from 'sweetalert2';
     import { useStoreData } from '@/stores/store';
-    import { useRoute } from 'vue-router'
+    import { useRoute, useRouter } from 'vue-router'
     import { storeToRefs } from 'pinia';
     import { Message } from '@/interfaces/Message';
     import { Board } from '@/interfaces/Board';
     import { BoardRoom } from '@/interfaces/BoardRoom';
+    import EmojiPicker from 'vue3-emoji-picker'
+    import 'vue3-emoji-picker/css'
 
     declare global {
         interface Window {
@@ -311,15 +335,19 @@
     const message = ref<string>("");
     const store = useStoreData();
     const route = useRoute();
+    const router = useRouter();
     const isClearBoard = ref<boolean>(false);
+    const timeoutScroll = ref<number>();
+    const customBoards = ref<Board[]>([]);
+    const isVoiceOn = ref<boolean>(true);
+    const isShowEmoji = ref<boolean>(false);
+    const typingInputRef = ref<Ref|null>(null);
+
     const typing = reactive({
         isTyping: false as boolean,
         timeout: undefined as number | undefined,
         usernameList: [] as string[],
     })
-    const timeoutScroll = ref<number>();
-    const customBoards = ref<Board[]>([]);
-    const isVoiceOn = ref<boolean>(true);
     const backgroundMusic = reactive({
         isOn: true as boolean,
         musicTrack: new Audio(require("@/assets/background_music.mp3")) as HTMLAudioElement,
@@ -459,7 +487,6 @@
         socketIO.value.on('winGameOne', (username) => {
             //user win game, alert to all
             route.query.username === username ? alertWinGame("You") : alertLuckNextTime(username);
-            console.log(users)
 
             //Sent message for the others
             messages.value.push({
@@ -475,8 +502,6 @@
             const isWin = usernameList.includes(route.query.username);
             isWin ? alertWinGame(usernameList) : alertLuckNextTime(usernameList);
 
-            console.log(users)
-            
             //Sent message for the others
             messages.value.push({
                 username: 'BotChat',
@@ -608,6 +633,7 @@
             message: message.value
         }))
         message.value = "";
+        isShowEmoji.value = false;
     }
 
     function timeoutFunction(){
@@ -652,6 +678,21 @@
         })
     }
 
+    function handleLeaveRoom(){
+        router.push({
+            name: 'login'
+        })
+        socketIO.value.emit("userLeaveRoom", {
+            username: route.query.username,
+            room: route.query.room
+        })
+    }
+
+    function handleSelectEmoji(emoji: any) {
+        message.value = message.value.concat(emoji.i);
+        typingInputRef.value.focus();
+    }
+
     function alertLuckNextTime(username: string) {
         Swal.fire({
             title: `${username} won! Better luck next time.`,
@@ -676,7 +717,6 @@
 
     //handle function from BoardComponent
     function handleWinGame(winNumber: number){
-        console.log('win number', winNumber);
         socketIO.value.emit('someoneWinGame', {
             username: route.query.username,
             room: route.query.room,
@@ -685,7 +725,6 @@
     }
 
     function handleGonnaWin(waitingNumber: number){
-        console.log('number', waitingNumber)
         socketIO.value.emit('gonnaWin', ({
             username: route.query.username,
             room: route.query.room,
