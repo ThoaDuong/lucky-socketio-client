@@ -11,17 +11,18 @@
                     :key="index"
                     :style="{'background': number !== null ? props.color : '#F1EAFF'}"
                     :class="{
-                        'relative py-[3%]': true,
-                        'text-white text-lg border px-1 md:px-2 hover:cursor-pointer': number !== null,
+                        'relative py-[0.9rem] text-md md:text-xl': true,
+                        'text-white text-lg border px-2 md:px-[0.6rem] hover:cursor-pointer': number !== null,
                         'text-lg border px-4': number === null,
-                        'px-2 md:px-3': number && number < 20,
+                        'px-3 md:px-[0.8rem]': number && number < 20,
+                        'px-3 md:px-[1rem]': number && number < 10,
                     }"
                     >
                     <span>{{ number }}</span>
                     
                     <!-- show star for selected -->
                     <img v-if="activeBoard[rowIndex].indexOf(number) !== -1" 
-                        class="w-11 h-11 absolute top-0 left-0 opacity-80"
+                        class="w-11 h-11 absolute top-1 left-0 md:top-2 md:left-1 opacity-80"
                         src="https://img.icons8.com/pulsar-line/48/hand-drawn-star.png" alt="star"/>
                 </td>
             </tr>

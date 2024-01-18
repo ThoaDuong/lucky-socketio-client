@@ -8,7 +8,7 @@
         -->
 
         <!-- Full screen -->
-        <div class="w-full h-screen max-h-screen 2xl:w-[80%] xl:overflow-y-hidden grid grid-cols-12 p-2 gap-2">
+        <div class="w-full h-screen max-h-screen 2xl:w-[80%] overflow-y-auto grid grid-cols-12 p-2 gap-2">
             <!-- Left side -->
             <div class="
                 col-span-12 
@@ -90,9 +90,9 @@
             </div>
             <!-- Right side -->
             <div class="
-                col-span-12 
+                col-span-12 sm:overflow-y-hidden
                 md:col-span-8 md:overflow-y-auto
-                xl:col-span-9 xl:overflow-y-hidden">
+                xl:col-span-9">
                 <div class="h-full">
                     <!-- Dynamic banner block -->
                     <div class="hidden md:block h-[80px] bg-base rounded-xl overflow-x-hidden mb-2 px-3">
@@ -227,8 +227,7 @@
                                 <!-- Display chat box | md:h-[calc(100vh-212px-87px-106px-350px)]  -->
                                 <div class="
                                     relative w-full h-[320px] 
-                                    md:min-h-[300px] md:h-[calc(100vh-212px-595px)] 
-                                    xl:h-[calc(100vh-212px-44px)]">
+                                    md:min-h-[300px] md:h-[calc(100vh-212px-595px)]                                     xl:min-h-[500px] xl:h-[calc(100vh-212px-44px)]">
                                     <div id="chat-box" class="
                                         h-[250px] overflow-y-auto
                                         md:h-[calc(100%-80px)] 
