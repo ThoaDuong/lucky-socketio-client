@@ -309,7 +309,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, computed, reactive, watch, Ref } from 'vue';
+    import { ref, onMounted, computed, reactive, watch, Ref, onUnmounted, onBeforeUnmount } from 'vue';
     import BoardComponent from '@/components/BoardComponent.vue';
     import Swal from 'sweetalert2';
     import { useStoreData } from '@/stores/store';
@@ -678,9 +678,15 @@
     }
 
     function handleLeaveRoom(){
+        // pause background music
+        backgroundMusic.musicTrack.pause();
+
+        // move back to login page
         router.push({
             name: 'login'
         })
+
+        // handle leave room
         socketIO.value.emit("userLeaveRoom", {
             username: route.query.username,
             room: route.query.room

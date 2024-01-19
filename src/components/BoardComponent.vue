@@ -22,7 +22,7 @@
                     
                     <!-- show star for selected -->
                     <img v-if="activeBoard[rowIndex].indexOf(number) !== -1" 
-                        class="w-11 h-11 absolute top-1 left-0 md:top-2 md:left-1 opacity-80"
+                        class="w-11 h-11 absolute top-1 left-0 md:top-2 md:left-[0.75px] opacity-80"
                         src="https://img.icons8.com/pulsar-line/48/hand-drawn-star.png" alt="star"/>
                 </td>
             </tr>
