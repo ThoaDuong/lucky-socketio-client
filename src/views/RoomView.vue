@@ -30,6 +30,14 @@
                         <div class="text-left">
                             <div class="flex gap-2">
                                 <h3 class="text-lg font-semibold drop-shadow-lg text-happy-blue">{{ route.query.username }}</h3>
+                                <button v-if="agora.micMuted"
+                                    @click="handleToggleMicrophone()">
+                                    <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/no-microphone.png" alt="no-microphone"/>
+                                </button>
+                                <button v-else
+                                    @click="handleToggleMicrophone()">
+                                    <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/radio-studio.png" alt="radio-studio"/>
+                                </button>
                                 <button v-if="backgroundMusic.isOn"
                                     @click="handleToggleBackgroundMusic()">
                                     <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
@@ -66,11 +74,6 @@
                                 'grid grid-cols-3 pb-1': true,
                             }">
                                 <div class="col-span-1 mx-auto text-center">
-                                    <!-- <img
-                                    :style="{'background': board.color}"
-                                    class="w-14 h-14 p-2 rounded-full text-white mx-auto"
-                                    src="https://img.icons8.com/external-smashingstocks-hand-drawn-black-smashing-stocks/99/external-Board-education-smashingstocks-hand-drawn-black-smashing-stocks.png"
-                                    alt="board image"/> -->
                                     <img
                                     :style="{'background': board.color}"
                                     class="w-14 h-14 p-2 rounded-full text-white mx-auto"
@@ -309,7 +312,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, computed, reactive, watch, Ref, onUnmounted, onBeforeUnmount } from 'vue';
+    import { ref, onMounted, computed, reactive, watch, Ref, markRaw } from 'vue';
     import BoardComponent from '@/components/BoardComponent.vue';
     import Swal from 'sweetalert2';
     import { useStoreData } from '@/stores/store';
@@ -320,6 +323,8 @@
     import { BoardRoom } from '@/interfaces/BoardRoom';
     import EmojiPicker from 'vue3-emoji-picker'
     import 'vue3-emoji-picker/css'
+    import AgoraRTC, { IAgoraRTCClient, IMicrophoneAudioTrack } from "agora-rtc-sdk-ng";
+    import { appid } from '@/assets/appid';
 
     declare global {
         interface Window {
@@ -351,6 +356,35 @@
         isOn: true as boolean,
         musicTrack: new Audio(require("@/assets/background_music.mp3")) as HTMLAudioElement,
     })
+    const agora = reactive({
+        appid: appid,
+        token: null,
+        rtcUid: route.query.username ? route.query.username.toString() : "",
+        room: route.query.room ? route.query.room.toString() : "",
+        rtcClient: null as null|IAgoraRTCClient,
+        audioTrack: {
+            localAudioTrack: null as null|Promise<IMicrophoneAudioTrack>,
+            remoteAudioTracks: {} as any
+        },
+        micMuted: true,
+    })
+
+    async function initRtc () {
+        agora.rtcClient = markRaw(AgoraRTC.createClient({mode:"rtc", codec:"vp8"}));
+
+        agora.rtcClient.on('user-joined', handleUserJoined);
+        agora.rtcClient.on('user-published', handleUserPublished);
+        agora.rtcClient.on('user-left', handleUserLeft);
+
+        await agora.rtcClient.join(
+            agora.appid, agora.room, agora.token, agora.rtcUid
+        );
+
+        agora.audioTrack.localAudioTrack = AgoraRTC.createMicrophoneAudioTrack();
+        (await agora.audioTrack.localAudioTrack).setMuted(agora.micMuted);
+        await agora.rtcClient.publish(await agora.audioTrack.localAudioTrack);
+
+    }
 
     //store data
     const { users, boards, boards_room, socketIO } = storeToRefs(store);
@@ -414,6 +448,9 @@
             message: `Welcome ${route.query.username}!`
         })
         handleScrollToBottom();
+
+        //Agora RTC
+        initRtc(); 
         
         //set default for responsive voice
         window.responsiveVoice.setDefaultVoice("Vietnamese Female");
@@ -550,6 +587,28 @@
         }
     }
 
+    async function handleToggleMicrophone(){
+        agora.micMuted = !agora.micMuted;
+        (await agora.audioTrack.localAudioTrack)?.setMuted(agora.micMuted);
+    }
+
+    function handleUserJoined(user: any){
+        // console.log('user joined', user);
+    }
+
+    async function handleUserPublished(user: any, mediaType: any){
+        await agora.rtcClient?.subscribe(user, mediaType);
+
+        if(mediaType === 'audio'){
+            agora.audioTrack.remoteAudioTracks[user.uid] = [user.audioTrack];
+            user.audioTrack.play();
+        }
+    }
+
+    function handleUserLeft(user: any){
+        delete agora.audioTrack.remoteAudioTracks[user.uid];
+    }
+
     function handleScrollToBottom(){
         clearTimeout(timeoutScroll.value);
         timeoutScroll.value = setTimeout(() => {
@@ -677,9 +736,15 @@
         })
     }
 
-    function handleLeaveRoom(){
+    async function handleLeaveRoom(){
         // pause background music
         backgroundMusic.musicTrack.pause();
+
+        // stop audio calling
+        (await agora.audioTrack.localAudioTrack)?.stop();
+        (await agora.audioTrack.localAudioTrack)?.close();
+        agora.rtcClient?.unpublish();
+        agora.rtcClient?.leave();
 
         // move back to login page
         router.push({

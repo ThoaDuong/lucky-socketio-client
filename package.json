@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "agora-rtc-sdk-ng": "^4.20.0",
     "pinia": "^2.1.7",
     "socket.io-client": "^4.7.2",
     "sweetalert2": "^11.9.0",
