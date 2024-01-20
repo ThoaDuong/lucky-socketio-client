@@ -367,6 +367,7 @@
             remoteAudioTracks: {} as any
         },
         micMuted: true,
+        isFirstTimeTurnMicro: true,
     })
 
     async function initRtc () {
@@ -450,7 +451,7 @@
         handleScrollToBottom();
 
         //Agora RTC
-        initRtc(); 
+        // initRtc(); 
         
         //set default for responsive voice
         window.responsiveVoice.setDefaultVoice("Vietnamese Female");
@@ -460,7 +461,7 @@
         if(backgroundMusic.isOn){
             backgroundMusic.musicTrack.play();
             backgroundMusic.musicTrack.loop = true;
-            backgroundMusic.musicTrack.volume = 0.3;
+            backgroundMusic.musicTrack.volume = 0.1;
         }
 
         //listen socket.io connection
@@ -589,7 +590,16 @@
 
     async function handleToggleMicrophone(){
         agora.micMuted = !agora.micMuted;
-        (await agora.audioTrack.localAudioTrack)?.setMuted(agora.micMuted);
+
+        // init RTC at the first time
+        if(agora.isFirstTimeTurnMicro && !agora.micMuted){
+            initRtc();
+            agora.isFirstTimeTurnMicro = false;
+        }
+        // adjust muted
+        else{
+            (await agora.audioTrack.localAudioTrack)?.setMuted(agora.micMuted);
+        }
     }
 
     function handleUserJoined(user: any){
