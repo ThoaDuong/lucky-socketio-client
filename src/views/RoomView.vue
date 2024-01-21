@@ -80,10 +80,18 @@
                                     src="https://img.icons8.com/matisse/100/paper.png"
                                     alt="board image"/>
                                 </div>
-                                <div class="col-span-2 text-left">
+                                <div class="col-span-2 flex gap-3 text-left">
                                     <h3 class="text-lg py-4 font-semibold">
                                         {{ board.username }}
                                     </h3>
+                                    <span v-show="board.username !== null" class="py-[1.3rem]">
+                                        <span v-if="board.micMuted">
+                                            <img class="w-4 h-4" src="https://img.icons8.com/pulsar-color/48/no-microphone.png" alt="no-microphone"/>
+                                        </span>
+                                        <span v-else>
+                                            <img class="w-4 h-4" src="https://img.icons8.com/pulsar-color/48/radio-studio.png" alt="radio-studio"/>
+                                        </span>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -431,7 +439,9 @@
                     br.boardId === item.id && br.room === route.query.room
                 );
                 tempBoards.push({
-                    ...item, username: rsBoard ? rsBoard.username : null
+                    ...item, 
+                    username: rsBoard ? rsBoard.username : null,
+                    micMuted: rsBoard ? rsBoard.micMuted : false,
                 })
             })
             customBoards.value = tempBoards;
@@ -478,6 +488,10 @@
 
         socketIO.value.on('someoneChangeBoardToAll', () => {
             store.getBoardsFromAPI();
+            store.getBoardsRoomFromAPI();
+        })
+
+        socketIO.value.on('someoneChangeMicMuted', () => {
             store.getBoardsRoomFromAPI();
         })
 
@@ -600,6 +614,12 @@
         else{
             (await agora.audioTrack.localAudioTrack)?.setMuted(agora.micMuted);
         }
+
+        store.socketIO.emit("changeMicMuted", {
+            username: route.query.username,
+            room: route.query.room,
+            micMuted: agora.micMuted,
+        })
     }
 
     function handleUserJoined(user: any){
