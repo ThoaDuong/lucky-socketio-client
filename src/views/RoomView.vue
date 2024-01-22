@@ -471,7 +471,7 @@
         if(backgroundMusic.isOn){
             backgroundMusic.musicTrack.play();
             backgroundMusic.musicTrack.loop = true;
-            backgroundMusic.musicTrack.volume = 0.1;
+            backgroundMusic.musicTrack.volume = 0.2;
         }
 
         //listen socket.io connection
@@ -651,8 +651,7 @@
 
     function handleSpeakNumber(number: number){
         //responsiveVoice import at index.html
-        // window.responsiveVoice.speak(number.toString(), "Vietnamese Female", {pitch: 1, volume: 4, rate: 1.2});
-        window.responsiveVoice.speak(number.toString());
+        window.responsiveVoice.speak(number.toString(), "Vietnamese Female", {volume: 4});
     }
 
     function handleNextNumber(){

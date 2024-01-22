@@ -64,7 +64,7 @@
                                     <input
                                         v-model="state.room"
                                         class="w-full md:w-60 border border-gray-500 py-2 px-4 rounded-xl"
-                                        placeholder="room1"
+                                        placeholder="123"
                                         type="text"
                                         name="room"
                                         id="room">
@@ -77,6 +77,10 @@
                                 </p>
                             </div>
                         </div>
+
+                        <p v-if="isLoading.listStartedRoom || isLoading.users">
+                            <img class="text-center mx-auto w-10 h-10" src="@/assets/spinner.gif" alt="loading"/>
+                        </p>
 
 
                         <!-- Display submit login button -->
