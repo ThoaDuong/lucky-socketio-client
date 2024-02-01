@@ -5,7 +5,7 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 
     html, body {
         font-family: 'Montserrat', sans-serif;
@@ -14,11 +14,16 @@
     .font-rubik{
         font-family: 'Rubik Bubbles', sans-serif;
     }
-    .font-doodle{
-        font-family: 'Rubik Doodle Shadow', sans-serif;
+    .font-black-ops {
+        font-family: "Black Ops One", system-ui;
+        font-weight: 400;
+        font-style: normal;
     }
     .content-title{
         @apply font-semibold text-lg py-2 px-4 text-left;
+    }
+    .background-image{
+        @apply bg-no-repeat bg-center bg-cover;
     }
     .swal2-confirm{
         font-size: 12px !important;

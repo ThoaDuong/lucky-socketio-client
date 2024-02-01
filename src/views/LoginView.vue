@@ -1,7 +1,7 @@
 <template>
     <div class="home_page">
         <!-- Display all screen, yellow one -->
-        <div class="h-screen flex justify-center items-center rounded-none bg-login xl:bg-base">
+        <div class="h-screen flex justify-center items-center rounded-none bg-login xl:bg-image-base background-image">
             
             <!-- Display 3/4 screen, pink one -->
             <div class="w-full h-fit p-10 xl:w-fit xl:h-fit xl:px-20 xl:drop-shadow-lg bg-login rounded-lg">
@@ -171,7 +171,7 @@
             return;
         }
 
-        if(state.username.length > 20){
+        if(state.username.length > 15){
             validate.username = true;
             validate.usernameErrorMessage = "This username's length is too long";
             return;

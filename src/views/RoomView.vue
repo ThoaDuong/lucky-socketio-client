@@ -1,5 +1,5 @@
 <template>
-    <div class="room_page 2xl:flex 2xl:justify-center">
+    <div class="room_page 2xl:flex 2xl:justify-center bg-image-base background-image">
         <!-- Responsive concept
             normal: phone
             md - lg: tablet
@@ -16,41 +16,43 @@
                 xl:col-span-3">
                 <div class="h-full">
                     <!-- Logo block -->
-                    <div class="h-[80px] bg-base rounded-xl flex mb-2">
+                    <div class="h-[80px] bg-base bg-opacity-80 rounded-xl flex mb-2">
                         <div class="px-4 pt-1">
                             <img class="w-16 h-16" src="https://i.imgur.com/hB1TKLR.png" alt="Lootoo"/>
                         </div>
                         <h1 class="font-rubik text-4xl text-yellow-500 font-bold h-full flex items-center">LooToo</h1>
                     </div>
                     <!-- User information block -->
-                    <div class="h-[100px] w-full mb-2 flex items-center bg-base rounded-xl relative">
+                    <div class="h-[100px] w-full mb-2 flex items-center bg-base bg-opacity-80 rounded-xl relative">
                         <div class="px-4">
                             <img class="w-16 h-16" src="https://img.icons8.com/clouds/100/corgi.png" alt="Temporary profile picture"/>
                         </div>
                         <div class="text-left">
                             <div class="flex gap-2">
                                 <h3 class="text-lg font-semibold drop-shadow-lg text-happy-blue">{{ route.query.username }}</h3>
-                                <button v-if="agora.micMuted"
-                                    @click="handleToggleMicrophone()">
-                                    <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/no-microphone.png" alt="no-microphone"/>
-                                </button>
-                                <button v-else
-                                    @click="handleToggleMicrophone()">
-                                    <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/radio-studio.png" alt="radio-studio"/>
-                                </button>
-                                <button v-if="backgroundMusic.isOn"
-                                    @click="handleToggleBackgroundMusic()">
-                                    <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
-                                </button>
-                                <button v-else
-                                    @click="handleToggleBackgroundMusic()">
-                                    <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/mute.png" alt="mute"/>
-                                </button>
                             </div>
                             <p class="text-sm"><strong>Role:</strong>
                                 {{ isCurrentUserAdmin ? 'Host' : 'Player' }}
                             </p>
                             <p class="text-sm"><strong>Room Code:</strong> {{ route.query.room }}</p>
+                        </div>
+                        <div class="absolute top-3 right-24">
+                            <button v-if="agora.micMuted"
+                                @click="handleToggleMicrophone()">
+                                <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/no-microphone.png" alt="no-microphone"/>
+                            </button>
+                            <button v-else
+                                @click="handleToggleMicrophone()">
+                                <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/radio-studio.png" alt="radio-studio"/>
+                            </button>
+                            <button v-if="backgroundMusic.isOn"
+                                @click="handleToggleBackgroundMusic()">
+                                <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
+                            </button>
+                            <button v-else
+                                @click="handleToggleBackgroundMusic()">
+                                <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/mute.png" alt="mute"/>
+                            </button>
                         </div>
                         <button @click="handleLeaveRoom()"
                             class="absolute top-2 right-2 rounded-full bg-happy-red text-white py-1 px-3 text-sm font-semibold">
@@ -59,7 +61,7 @@
                         </button>
                     </div>
                     <!-- Boards list block -->
-                    <div class="h-[250px] md:h-[calc(100vh-212px)] bg-base rounded-xl">
+                    <div class="h-[250px] md:h-[calc(100vh-212px)] bg-base bg-opacity-80 rounded-xl">
                         <h3 class="content-title">
                             Select board here
                         </h3>
@@ -106,32 +108,32 @@
                 xl:col-span-9">
                 <div class="h-full">
                     <!-- Dynamic banner block -->
-                    <div class="hidden md:block h-[80px] bg-base rounded-xl overflow-x-hidden mb-2 px-3">
-                        <div class="relative h-full flex justify-right items-center font-doodle text-xl">
+                    <div class="hidden md:block h-[80px] bg-base bg-opacity-80 rounded-xl overflow-x-hidden mb-2 px-3">
+                        <div class="relative h-full flex justify-right items-center font-black-ops text-2xl">
                             <!-- Welcome to the party! Get ready for some fun. -->
                         
                             <div class="animate-marquee whitespace-nowrap">
-                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
-                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
-                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
+                                <span class="mx-4 text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-happy-red">Happy new year</span>
+                                <span class="mx-4 text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-happy-red">Happy new year</span>
+                                <span class="mx-4 text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-happy-red">Happy new year</span>
                             </div>
                             <div class="absolute animate-marquee2 whitespace-nowrap">
-                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
-                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
-                                <span class="mx-4 text-xl text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-xl text-happy-red">Happy new year</span>
+                                <span class="mx-4 text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-happy-red">Happy new year</span>
+                                <span class="mx-4 text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-happy-red">Happy new year</span>
+                                <span class="mx-4 text-happy-blue">No refresh during play</span>
+                                <span class="mx-4 text-happy-red">Happy new year</span>
                             </div>
                         </div>
                     </div>
                     <div class="h-auto xl:h-[100px] mb-2">
                         <div class="h-full grid grid-cols-3 gap-2">
                             <!-- Called numbers block -->
-                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-2 bg-base rounded-xl overflow-x-hidden">
+                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-2 bg-base bg-opacity-80 rounded-xl overflow-x-hidden">
                                 <div class="h-full mx-5 flex justify-right items-center overflow-x-auto">
                                     <div class="flex items-center bg-happy-blue rounded-full py-2 px-4">
                                         <!-- Random number -->
@@ -157,7 +159,7 @@
                                 </div>
                             </div>
                             <!-- Admin action block -->
-                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-1 block bg-base rounded-xl">
+                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-1 block bg-base bg-opacity-80 rounded-xl">
                                 
                                 <div class="h-full flex justify-center items-center">
                                     <!-- Take host option -->
@@ -215,7 +217,7 @@
                     <div class="h-auto xl:h-[calc(100vh-212px)]">
                         <div class="grid grid-cols-3 gap-2">
                             <!-- Display current board -->
-                            <div class="h-full col-span-3 xl:col-span-2 bg-base rounded-xl flex justify-center items-center overflow-y-auto">
+                            <div class="h-full col-span-3 xl:col-span-2 bg-base bg-opacity-80 rounded-xl flex justify-center items-center overflow-y-auto">
 
                                 <!-- Display current board -->
                                 <div class="my-4 xl:my-1">
@@ -231,7 +233,7 @@
                                 </div>
                             </div>
                             <!-- ChatBox block -->
-                            <div class="h-full col-span-3 xl:col-span-1 bg-base rounded-xl">
+                            <div class="h-full col-span-3 xl:col-span-1 bg-base bg-opacity-80 rounded-xl">
                                 <h3 class="content-title">
                                     Chat Box
                                 </h3>

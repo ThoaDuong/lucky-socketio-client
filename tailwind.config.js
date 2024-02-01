@@ -12,7 +12,11 @@ export default {
                 'happy-red': '#FF8080',
                 'happy-blue': '#95BDFF',
                 'happy-green': '#00DFA2',
-                'login': '#7ED7C1'
+                // 'login': '#7ED7C1'
+                'login': '#FFF6F6'
+            },
+            backgroundImage: {
+                'image-base': 'url("@/assets/login_bg.jpg")',
             },
             fontFamily: {
                 'flex': ['"IBM Plex Serif"', 'serif']

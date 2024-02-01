@@ -4,8 +4,8 @@ import { User } from "@/interfaces/User";
 import { Board } from "@/interfaces/Board";
 import { BoardRoom } from "@/interfaces/BoardRoom";
 
-const uri = 'https://lootoo-app-server.onrender.com';
-// const uri = 'http://localhost:8000'
+// const uri = 'https://lootoo-app-server.onrender.com';
+const uri = 'http://localhost:8000'
 const headers = {
     'Content-Type': 'application/json',
 }
