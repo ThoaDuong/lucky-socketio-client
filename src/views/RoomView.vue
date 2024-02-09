@@ -383,7 +383,7 @@
     async function initRtc () {
         agora.rtcClient = markRaw(AgoraRTC.createClient({mode:"rtc", codec:"vp8"}));
 
-        agora.rtcClient.on('user-joined', handleUserJoined);
+        // agora.rtcClient.on('user-joined', handleUserJoined);
         agora.rtcClient.on('user-published', handleUserPublished);
         agora.rtcClient.on('user-left', handleUserLeft);
 
@@ -624,9 +624,9 @@
         })
     }
 
-    function handleUserJoined(user: any){
-        // console.log('user joined', user);
-    }
+    // function handleUserJoined(user: any){
+    //     // console.log('user joined', user);
+    // }
 
     async function handleUserPublished(user: any, mediaType: any){
         await agora.rtcClient?.subscribe(user, mediaType);
