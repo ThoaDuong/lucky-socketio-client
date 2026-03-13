@@ -334,7 +334,6 @@
     import EmojiPicker from 'vue3-emoji-picker'
     import 'vue3-emoji-picker/css'
     import AgoraRTC, { IAgoraRTCClient, IMicrophoneAudioTrack } from "agora-rtc-sdk-ng";
-    import { appid } from '@/assets/appid';
 
     declare global {
         interface Window {
@@ -356,6 +355,14 @@
     const isVoiceOn = ref<boolean>(true);
     const isShowEmoji = ref<boolean>(false);
     const typingInputRef = ref<Ref|null>(null);
+    const appid = process.env.VUE_APP_AGORA_APPID || "";
+
+    // Queue for "gonna win" popups to show them sequentially
+    const gonnaWinQueue = ref<string[]>([]);
+    const isShowingGonnaWin = ref<boolean>(false);
+
+    // Flag to block all win/gonnaWin events once game is ending
+    const isGameEnding = ref<boolean>(false);
 
     const typing = reactive({
         isTyping: false as boolean,
@@ -538,33 +545,53 @@
         })
 
         socketIO.value.on('winGameOne', (username) => {
-            //user win game, alert to all
-            route.query.username === username ? alertWinGame("You") : alertLuckNextTime(username);
+            //ignore if game is already ending
+            if (isGameEnding.value) return;
+            isGameEnding.value = true;
+
+            //close any gonna-win popup
+            closePendingGonnaWinPopups();
 
             //Sent message for the others
             messages.value.push({
                 username: 'BotChat',
                 message: `${username} won!!!`
             })
+
             //clear numbers and boards
             changeStopAndClear();
+
+            //show single win popup
+            const isWinner = route.query.username === username;
+            showWinPopup(isWinner ? 'You' : username, isWinner);
         })
 
         socketIO.value.on('winGameMultiple', (usernameList) => {
-            //user win game, alert to all
-            const isWin = usernameList.includes(route.query.username);
-            isWin ? alertWinGame(usernameList) : alertLuckNextTime(usernameList);
+            //ignore if game is already ending
+            if (isGameEnding.value) return;
+            isGameEnding.value = true;
+
+            //close any gonna-win popup
+            closePendingGonnaWinPopups();
 
             //Sent message for the others
             messages.value.push({
                 username: 'BotChat',
                 message: `${usernameList} won!!!`
             })
+
             //clear numbers and boards
             changeStopAndClear();
+
+            //show single win popup
+            const isWinner = usernameList.includes(route.query.username);
+            showWinPopup(usernameList.toString(), isWinner);
         })
 
         socketIO.value.on('someoneGonnaWinToAll', (username) => {
+            //ignore if game is ending
+            if (isGameEnding.value) return;
+
             //add to chatbox
             messages.value.push({
                 username: 'BotChat',
@@ -574,14 +601,9 @@
             //scroll chatbox to bottom
             handleScrollToBottom();
 
-            //show popup
-            Swal.fire({
-                position: "top-end",
-                text: `${username} - just got 4 numbers in a row`,
-                showConfirmButton: false,
-                backdrop: false,
-                timer: 3000
-            });
+            //add to queue and show popup sequentially
+            gonnaWinQueue.value.push(username);
+            showNextGonnaWinPopup();
         })  
             
 
@@ -683,6 +705,8 @@
         randomNumber.value = 0;
         calledNumbers.value = [];
         isClearBoard.value = true;
+        gonnaWinQueue.value = [];
+        isShowingGonnaWin.value = false;
     }
 
     function handleStopClear(){
@@ -794,30 +818,11 @@
         typingInputRef.value.focus();
     }
 
-    function alertLuckNextTime(username: string) {
-        Swal.fire({
-            title: `${username} won! Better luck next time.`,
-            confirmButtonText: 'End Game',
-            imageUrl: "https://img.icons8.com/external-wanicon-lineal-color-wanicon/64/external-shamrock-st-patrick-day-wanicon-lineal-color-wanicon.png",
-            imageWidth: 100,
-            imageHeight: 100,
-            padding: '1rem',
-        })
-    }
-
-    function alertWinGame (username: string) {
-        Swal.fire({
-            title: `Congratulations! ${username} won`,
-            confirmButtonText: 'End Game',
-            imageUrl: "https://img.icons8.com/external-filled-outline-geotatah/64/external-best-friend-best-friend-forever-filled-outline-filled-outline-geotatah-6.png",
-            imageWidth: 100,
-            imageHeight: 100,
-            padding: '1rem',
-        })
-    }
-
     //handle function from BoardComponent
     function handleWinGame(winNumber: number){
+        //ignore if game is already ending
+        if (isGameEnding.value) return;
+
         socketIO.value.emit('someoneWinGame', {
             username: route.query.username,
             room: route.query.room,
@@ -826,10 +831,65 @@
     }
 
     function handleGonnaWin(waitingNumber: number){
+        //ignore if game is already ending
+        if (isGameEnding.value) return;
+
         socketIO.value.emit('gonnaWin', ({
             username: route.query.username,
             room: route.query.room,
             waitingNumber: waitingNumber
         }))
+    }
+
+    async function showNextGonnaWinPopup() {
+        // Skip if game is ending or already showing a popup
+        if (isShowingGonnaWin.value || isGameEnding.value || gonnaWinQueue.value.length === 0) return;
+
+        isShowingGonnaWin.value = true;
+        const username = gonnaWinQueue.value.shift()!;
+
+        await Swal.fire({
+            position: "top-end",
+            text: `${username} - just got 4 numbers in a row`,
+            showConfirmButton: false,
+            backdrop: false,
+            timer: 3000
+        });
+
+        isShowingGonnaWin.value = false;
+        showNextGonnaWinPopup(); // Show next in queue
+    }
+
+    function closePendingGonnaWinPopups() {
+        gonnaWinQueue.value = [];
+        if (isShowingGonnaWin.value) {
+            Swal.close();
+            isShowingGonnaWin.value = false;
+        }
+    }
+
+    async function showWinPopup(title: string, isWinner: boolean) {
+        if (isWinner) {
+            await Swal.fire({
+                title: `Congratulations! ${title} won`,
+                confirmButtonText: 'End Game',
+                imageUrl: "https://img.icons8.com/external-filled-outline-geotatah/64/external-best-friend-best-friend-forever-filled-outline-filled-outline-geotatah-6.png",
+                imageWidth: 100,
+                imageHeight: 100,
+                padding: '1rem',
+            });
+        } else {
+            await Swal.fire({
+                title: `${title} won! Better luck next time.`,
+                confirmButtonText: 'End Game',
+                imageUrl: "https://img.icons8.com/external-wanicon-lineal-color-wanicon/64/external-shamrock-st-patrick-day-wanicon-lineal-color-wanicon.png",
+                imageWidth: 100,
+                imageHeight: 100,
+                padding: '1rem',
+            });
+        }
+
+        // Reset flag after user closes popup
+        isGameEnding.value = false;
     }
 </script>
