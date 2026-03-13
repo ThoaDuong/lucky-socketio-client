@@ -25,9 +25,14 @@ const router = createRouter({
 router.beforeEach((to, from) => {
     if(to.name === 'room'){
         const { username, room } = to.query;
-        if(from.name !== 'login' ||
-            !username || username.length > 20 ||
-            !room || room.length > 11){
+        // Cho phép nếu đến từ login HOẶC có session data (refresh case)
+        const sessionData = sessionStorage.getItem('lootoo_session');
+        const hasValidSession = sessionData !== null;
+        const isFromLogin = from.name === 'login';
+        
+        if((!isFromLogin && !hasValidSession) ||
+            !username || (username as string).length > 20 ||
+            !room || (room as string).length > 11){
             return { name: 'login' };
         }
         return true;

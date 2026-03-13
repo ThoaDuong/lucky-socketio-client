@@ -30,7 +30,7 @@
     </table>
 </template>
 <script setup lang="ts">
-    import { ref, defineProps, defineEmits, onUnmounted, watch } from 'vue';
+    import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
     import Swal from 'sweetalert2';
     
     const props = defineProps<{
@@ -42,15 +42,39 @@
     const emit = defineEmits(['winGame', 'resetClearBoard', 'gonnaWin']);
 
     const activeBoard = ref<(number | null)[][]>([[], [], [], [], [], [], [], [], []]);
-    
+    const STORAGE_KEY = 'lootoo_activeBoard';
+
+    /** Save active board selections to sessionStorage */
+    function saveActiveBoard() {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(activeBoard.value));
+    }
+
+    /** Restore active board selections from sessionStorage */
+    function restoreActiveBoard() {
+        const saved = sessionStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            try {
+                activeBoard.value = JSON.parse(saved);
+            } catch {
+                clearActiveBoard();
+            }
+        }
+    }
+
+    onMounted(() => {
+        restoreActiveBoard();
+    })
+
     onUnmounted(() => {
         clearActiveBoard();
     })
 
     //clear active board when change to another board 
     watch(() => props.boardNumber, (newValue, oldValue) => {
-        if(newValue && newValue !== oldValue){
-            clearActiveBoard();
+        if (newValue && oldValue) {
+            if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+                clearActiveBoard();
+            }
         }
     })
 
@@ -61,6 +85,9 @@
         }
     })
 
+    /**
+     * Handles the click event on a bingo square, adding or removing it from the active board.
+     */
     function handleClickSquare(calledNumber: number | null){
         if(!calledNumber){
             return null;
@@ -79,8 +106,13 @@
                 }
             })  
         })
+        // Save state after any click
+        saveActiveBoard();
     }
 
+    /**
+     * Attempts to add a dialed number to the active selection, checking for potential win conditions.
+     */
     function handleAddNumber(tempActiveBoard: (number | null)[], number: number, arrayNumberHasSelected: (number|null)[]){
         switch(tempActiveBoard.length){
             case 3:
@@ -94,15 +126,25 @@
         }
     }
 
+    /**
+     * Removes an incorrectly selected number from the active board selection.
+     */
     function handleRemoveNumber(tempActiveBoard: (number | null)[], index: number){
         tempActiveBoard.splice(index, 1);
     }
 
+    /**
+     * Completely resets the user's active board selection and removes it from session storage.
+     */
     function clearActiveBoard(){
         let value: (number | null)[][] = [[], [], [], [], [], [], [], [], []];
         activeBoard.value = value;
+        sessionStorage.removeItem(STORAGE_KEY);
     }
     
+    /**
+     * Displays an error popup alerting the user that they selected uncalled numbers.
+     */
     function  alertInValidCalledNumbers(missingNumbers: number[]){
         Swal.fire({
             title: 'Oh no!',
@@ -114,6 +156,9 @@
         })
     }
 
+    /**
+     * Validates selected numbers against the official called numbers to identify any false claims.
+     */
     function checkMissingNumbers(tempActiveBoard: (number | null)[], number: number): number[]{
         let missingNumbers: number[] = [];
 
@@ -132,6 +177,9 @@
         return missingNumbers;
     }
 
+    /**
+     * Verifies if the sequence of 5 selected numbers constitutes a valid win.
+     */
     function checkWinGame(tempActiveBoard: (number | null)[], number: number){
         //check all number is called
         const missingNumbers: number[] = checkMissingNumbers(tempActiveBoard, number);
@@ -145,6 +193,9 @@
         }
     }
 
+    /**
+     * Finds the single remaining unselected number in a row when 4 numbers have already been selected.
+     */
     function findWaitingNumber(tempActiveBoard: (number|null)[], arrayNumberHasSelected: (number|null)[]){
         let waitingNumber = -1;
         arrayNumberHasSelected.forEach(rowNumber => {
@@ -158,6 +209,9 @@
         return waitingNumber;
     }
 
+    /**
+     * Verifies a 'gonna win' state (4 out of 5 valid numbers) and emits the waiting number event.
+     */
     function checkGonnaWin(tempActiveBoard: (number | null)[], number: number, arrayNumberHasSelected: (number|null)[]){
         //check all number is called
         const missingNumbers: number[] = checkMissingNumbers(tempActiveBoard, number);

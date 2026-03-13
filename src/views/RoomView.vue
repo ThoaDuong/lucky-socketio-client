@@ -8,7 +8,7 @@
         -->
 
         <!-- Full screen -->
-        <div class="w-full h-screen max-h-screen 2xl:w-[80%] overflow-y-auto grid grid-cols-12 p-2 gap-2">
+        <div class="w-full min-h-screen xl:h-screen xl:max-h-screen 2xl:w-[80%] overflow-y-auto grid grid-cols-12 p-2 gap-2">
             <!-- Left side -->
             <div class="
                 col-span-12 
@@ -16,14 +16,14 @@
                 xl:col-span-3">
                 <div class="h-full">
                     <!-- Logo block -->
-                    <div class="h-[80px] bg-base bg-opacity-80 rounded-xl flex mb-2">
+                    <div class="h-[80px] bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl flex mb-2 transition-all duration-300 hover:shadow-2xl">
                         <div class="px-4 pt-1">
                             <img class="w-16 h-16" src="https://i.imgur.com/hB1TKLR.png" alt="Lootoo"/>
                         </div>
                         <h1 class="font-rubik text-4xl text-yellow-500 font-bold h-full flex items-center">LooToo</h1>
                     </div>
                     <!-- User information block -->
-                    <div class="h-[100px] w-full mb-2 flex items-center bg-base bg-opacity-80 rounded-xl relative">
+                    <div class="h-[100px] w-full mb-2 flex items-center bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl relative transition-all duration-300 hover:shadow-2xl">
                         <div class="px-4">
                             <img class="w-16 h-16" src="https://img.icons8.com/clouds/100/corgi.png" alt="Temporary profile picture"/>
                         </div>
@@ -45,6 +45,7 @@
                                 @click="handleToggleMicrophone()">
                                 <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/radio-studio.png" alt="radio-studio"/>
                             </button>
+                            <!-- Background music buttons (disabled)
                             <button v-if="backgroundMusic.isOn"
                                 @click="handleToggleBackgroundMusic()">
                                 <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
@@ -53,27 +54,28 @@
                                 @click="handleToggleBackgroundMusic()">
                                 <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/mute.png" alt="mute"/>
                             </button>
+                            -->
                         </div>
                         <button @click="handleLeaveRoom()"
-                            class="absolute top-2 right-2 rounded-full bg-happy-red text-white py-1 px-3 text-sm font-semibold">
+                            class="absolute top-2 right-2 rounded-full bg-gradient-to-r from-red-400 to-rose-500 hover:from-red-500 hover:to-rose-600 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:scale-95 text-white py-1 px-3 text-sm font-semibold">
                             <span>Leave</span>
                             <img class="w-4 h-4 mt-0.5 ml-1 float-right" src="https://img.icons8.com/external-tal-revivo-filled-tal-revivo/24/external-exiting-from-shopping-mall-with-arrow-outside-mall-filled-tal-revivo.png" alt="suicide"/>
                         </button>
                     </div>
                     <!-- Boards list block -->
-                    <div class="h-[250px] md:h-[calc(100vh-212px)] bg-base bg-opacity-80 rounded-xl">
+                    <div class="h-[250px] md:h-auto min-h-[250px] xl:h-[calc(100vh-212px)] bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
                         <h3 class="content-title">
                             Select board here
                         </h3>
 
-                        <div class="h-[70%] md:h-[84%] overflow-y-auto">
+                        <div class="flex-1 overflow-y-auto w-full styled-scrollbar">
                             <div
                             v-for="board in customBoards" :key="board.id"
                             @click="board.username === null && !isGameStarted ? handleChangeBoard(board.id) : null"
                             :class="{
-                                'hover:cursor-pointer': !!(board.username === null && !isGameStarted),
-                                'opacity-60': !!(board.username !== null || isGameStarted),
-                                'grid grid-cols-3 pb-1': true,
+                                'hover:cursor-pointer hover:bg-white/40 transform hover:scale-[1.02]': !!(board.username === null && !isGameStarted),
+                                'opacity-60 grayscale': !!(board.username !== null || isGameStarted),
+                                'grid grid-cols-3 pb-1 transition-all duration-300 rounded-lg mx-2 my-1': true,
                             }">
                                 <div class="col-span-1 mx-auto text-center">
                                     <img
@@ -107,35 +109,13 @@
                 md:col-span-8 md:overflow-y-auto
                 xl:col-span-9">
                 <div class="h-full">
-                    <!-- Dynamic banner block -->
-                    <div class="hidden md:block h-[80px] bg-base bg-opacity-80 rounded-xl overflow-x-hidden mb-2 px-3">
-                        <div class="relative h-full flex justify-right items-center font-black-ops text-2xl">
-                            <!-- Welcome to the party! Get ready for some fun. -->
-                        
-                            <div class="animate-marquee whitespace-nowrap">
-                                <span class="mx-4 text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-happy-red">Happy new year</span>
-                                <span class="mx-4 text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-happy-red">Happy new year</span>
-                                <span class="mx-4 text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-happy-red">Happy new year</span>
-                            </div>
-                            <div class="absolute animate-marquee2 whitespace-nowrap">
-                                <span class="mx-4 text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-happy-red">Happy new year</span>
-                                <span class="mx-4 text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-happy-red">Happy new year</span>
-                                <span class="mx-4 text-happy-blue">No refresh during play</span>
-                                <span class="mx-4 text-happy-red">Happy new year</span>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="h-auto xl:h-[100px] mb-2">
                         <div class="h-full grid grid-cols-3 gap-2">
                             <!-- Called numbers block -->
-                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-2 bg-base bg-opacity-80 rounded-xl overflow-x-hidden">
-                                <div class="h-full mx-5 flex justify-right items-center overflow-x-auto">
-                                    <div class="flex items-center bg-happy-blue rounded-full py-2 px-4">
+                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-2 bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl overflow-x-hidden flex items-center transition-all duration-300 hover:shadow-2xl">
+                                <div class="w-full mx-5 flex justify-start items-center overflow-x-auto styled-scrollbar py-2">
+                                    <div class="flex items-center bg-gradient-to-r from-blue-400 to-indigo-500 shadow-md rounded-full py-2 px-4 shrink-0 transition-transform duration-300 hover:scale-105">
                                         <!-- Random number -->
                                         <div class="block w-20">
                                             <span class="text-xl font-semibold">
@@ -143,41 +123,45 @@
                                             </span>
                                             <span>/90</span>
                                         </div>
-                                        <!-- List called numbers -->
+                                        <!-- List called numbers (latest) -->
                                         <div class="block">
-                                            <div class="bg-happy-yellow w-14 h-14 flex justify-center items-center rounded-full text-2xl font-semibold">
+                                            <div class="bg-gradient-to-r from-yellow-300 to-yellow-500 shadow-lg w-14 h-14 flex justify-center items-center rounded-full text-2xl font-bold text-gray-800 transition-all duration-300 transform scale-110">
                                                 {{calledNumbers[0] ? calledNumbers[0] : 0}}
                                             </div>
                                         </div>
                                     </div>
-                                    <div v-for="(number, index) in [...calledNumbers.filter((n, index) => index !== 0)]" 
-                                        :key="index">
-                                        <div class="bg-happy-yellow w-12 h-12 flex justify-center items-center rounded-full mx-1 text-xl font-semibold">
-                                            {{ number }}
+                                    <!-- History numbers with TransitionGroup -->
+                                    <TransitionGroup name="list-number" tag="div" class="flex items-center">
+                                        <div v-for="(number, index) in calledNumbers.slice(1)" 
+                                            :key="number ? `num-${number}` : `idx-${index}`"
+                                            class="shrink-0">
+                                            <div class="bg-white/60 border border-white/80 shadow-inner w-12 h-12 flex justify-center items-center rounded-full mx-1.5 text-xl font-semibold text-gray-700 transition-all duration-300 hover:bg-white hover:scale-110">
+                                                {{ number }}
+                                            </div>
                                         </div>
-                                    </div>
+                                    </TransitionGroup>
                                 </div>
                             </div>
                             <!-- Admin action block -->
-                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-1 block bg-base bg-opacity-80 rounded-xl">
+                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-1 block bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl transition-all duration-300 hover:shadow-2xl">
                                 
                                 <div class="h-full flex justify-center items-center">
                                     <!-- Take host option -->
-                                    <div v-if="!isCurrentUserAdmin" class="text-center">
+                                    <div v-if="!isCurrentUserAdmin" class="flex flex-wrap justify-center items-center gap-3">
                                         <button @click="handleTakeAdmin"
                                         :disabled="isExistUserAdmin"
                                         :class="{
-                                            'opacity-70': isExistUserAdmin
+                                            'opacity-50 grayscale cursor-not-allowed': isExistUserAdmin,
+                                            'hover:-translate-y-1 hover:shadow-lg active:scale-95': !isExistUserAdmin
                                         }"
-                                        class="rounded-full bg-happy-blue text-white py-1 px-3 text-sm font-semibold">
-                                            <!-- <img class="w-5 h-5 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-host-award-events-flaticons-lineal-color-flat-icons.png" alt="host"/> -->
-                                            <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-yogi-aprelliyanto-glyph-yogi-aprelliyanto/32/external-lock-web-programming-yogi-aprelliyanto-glyph-yogi-aprelliyanto.png" alt="host"/>
+                                        class="rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 text-white py-1.5 px-4 text-sm font-semibold transition-all duration-300 transform flex items-center">
+                                            <img class="w-4 h-4 mr-1.5" src="https://img.icons8.com/external-yogi-aprelliyanto-glyph-yogi-aprelliyanto/32/FFFFFF/external-lock-web-programming-yogi-aprelliyanto-glyph-yogi-aprelliyanto.png" alt="host"/>
                                             <span>Host</span>
                                         </button>
                                         <button @click="isVoiceOn = !isVoiceOn"
-                                            class="rounded-full bg-happy-green text-white mx-1 py-1 px-3 text-sm font-semibold">
-                                            <img v-show="isVoiceOn" class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
-                                            <img v-show="!isVoiceOn" class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/mute.png" alt="mute"/>
+                                            class="rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 text-white py-1.5 px-4 text-sm font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:scale-95 flex items-center">
+                                            <img v-show="isVoiceOn" class="w-4 h-4 mr-1.5" src="https://img.icons8.com/pulsar-line/48/FFFFFF/speaker.png" alt="speaker"/>
+                                            <img v-show="!isVoiceOn" class="w-4 h-4 mr-1.5" src="https://img.icons8.com/pulsar-line/48/FFFFFF/mute.png" alt="mute"/>
                                             <span>{{ isVoiceOn ? 'On' : 'Off' }}</span>
                                         </button>
                                     </div>
@@ -185,27 +169,26 @@
                                     
                                     <!-- Admin action -->
                                     <div v-else>
-                                        <div class="text-center">
+                                        <div class="flex flex-wrap justify-center items-center gap-3">
                                             <button @click="handleReleaseAdmin"
-                                                class="rounded-full bg-happy-blue text-white mx-1 py-1 px-3 text-sm font-semibold">
-                                                <!-- <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/delete-sign.png" alt="close-sign"/> -->
-                                                <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-yogi-aprelliyanto-glyph-yogi-aprelliyanto/32/external-unlock-web-programming-yogi-aprelliyanto-glyph-yogi-aprelliyanto.png" alt="close-sign"/>
+                                                class="rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 text-white py-1.5 px-4 text-sm font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:scale-95 flex items-center">
+                                                <img class="w-4 h-4 mr-1.5" src="https://img.icons8.com/external-yogi-aprelliyanto-glyph-yogi-aprelliyanto/32/FFFFFF/external-unlock-web-programming-yogi-aprelliyanto-glyph-yogi-aprelliyanto.png" alt="close-sign"/>
                                                 <span>Release</span>
                                             </button>
                                             <button @click="handleStopClear"
-                                                class="rounded-full bg-happy-red text-white mx-1 py-1 px-3 text-sm font-semibold">
-                                                <!-- <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/external-tal-revivo-filled-tal-revivo/24/external-exiting-from-shopping-mall-with-arrow-outside-mall-filled-tal-revivo.png" alt="suicide"/> -->
-                                                <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/delete-sign.png" alt="close-sign"/>
+                                                class="rounded-full bg-gradient-to-r from-red-400 to-rose-500 text-white py-1.5 px-4 text-sm font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:scale-95 flex items-center">
+                                                <img class="w-4 h-4 mr-1.5" src="https://img.icons8.com/pulsar-line/48/FFFFFF/delete-sign.png" alt="close-sign"/>
                                                 <span>End</span>
                                             </button>
                                             <button @click="isVoiceOn = !isVoiceOn"
-                                                class="rounded-full bg-happy-green text-white mx-1 py-1 px-3 text-sm font-semibold">
-                                                <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
+                                                class="rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 text-white py-1.5 px-4 text-sm font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:scale-95 flex items-center">
+                                                <img v-show="isVoiceOn" class="w-4 h-4 mr-1.5" src="https://img.icons8.com/pulsar-line/48/FFFFFF/speaker.png" alt="speaker"/>
+                                                <img v-show="!isVoiceOn" class="w-4 h-4 mr-1.5" src="https://img.icons8.com/pulsar-line/48/FFFFFF/mute.png" alt="mute"/>
                                                 <span>{{ isVoiceOn ? 'On' : 'Off' }}</span>
                                             </button>
                                             <button @click="handleNextNumber"
-                                                class="rounded-full bg-happy-green text-white mt-2 mx-1 py-1 px-3 text-sm font-semibold">
-                                                <img class="w-4 h-4 mt-0.5 mr-1 float-left" src="https://img.icons8.com/pulsar-color/48/forward.png" alt="forward"/>
+                                                class="rounded-full bg-gradient-to-r from-orange-400 to-pink-500 text-white py-1.5 px-4 text-sm font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:scale-95 focus:ring-4 focus:ring-orange-300 outline-none flex items-center">
+                                                <img class="w-4 h-4 mr-1.5" src="https://img.icons8.com/pulsar-line/48/FFFFFF/forward.png" alt="forward"/>
                                                 <span>Next Number</span>
                                             </button>
                                         </div>
@@ -214,10 +197,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="h-auto xl:h-[calc(100vh-212px)]">
-                        <div class="grid grid-cols-3 gap-2">
+                    <div class="h-auto xl:h-[calc(100vh-124px)] grid grid-cols-3 gap-2">
                             <!-- Display current board -->
-                            <div class="h-full col-span-3 xl:col-span-2 bg-base bg-opacity-80 rounded-xl flex justify-center items-center overflow-y-auto">
+                            <div class="h-full col-span-3 xl:col-span-2 bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl flex justify-center items-center overflow-y-auto transition-all duration-300 hover:shadow-2xl">
 
                                 <!-- Display current board -->
                                 <div class="my-4 xl:my-1">
@@ -233,87 +215,87 @@
                                 </div>
                             </div>
                             <!-- ChatBox block -->
-                            <div class="h-full col-span-3 xl:col-span-1 bg-base bg-opacity-80 rounded-xl">
-                                <h3 class="content-title">
+                            <div class="h-full col-span-3 xl:col-span-1 bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
+                                <h3 class="content-title pb-2 border-b border-white/20 text-indigo-900 drop-shadow-sm font-bold pt-3 bg-white/20 rounded-t-xl mb-0">
                                     Chat Box
                                 </h3>
-                                <!-- Display chat box | md:h-[calc(100vh-212px-87px-106px-350px)]  -->
+                                <!-- Display chat box -->
                                 <div class="
-                                    relative w-full h-[320px] 
-                                    md:min-h-[300px] md:h-[calc(100vh-212px-595px)]                                     xl:min-h-[500px] xl:h-[calc(100vh-212px-44px)]">
+                                    relative w-full flex-1 flex flex-col overflow-hidden 
+                                    min-h-[300px] h-[320px] 
+                                    md:min-h-[300px] md:h-[calc(100vh-507px)] 
+                                    xl:min-h-[500px] xl:h-[calc(100vh-124px-44px)]">
                                     <div id="chat-box" class="
-                                        h-[250px] overflow-y-auto
-                                        md:h-[calc(100%-80px)] 
-                                        xl:h-[calc(100vh-230px-32%)]">
-                                        <div v-for="(m, index) in messages" 
-                                        :key="index"
-                                        class="mx-3">
-                                            <div v-if="!!(m.username === 'BotChat')"
-                                            class="my-2 flex justify-center">
-                                                <div class="w-fit px-4 py-1 text-xs bg-violet-300 rounded">
-                                                    {{ m.message }}
+                                        flex-1 overflow-y-auto styled-scrollbar px-2 py-4 relative z-10">
+                                        
+                                        <TransitionGroup name="chat-list" tag="div" class="space-y-3">
+                                            <div v-for="(m, index) in messages" 
+                                            :key="'msg-'+index"
+                                            class="mx-1">
+                                                <div v-if="!!(m.username === 'BotChat')"
+                                                class="my-2 flex justify-center">
+                                                    <div class="w-fit px-4 py-1 text-xs bg-violet-300 rounded">
+                                                        {{ m.message }}
+                                                    </div>
+                                                </div>
+                                                <div v-else-if="!!(m.username !== route.query.username)" 
+                                                class="my-2">
+                                                    <div class="text-left font-semibold text-xs text-orange-900 opacity-40 ml-3 mb-[-3px]">
+                                                        {{ m.username }}
+                                                    </div>
+                                                    <div class="w-fit px-4 py-1 text-sm bg-gradient-to-r from-teal-400 to-emerald-500 text-white shadow font-medium rounded-2xl rounded-tl-none text-left max-w-[85%] break-words">
+                                                        {{ m.message }}
+                                                    </div>
+                                                </div>
+                                                <div v-else
+                                                class="flex justify-end my-1">
+                                                    <div class="w-fit px-4 py-1 text-sm bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow font-medium rounded-2xl rounded-tr-none text-right max-w-[85%] break-words">
+                                                        {{ m.message }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div v-else-if="!!(m.username !== route.query.username)" 
-                                            class="my-2">
-                                                <div class="text-left font-semibold text-xs text-orange-900 opacity-40 ml-3 mb-[-3px]">
-                                                    {{ m.username }}
-                                                </div>
-                                                <div class="w-fit px-4 py-1 text-sm bg-happy-green rounded-full text-left">
-                                                    {{ m.message }}
-                                                </div>
-                                            </div>
-                                            <div v-else
-                                            class="flex justify-end my-2">
-                                                <div class="w-fit px-4 py-1 text-sm bg-happy-blue rounded-full text-right">
-                                                    {{ m.message }}
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </TransitionGroup>
                                     </div>
-                                    <div class="absolute bottom-[40px] xl:bottom-[60px] w-full">
-                                        <div class="w-[90%] mx-auto text-sm">
+                                    <!-- Chat Input Area -->
+                                    <div class="w-full bg-white/40 backdrop-blur-md p-3 rounded-b-xl border-t border-white/50 relative z-20">
+                                        <div class="w-full relative flex items-center bg-white/70 rounded-full shadow-inner border border-white/60">
                                             <input
                                             v-model="message"
                                             @keyup="handleTypingEvent($event)"
                                             @keyup.enter="handleSendMessage"
                                             ref="typingInputRef"
-                                            class="shadow-md border rounded-full w-full py-2 pl-5 pr-12 xl:pr-10 text-gray-700 focus:outline-none"
+                                            class="w-full py-2.5 pl-5 pr-12 bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none"
                                             type="text"
-                                            placeholder="tap enter to send">
+                                            placeholder="Type a message...">
+                                            
+                                            <!-- Emoji Button Inside Input -->
+                                            <button @click="isShowEmoji = !isShowEmoji" 
+                                                class="absolute right-2 p-1.5 rounded-full hover:bg-white/50 transition-colors">
+                                                <img class="w-6 h-6 opacity-80 hover:opacity-100 transition-opacity" src="https://img.icons8.com/emoji/48/smiling-face-with-smiling-eyes.png" alt="smile"/>
+                                            </button>
+                                        </div>
+                                        <div v-show="isShowEmoji" 
+                                            class="absolute bottom-[80px] xl:bottom-[100px] right-[25px]">
+                                            <EmojiPicker 
+                                                :hide-group-names="true"
+                                                :disable-sticky-group-names="true"
+                                                :disable-skin-tones="true"
+                                                :display-recent="true"
+                                                @select="handleSelectEmoji" />
                                         </div>
                                     </div>
-                                    <div @click="isShowEmoji = !isShowEmoji" 
-                                        class="absolute bottom-[38px] xl:bottom-[58px] right-[40px] xl:right-[30px]">
-                                        <button><img class="w-7 h-7" src="https://img.icons8.com/emoji/48/smiling-face-with-smiling-eyes.png" alt="smile"/></button>
+                                        <!-- Typing Indicator -->
+                                        <div class="absolute -top-7 left-4 text-xs font-semibold text-indigo-800 bg-white/60 px-3 py-1 rounded-full shadow-sm backdrop-blur-sm transition-opacity duration-300"
+                                             :class="typing.usernameList.length > 0 ? 'opacity-100' : 'opacity-0'">
+                                            <span v-if="typing.usernameList.length === 1">
+                                                {{ typing.usernameList[0] }} is typing...
+                                            </span>
+                                            <span v-else-if="typing.usernameList.length > 1">
+                                                {{ typing.usernameList.join(', ') }} are typing...
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div v-show="isShowEmoji" 
-                                        class="absolute bottom-[80px] xl:bottom-[100px] right-[25px]">
-                                        <EmojiPicker 
-                                            :hide-group-names="true"
-                                            :disable-sticky-group-names="true"
-                                            :disable-skin-tones="true"
-                                            :display-recent="true"
-                                            @select="handleSelectEmoji" />
-                                    </div>
-                                    <!-- Display typing -->
-                                    <p 
-                                    class="absolute bottom-[15px] xl:bottom-[35px] left-8 mx-6 text-left text-sm">
-                                        <span v-if="!!(typing.usernameList.length === 1)">
-                                            {{ typing.usernameList[0] }} is typing
-                                        </span>
-                                        <span v-if="!!(typing.usernameList.length > 1)">
-                                            <label v-for="(name, index) in typing.usernameList"
-                                            :key="index">
-                                                <span>{{ name }}</span> 
-                                                <span v-show="typing.usernameList.length-1 !== index">, </span> 
-                                            </label>
-                                            are typing...
-                                        </span>
-                                    </p>
                                 </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -322,574 +304,303 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, computed, reactive, watch, Ref, markRaw } from 'vue';
+    import { ref, onMounted, computed, watch } from 'vue';
     import BoardComponent from '@/components/BoardComponent.vue';
-    import Swal from 'sweetalert2';
     import { useStoreData } from '@/stores/store';
-    import { useRoute, useRouter } from 'vue-router'
+    import { useRoute, useRouter } from 'vue-router';
     import { storeToRefs } from 'pinia';
-    import { Message } from '@/interfaces/Message';
     import { Board } from '@/interfaces/Board';
     import { BoardRoom } from '@/interfaces/BoardRoom';
-    import EmojiPicker from 'vue3-emoji-picker'
-    import 'vue3-emoji-picker/css'
-    import AgoraRTC, { IAgoraRTCClient, IMicrophoneAudioTrack } from "agora-rtc-sdk-ng";
+    import EmojiPicker from 'vue3-emoji-picker';
+    import 'vue3-emoji-picker/css';
 
-    declare global {
-        interface Window {
-            responsiveVoice?: any;
-        }
-    }
+    // ── Composables ──────────────────────────────────────────────
+    import { useAgora } from '@/composables/useAgora';
+    import { useChat } from '@/composables/useChat';
+    import { useGameLogic } from '@/composables/useGameLogic';
+    import { useAdmin } from '@/composables/useAdmin';
 
-    //static variable
-    const randomNumber = ref<number>(0);
-    const calledNumbers = ref<(number | null)[]>([]);
-    const messages = ref<Message[]>([]);
-    const message = ref<string>("");
+    // ── Agora (voice chat) ───────────────────────────────────────
+    const { agora, handleToggleMicrophone, leaveRtc } = useAgora();
+
+    // ── Chat (messages, typing, emoji) ───────────────────────────
+    const {
+        messages, message, typing, isShowEmoji, typingInputRef,
+        addBotMessage, handleScrollToBottom, handleSendMessage,
+        handleTypingEvent, handleSelectEmoji,
+    } = useChat();
+
+    // ── Game logic (numbers, win, popups) ────────────────────────
+    const {
+        randomNumber, calledNumbers, isClearBoard, isVoiceOn,
+        isGameStarted, countCalledNumbers, isGameEnding,
+        gonnaWinQueue,
+        handleSpeakNumber, handleNextNumber, changeStopAndClear,
+        handleStopClear, handleWinGame, handleGonnaWin,
+        showNextGonnaWinPopup, closePendingGonnaWinPopups, showWinPopup,
+    } = useGameLogic();
+
+    // ── Admin (host role) ────────────────────────────────────────
+    const {
+        isCurrentUserAdmin, isExistUserAdmin,
+        handleTakeAdmin, handleReleaseAdmin,
+    } = useAdmin();
+
+    // ── Core dependencies ────────────────────────────────────────
     const store = useStoreData();
     const route = useRoute();
     const router = useRouter();
-    const isClearBoard = ref<boolean>(false);
-    const timeoutScroll = ref<number>();
+    const { boards, boards_room, socketIO } = storeToRefs(store);
+
+    // ── Board state ──────────────────────────────────────────────
     const customBoards = ref<Board[]>([]);
-    const isVoiceOn = ref<boolean>(true);
-    const isShowEmoji = ref<boolean>(false);
-    const typingInputRef = ref<Ref|null>(null);
-    const appid = process.env.VUE_APP_AGORA_APPID || "";
 
-    // Queue for "gonna win" popups to show them sequentially
-    const gonnaWinQueue = ref<string[]>([]);
-    const isShowingGonnaWin = ref<boolean>(false);
-
-    // Flag to block all win/gonnaWin events once game is ending
-    const isGameEnding = ref<boolean>(false);
-
-    const typing = reactive({
-        isTyping: false as boolean,
-        timeout: undefined as number | undefined,
-        usernameList: [] as string[],
-    })
-    const backgroundMusic = reactive({
-        isOn: true as boolean,
-        musicTrack: new Audio(require("@/assets/background_music.mp3")) as HTMLAudioElement,
-    })
-    const agora = reactive({
-        appid: appid,
-        token: null,
-        rtcUid: route.query.username ? route.query.username.toString() : "",
-        room: route.query.room ? route.query.room.toString() : "",
-        rtcClient: null as null|IAgoraRTCClient,
-        audioTrack: {
-            localAudioTrack: null as null|Promise<IMicrophoneAudioTrack>,
-            remoteAudioTracks: {} as any
-        },
-        micMuted: true,
-        isFirstTimeTurnMicro: true,
-    })
-
-    async function initRtc () {
-        agora.rtcClient = markRaw(AgoraRTC.createClient({mode:"rtc", codec:"vp8"}));
-
-        // agora.rtcClient.on('user-joined', handleUserJoined);
-        agora.rtcClient.on('user-published', handleUserPublished);
-        agora.rtcClient.on('user-left', handleUserLeft);
-
-        await agora.rtcClient.join(
-            agora.appid, agora.room, agora.token, agora.rtcUid
-        );
-
-        agora.audioTrack.localAudioTrack = AgoraRTC.createMicrophoneAudioTrack();
-        (await agora.audioTrack.localAudioTrack).setMuted(agora.micMuted);
-        await agora.rtcClient.publish(await agora.audioTrack.localAudioTrack);
-
-    }
-
-    //store data
-    const { users, boards, boards_room, socketIO } = storeToRefs(store);
-
-    const isGameStarted = computed(() => calledNumbers.value.length > 0 ? true : false);
-    const isCurrentUserAdmin = computed(() => {
-        const user  = users.value.find(user => 
-            user.username === route.query.username && user.room === route.query.room
-        );
-        return !!(user?.isAdmin); 
-    })
-    const isExistUserAdmin = computed(() => {
-        const index = users.value.findIndex(user => 
-            user.isAdmin === true && user.room === route.query.room
-        ); 
-        return !!(index !==-1);
-    })
-    const countCalledNumbers = computed(() => calledNumbers.value.length);
+    /** The board currently assigned to this user. */
     const currentBoard = computed(() => {
         return customBoards.value.find(b => b.username === route.query.username);
-    })
+    });
 
+    // ── Watchers ─────────────────────────────────────────────────
+
+    /** Sync started-room list when game starts or stops (admin only). */
     watch(isGameStarted, (isGameStartedNew) => {
-        if(isCurrentUserAdmin.value){
+        if (isCurrentUserAdmin.value) {
             const room = route.query.room ? route.query.room.toString() : '';
-            if(isGameStartedNew){
+            if (isGameStartedNew) {
                 store.addStartedRoom(room);
-            } else{
+            } else {
                 store.removeStartedRoom(room);
             }
         }
-    })
+    });
 
-    //to handle in watch when boards or boards_room change
-    const twoVariable = computed<[Board[], BoardRoom[]]>(() => [boards.value, boards_room.value]);
-    watch(twoVariable, async (newValue) => {
-        if(newValue){
-            let tempBoards: Board[] = [];
-            //run loop with boards list
+    /** Merge boards + boards_room into customBoards whenever either changes. */
+    const boardsAndRooms = computed<[Board[], BoardRoom[]]>(() => [boards.value, boards_room.value]);
+    watch(boardsAndRooms, (newValue) => {
+        if (newValue) {
+            const tempBoards: Board[] = [];
             newValue[0].forEach(item => {
-                //check if boards_room exist, init username
-                const rsBoard = newValue[1].find(br => 
-                    br.boardId === item.id && br.room === route.query.room
+                const rsBoard = newValue[1].find(
+                    br => br.boardId === item.id && br.room === route.query.room
                 );
                 tempBoards.push({
-                    ...item, 
+                    ...item,
                     username: rsBoard ? rsBoard.username : null,
                     micMuted: rsBoard ? rsBoard.micMuted : false,
-                })
-            })
+                });
+            });
             customBoards.value = tempBoards;
         }
     }, { deep: true });
 
-    //lifecycle hook
+    // ── Lifecycle ────────────────────────────────────────────────
+
     onMounted(() => {
-        //initial api data from back-end
+        // Re-emit join on refresh/reconnect so the server updates the socket id
+        const sessionData = sessionStorage.getItem('lootoo_session');
+        if (sessionData) {
+            const { username, room } = JSON.parse(sessionData);
+            socketIO.value.emit('userJoinRoom', { username, room });
+        }
+
+        // Fetch initial API data
         store.getUsersFromAPI();
         store.getBoardsFromAPI();
         store.getBoardsRoomFromAPI();
-        messages.value.push({
-            username: 'BotChat',
-            message: `Welcome ${route.query.username}!`
-        })
-        handleScrollToBottom();
+        addBotMessage(`Welcome ${route.query.username}!`);
 
-        //Agora RTC
-        // initRtc(); 
-        
-        //set default for responsive voice
-        window.responsiveVoice.setDefaultVoice("Vietnamese Female");
+        // Set default text-to-speech voice
+        window.responsiveVoice.setDefaultVoice('Vietnamese Female');
         window.responsiveVoice.setDefaultRate(1.2);
 
-        //set background music
-        if(backgroundMusic.isOn){
-            backgroundMusic.musicTrack.play();
-            backgroundMusic.musicTrack.loop = true;
-            backgroundMusic.musicTrack.volume = 0.2;
-        }
+        // ── Socket listeners ─────────────────────────────────────
 
-        //listen socket.io connection
+        /** Restore game state on reconnect. */
+        socketIO.value.on('roomState', (data) => {
+            randomNumber.value = data.randomNumber;
+            calledNumbers.value = data.calledNumbers;
+        });
+
+        /** A brand-new user joined the room. */
         socketIO.value.on('someoneJoinRoom', (username) => {
             store.getUsersFromAPI();
             store.getBoardsFromAPI();
             store.getBoardsRoomFromAPI();
-            messages.value.push({
-                username: 'BotChat',
-                message: `${username}, just joined`
-            })
-            handleScrollToBottom();
-        })
+            addBotMessage(`${username}, just joined`);
+        });
 
         socketIO.value.on('someoneChangeBoardToAll', () => {
             store.getBoardsFromAPI();
             store.getBoardsRoomFromAPI();
-        })
+        });
 
         socketIO.value.on('someoneChangeMicMuted', () => {
             store.getBoardsRoomFromAPI();
-        })
+        });
 
+        /** A user's socket disconnected (grace period started). */
+        socketIO.value.on('someoneDisconnectRoom', (username) => {
+            addBotMessage(`${username}, just left`);
+        });
+
+        /** A user successfully reconnected within the grace period. */
+        socketIO.value.on('someoneReconnectRoom', (username) => {
+            addBotMessage(`${username}, just reconnected`);
+        });
+
+        /** A user permanently left the room (grace period expired or manual leave). */
         socketIO.value.on('someoneLeaveRoom', (username) => {
             store.getUsersFromAPI();
-            // store.getBoardsFromAPI(); - not reset all boards
             store.getBoardsRoomFromAPI();
-            messages.value.push({
-                username: 'BotChat',
-                message: `${username}, just left`
-            })
-        })
+            addBotMessage(`${username}, just left room`);
+        });
 
+        /** A new number was drawn. */
         socketIO.value.on('updateRandomNumber', (data) => {
             randomNumber.value = data.randomNumber;
             calledNumbers.value = data.calledNumbers;
-
-            if(isVoiceOn.value){
+            if (isVoiceOn.value) {
                 handleSpeakNumber(data.randomNumber);
             }
-        })
+        });
 
         socketIO.value.on('updateStopAndClear', () => {
             changeStopAndClear();
-        })
-        
-        socketIO.value.on('someoneSendMessageToAll', (data) => {
-            //add new message
-            messages.value.push({ ...data });
+        });
 
-            //scroll to bottom when submit chatting
+        /** A chat message was sent by someone. */
+        socketIO.value.on('someoneSendMessageToAll', (data) => {
+            messages.value.push({ ...data });
             handleScrollToBottom();
-        })
+        });
 
         socketIO.value.on('someoneTypingMessage', (username) => {
             typing.usernameList.push(username);
-        })
+        });
 
         socketIO.value.on('someoneNoLongerTyping', (username) => {
             const index = typing.usernameList.indexOf(username);
             typing.usernameList.splice(index, 1);
-        })
+        });
 
+        /** Single winner event. */
         socketIO.value.on('winGameOne', (username) => {
-            //ignore if game is already ending
             if (isGameEnding.value) return;
             isGameEnding.value = true;
-
-            //close any gonna-win popup
             closePendingGonnaWinPopups();
-
-            //Sent message for the others
-            messages.value.push({
-                username: 'BotChat',
-                message: `${username} won!!!`
-            })
-
-            //clear numbers and boards
+            addBotMessage(`${username} won!!!`);
             changeStopAndClear();
-
-            //show single win popup
             const isWinner = route.query.username === username;
             showWinPopup(isWinner ? 'You' : username, isWinner);
-        })
+        });
 
+        /** Multiple winners event. */
         socketIO.value.on('winGameMultiple', (usernameList) => {
-            //ignore if game is already ending
             if (isGameEnding.value) return;
             isGameEnding.value = true;
-
-            //close any gonna-win popup
             closePendingGonnaWinPopups();
-
-            //Sent message for the others
-            messages.value.push({
-                username: 'BotChat',
-                message: `${usernameList} won!!!`
-            })
-
-            //clear numbers and boards
+            addBotMessage(`${usernameList} won!!!`);
             changeStopAndClear();
-
-            //show single win popup
             const isWinner = usernameList.includes(route.query.username);
             showWinPopup(usernameList.toString(), isWinner);
-        })
+        });
 
+        /** Someone is one number away from winning. */
         socketIO.value.on('someoneGonnaWinToAll', (username) => {
-            //ignore if game is ending
             if (isGameEnding.value) return;
-
-            //add to chatbox
-            messages.value.push({
-                username: 'BotChat',
-                message: `${username} - just got 4 numbers in a row`
-            })
-
-            //scroll chatbox to bottom
-            handleScrollToBottom();
-
-            //add to queue and show popup sequentially
+            addBotMessage(`${username} - just got 4 numbers in a row`);
             gonnaWinQueue.value.push(username);
             showNextGonnaWinPopup();
-        })  
-            
+        });
 
         socketIO.value.on('someoneTakeAdminToAll', () => {
             store.getUsersFromAPI();
-        })
+        });
 
         socketIO.value.on('someoneReleaseAdminToAll', () => {
             store.getUsersFromAPI();
-        })
-    })
+        });
+    });
 
-    //handle function
-    function handleToggleBackgroundMusic(){
-        backgroundMusic.isOn = !backgroundMusic.isOn;
-        if(backgroundMusic.isOn){
-            backgroundMusic.musicTrack.play();
-        } else{
-            backgroundMusic.musicTrack.pause();
-        }
-    }
+    // ── Room-level handlers (orchestration between composables) ──
 
-    async function handleToggleMicrophone(){
-        agora.micMuted = !agora.micMuted;
-
-        // init RTC at the first time
-        if(agora.isFirstTimeTurnMicro && !agora.micMuted){
-            initRtc();
-            agora.isFirstTimeTurnMicro = false;
-        }
-        // adjust muted
-        else{
-            (await agora.audioTrack.localAudioTrack)?.setMuted(agora.micMuted);
-        }
-
-        store.socketIO.emit("changeMicMuted", {
+    /**
+     * Sends an event to change the user's board to a target board.
+     */
+    function handleChangeBoard(targetBoardId: number) {
+        socketIO.value.emit('userChangeBoard', {
             username: route.query.username,
             room: route.query.room,
-            micMuted: agora.micMuted,
-        })
-    }
-
-    // function handleUserJoined(user: any){
-    //     // console.log('user joined', user);
-    // }
-
-    async function handleUserPublished(user: any, mediaType: any){
-        await agora.rtcClient?.subscribe(user, mediaType);
-
-        if(mediaType === 'audio'){
-            agora.audioTrack.remoteAudioTracks[user.uid] = [user.audioTrack];
-            user.audioTrack.play();
-        }
-    }
-
-    function handleUserLeft(user: any){
-        delete agora.audioTrack.remoteAudioTracks[user.uid];
-    }
-
-    function handleScrollToBottom(){
-        clearTimeout(timeoutScroll.value);
-        timeoutScroll.value = setTimeout(() => {
-            const el = document.getElementById('chat-box');
-            if (el) {
-                el.scrollTop = el.scrollHeight;
-            }
-        }, 0)
-    }
-
-    function handleSpeakNumber(number: number){
-        //responsiveVoice import at index.html
-        window.responsiveVoice.speak(number.toString(), "Vietnamese Female", {volume: 4});
-    }
-
-    function handleNextNumber(){
-        let randomTemp = 0;
-        let calledNumbersTemp = [...calledNumbers.value];
-        do{
-            randomTemp = Math.floor(Math.random() * 90 + 1);
-        }while(calledNumbersTemp.indexOf(randomTemp) !== -1);
-        
-        //speak random number
-        if(isVoiceOn.value){
-            handleSpeakNumber(randomTemp);
-        }
-
-        //add random number to first position of list called
-        calledNumbersTemp.unshift(randomTemp);
-        
-        //send socket event
-        socketIO.value.emit('changeRandomNumber', { 
-            randomNumber: randomTemp,
-            calledNumbers: calledNumbersTemp,
-            room: route.query.room 
+            targetBoardId: targetBoardId,
         });
     }
 
-    function changeStopAndClear(){
-        randomNumber.value = 0;
-        calledNumbers.value = [];
-        isClearBoard.value = true;
-        gonnaWinQueue.value = [];
-        isShowingGonnaWin.value = false;
-    }
+    /**
+     * Disconnects from WebRTC, clears sessions, and leaves the game room.
+     */
+    async function handleLeaveRoom() {
+        sessionStorage.removeItem('lootoo_session');
+        sessionStorage.removeItem('lootoo_activeBoard');
 
-    function handleStopClear(){
-        //show alert to confirm
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You will not be able to recover this action",
-            icon: 'warning',
-            showCloseButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Yes, I am sure!',
-            cancelButtonText: "No, cancel it!",
-        }).then((result) => {
-            if (result.isConfirmed){
-                //send socket event when confirm
-                socketIO.value.emit('changeStopAndClear', (route.query.room));
-            }
-        })
-    }
+        await leaveRtc();
 
-    function handleChangeBoard(targetBoardId: number){
-        //send event to server | socket.io
-        socketIO.value.emit("userChangeBoard", {
+        router.push({ name: 'login' });
+
+        socketIO.value.emit('userLeaveRoom', {
             username: route.query.username,
             room: route.query.room,
-            targetBoardId: targetBoardId
-        })
-    }
-
-    function handleSendMessage() {
-        if(message.value === ""){
-            return;
-        }
-        socketIO.value.emit('someoneSendMessage', ({
-            room: route.query.room,
-            username: route.query.username,
-            message: message.value
-        }))
-        message.value = "";
-        isShowEmoji.value = false;
-    }
-
-    function timeoutFunction(){
-        typing.isTyping = false;
-        socketIO.value.emit("noLongerTypingMessage", ({
-            username: route.query.username,
-            room: route.query.room
-        }))
-    }
-
-    function handleTypingEvent(event: KeyboardEvent) {
-        if(event.key !== 'Enter'){
-            if(!typing.isTyping){
-                typing.isTyping = true;
-                socketIO.value.emit("typingMessage", ({
-                    username: route.query.username,
-                    room: route.query.room
-                }))
-                clearTimeout(typing.timeout);
-                typing.timeout = setTimeout(timeoutFunction, 600);
-            }else{
-                clearTimeout(typing.timeout);
-                typing.timeout = setTimeout(timeoutFunction, 600);
-            }
-        }
-
-    }
-
-    function handleTakeAdmin(){
-        //send event to server | socket.io
-        socketIO.value.emit("userTakeAdmin", {
-            username: route.query.username,
-            room: route.query.room,
-        })
-    }
-
-    function handleReleaseAdmin(){
-        //send event to server | socket.io
-        socketIO.value.emit("userReleaseAdmin", {
-            username: route.query.username,
-            room: route.query.room,
-        })
-    }
-
-    async function handleLeaveRoom(){
-        // pause background music
-        backgroundMusic.musicTrack.pause();
-
-        // stop audio calling
-        (await agora.audioTrack.localAudioTrack)?.stop();
-        (await agora.audioTrack.localAudioTrack)?.close();
-        agora.rtcClient?.unpublish();
-        agora.rtcClient?.leave();
-
-        // move back to login page
-        router.push({
-            name: 'login'
-        })
-
-        // handle leave room
-        socketIO.value.emit("userLeaveRoom", {
-            username: route.query.username,
-            room: route.query.room
-        })
-    }
-
-    function handleSelectEmoji(emoji: any) {
-        message.value = message.value.concat(emoji.i);
-        typingInputRef.value.focus();
-    }
-
-    //handle function from BoardComponent
-    function handleWinGame(winNumber: number){
-        //ignore if game is already ending
-        if (isGameEnding.value) return;
-
-        socketIO.value.emit('someoneWinGame', {
-            username: route.query.username,
-            room: route.query.room,
-            winNumber: winNumber,
-        })
-    }
-
-    function handleGonnaWin(waitingNumber: number){
-        //ignore if game is already ending
-        if (isGameEnding.value) return;
-
-        socketIO.value.emit('gonnaWin', ({
-            username: route.query.username,
-            room: route.query.room,
-            waitingNumber: waitingNumber
-        }))
-    }
-
-    async function showNextGonnaWinPopup() {
-        // Skip if game is ending or already showing a popup
-        if (isShowingGonnaWin.value || isGameEnding.value || gonnaWinQueue.value.length === 0) return;
-
-        isShowingGonnaWin.value = true;
-        const username = gonnaWinQueue.value.shift()!;
-
-        await Swal.fire({
-            position: "top-end",
-            text: `${username} - just got 4 numbers in a row`,
-            showConfirmButton: false,
-            backdrop: false,
-            timer: 3000
         });
-
-        isShowingGonnaWin.value = false;
-        showNextGonnaWinPopup(); // Show next in queue
-    }
-
-    function closePendingGonnaWinPopups() {
-        gonnaWinQueue.value = [];
-        if (isShowingGonnaWin.value) {
-            Swal.close();
-            isShowingGonnaWin.value = false;
-        }
-    }
-
-    async function showWinPopup(title: string, isWinner: boolean) {
-        if (isWinner) {
-            await Swal.fire({
-                title: `Congratulations! ${title} won`,
-                confirmButtonText: 'End Game',
-                imageUrl: "https://img.icons8.com/external-filled-outline-geotatah/64/external-best-friend-best-friend-forever-filled-outline-filled-outline-geotatah-6.png",
-                imageWidth: 100,
-                imageHeight: 100,
-                padding: '1rem',
-            });
-        } else {
-            await Swal.fire({
-                title: `${title} won! Better luck next time.`,
-                confirmButtonText: 'End Game',
-                imageUrl: "https://img.icons8.com/external-wanicon-lineal-color-wanicon/64/external-shamrock-st-patrick-day-wanicon-lineal-color-wanicon.png",
-                imageWidth: 100,
-                imageHeight: 100,
-                padding: '1rem',
-            });
-        }
-
-        // Reset flag after user closes popup
-        isGameEnding.value = false;
     }
 </script>
+
+<style scoped>
+/* Custom scrollbar for glassmorphism panels */
+.styled-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.styled-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+.styled-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+}
+.styled-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Chat List Transition */
+.chat-list-enter-active,
+.chat-list-leave-active,
+.chat-list-move {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.chat-list-enter-from,
+.chat-list-leave-to {
+  opacity: 0;
+  transform: translateY(15px);
+}
+.chat-list-leave-active {
+  position: absolute;
+}
+
+/* Number List Transition */
+.list-number-move,
+.list-number-enter-active,
+.list-number-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+.list-number-enter-from {
+  opacity: 0;
+  transform: translateX(-30px) scale(0.5);
+}
+.list-number-leave-to {
+  opacity: 0;
+  transform: scale(0.5);
+}
+.list-number-leave-active {
+  position: absolute;
+}
+</style>

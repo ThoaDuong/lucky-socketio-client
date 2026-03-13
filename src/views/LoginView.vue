@@ -202,6 +202,12 @@
     }
     
     function successLogin() {
+        //save session for reconnection after refresh
+        sessionStorage.setItem('lootoo_session', JSON.stringify({
+            username: state.username,
+            room: state.room
+        }));
+
         //send socket event: user join room
         store.socketIO.emit('userJoinRoom', { ...state });
         
