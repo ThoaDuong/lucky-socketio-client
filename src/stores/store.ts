@@ -4,8 +4,7 @@ import { User } from "@/interfaces/User";
 import { Board } from "@/interfaces/Board";
 import { BoardRoom } from "@/interfaces/BoardRoom";
 
-const uri = 'https://lootoo-app-server.onrender.com';
-// const uri = 'http://localhost:8000'
+const uri = process.env.VUE_APP_BACKEND_URI || '';
 const headers = {
     'Content-Type': 'application/json',
 }
