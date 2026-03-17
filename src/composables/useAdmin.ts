@@ -47,9 +47,18 @@ export function useAdmin() {
         });
     }
 
+    /** Username of the current host, or null if no host exists. */
+    const hostUsername = computed(() => {
+        const admin = users.value.find(
+            (u) => u.isAdmin === true && u.room === route.query.room
+        );
+        return admin ? admin.username : null;
+    });
+
     return {
         isCurrentUserAdmin,
         isExistUserAdmin,
+        hostUsername,
         handleTakeAdmin,
         handleReleaseAdmin,
     };

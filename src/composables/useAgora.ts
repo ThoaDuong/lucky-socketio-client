@@ -22,6 +22,7 @@ export function useAgora() {
             remoteAudioTracks: {} as any,
         },
         micMuted: true,
+        speakerMuted: false,
         isFirstTimeTurnMicro: true,
     });
 
@@ -91,6 +92,27 @@ export function useAgora() {
     }
 
     /**
+     * Toggles the user's speaker state (mute/unmute).
+     */
+    async function handleToggleSpeaker() {
+        agora.speakerMuted = !agora.speakerMuted;
+        
+        // In a real app, we might mute all remote audio tracks here.
+        // For now, we just sync the UI status.
+        Object.values(agora.audioTrack.remoteAudioTracks).forEach((tracks: any) => {
+            tracks.forEach((track: any) => {
+                track.setVolume(agora.speakerMuted ? 0 : 100);
+            });
+        });
+
+        store.socketIO.emit('changeSpeakerMuted', {
+            username: route.query.username,
+            room: route.query.room,
+            speakerMuted: agora.speakerMuted,
+        });
+    }
+
+    /**
      * Disconnects from the Agora RTC channel and releases local audio resources.
      */
     async function leaveRtc() {
@@ -103,6 +125,7 @@ export function useAgora() {
     return {
         agora,
         handleToggleMicrophone,
+        handleToggleSpeaker,
         leaveRtc,
     };
 }
