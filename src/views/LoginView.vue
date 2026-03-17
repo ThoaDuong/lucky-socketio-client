@@ -1,103 +1,91 @@
 <template>
-    <div class="home_page">
-        <!-- Display all screen, yellow one -->
-        <div class="h-screen flex justify-center items-center rounded-none bg-login xl:bg-image-base background-image">
-            
-            <!-- Display 3/4 screen, pink one -->
-            <div class="w-full h-fit p-10 xl:w-fit xl:h-fit xl:px-20 xl:drop-shadow-lg bg-login rounded-lg">
+    <div class="home_page relative h-screen w-full overflow-hidden bg-gradient-to-br from-pink-200 via-pink-50 to-yellow-200">
+        
+        <!-- Shared Header -->
+        <HeaderComponent />
+
+        <!-- Main Content (Centered) -->
+        <div class="relative z-10 flex h-full justify-center items-center p-4">
+            <!-- Glassmorphism Card -->
+            <div class="w-full max-w-md p-8 md:p-10 bg-white/70 backdrop-blur-xl border border-white/60 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.05)] animate-fade-in-up">
                 
                 <!-- Display main title -->
-                <div class="text-center">
-                    <h1 class="font-rubik text-5xl font-bold drop-shadow-lg text-yellow-500">
+                <div class="text-center mb-8">
+                    <h1 class="font-rubik text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-500 drop-shadow-sm mb-2">
                         Loo Too
                     </h1>
-                    <p class="text-lg text-gray-500 font-medium">
+                    <p class="text-base text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-500 drop-shadow-sm font-medium tracking-wide">
                         Get away from my lucky seat
                     </p>
                 </div>
 
-                <!-- Display main icon -->
-                <div class="flex justify-center items-center mt-4">
-                    <div class="flex justify-center items-center mt-10" data-v-inspector="app.vue:3:9"></div>
-                    <img class="w-32 h-auto" src="https://i.imgur.com/hB1TKLR.png" alt="lootoo"/>
-                </div>
-
                 <!-- Display login form -->
                 <div class="flex justify-center items-center">
-                    <form 
-                        @submit.prevent="handleLogin"
-                        class="w-full">
-
-                        <!-- Display username field -->
-                        <div class="md:flex md:justify-center">
-                            <div>
-                                <div class="my-2 block md:flex gap-1 items-center" for="name">
-                                    <div class="flex gap-1">
-                                        <img class="w-5 h-5" src="https://img.icons8.com/3d-fluency/94/user-female--v4.png" alt="user-female--v4"/>
-                                        <span class="w-24">Username</span>
-                                    </div>
-                                    <input
-                                        v-model="state.username"
-                                        class="w-full md:w-60 border border-gray-500 py-2 px-4 rounded-xl"
-                                        placeholder="User2508"
-                                        type="text"
-                                        name="name"
-                                        id="name">
-                                </div>
-                                <!-- Display message error of username -->
-                                <p v-if="validate.username" 
-                                    class="flex gap-1 text-red-500 font-semibold">
-                                    <img class="w-6 h-6" src="https://img.icons8.com/arcade/64/error.png" alt="error"/>
-                                    <span>{{ validate.usernameErrorMessage }}</span>
-                                </p>
-                            </div>
+                    <form @submit.prevent="handleLogin" class="w-full">
+                        <!-- Username field -->
+                        <div class="mb-5">
+                            <label class="flex items-center gap-2 mb-2 text-gray-700 font-semibold" for="name">
+                                <img class="w-5 h-5" src="https://img.icons8.com/3d-fluency/94/user-female--v4.png" alt="user"/>
+                                <span>Username</span>
+                            </label>
+                            <input
+                                v-model="state.username"
+                                class="w-full bg-white/90 border border-gray-200 text-gray-800 placeholder-gray-400 py-3 px-5 rounded-full outline-none focus:ring-2 focus:ring-pink-400 focus:bg-white transition-all duration-300 font-medium shadow-inner"
+                                placeholder="User2508"
+                                type="text"
+                                name="name"
+                                id="name">
+                            <!-- Error message -->
+                            <p v-if="validate.username" class="flex items-center gap-1 mt-2 text-pink-500 font-medium animate-shake">
+                                <img class="w-5 h-5" src="https://img.icons8.com/arcade/64/error.png" alt="error"/>
+                                <span class="text-sm">{{ validate.usernameErrorMessage }}</span>
+                            </p>
                         </div>
 
-                        <!-- Display room field -->
-                        <div class="md:flex md:justify-center">
-                            <div>
-                                <div class="my-2 block md:flex gap-1 items-center" for="room">
-                                    <div class="flex gap-1">
-                                        <img class="w-5 h-5" src="https://img.icons8.com/3d-fluency/94/room.png" alt="room"/>
-                                        <span class="w-24">Room</span>
-                                    </div>
-                                    <input
-                                        v-model="state.room"
-                                        class="w-full md:w-60 border border-gray-500 py-2 px-4 rounded-xl"
-                                        placeholder="123"
-                                        type="text"
-                                        name="room"
-                                        id="room">
-                                </div>
-                                <!-- Display message error of room -->
-                                <p v-if="validate.room" 
-                                    class="flex gap-1 text-red-500 font-semibold">
-                                    <img class="w-6 h-6" src="https://img.icons8.com/arcade/64/error.png" alt="error"/>
-                                    <span>{{ validate.roomErrorMessage }}</span>
-                                </p>
-                            </div>
+                        <!-- Room field -->
+                        <div class="mb-8">
+                            <label class="flex items-center gap-2 mb-2 text-gray-700 font-semibold" for="room">
+                                <img class="w-5 h-5" src="https://img.icons8.com/3d-fluency/94/room.png" alt="room"/>
+                                <span>Room</span>
+                            </label>
+                            <input
+                                v-model="state.room"
+                                class="w-full bg-white/90 border border-gray-200 text-gray-800 placeholder-gray-400 py-3 px-5 rounded-full outline-none focus:ring-2 focus:ring-pink-400 focus:bg-white transition-all duration-300 font-medium shadow-inner"
+                                placeholder="123"
+                                type="text"
+                                name="room"
+                                id="room">
+                            <!-- Error message -->
+                            <p v-if="validate.room" class="flex items-center gap-1 mt-2 text-pink-500 font-medium animate-shake">
+                                <img class="w-5 h-5" src="https://img.icons8.com/arcade/64/error.png" alt="error"/>
+                                <span class="text-sm">{{ validate.roomErrorMessage }}</span>
+                            </p>
                         </div>
 
-                        <p v-if="isLoading.listStartedRoom || isLoading.users">
-                            <img class="text-center mx-auto w-10 h-10" src="@/assets/spinner.gif" alt="loading"/>
-                        </p>
+                        <!-- Loading indicator -->
+                        <div v-if="isLoading.listStartedRoom || isLoading.users" class="flex justify-center mb-4">
+                            <svg class="animate-spin -ml-1 mr-3 h-8 w-8 text-pink-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
 
-
-                        <!-- Display submit login button -->
-                        <div class="flex justify-center items-center mt-4">
+                        <!-- Submit button -->
+                        <div class="flex justify-center mt-2">
                             <button 
-                                class="rounded-full bg-yellow-500 border-yellow-600 border-4 text-white py-2 px-6 mx-auto"
+                                class="flex items-center justify-center gap-2 w-full rounded-full bg-gradient-to-r from-pink-500 to-yellow-400 hover:from-pink-400 hover:to-yellow-300 shadow-[0_4px_14px_0_rgba(236,72,153,0.39)] text-white py-3 px-8 transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 font-bold text-lg"
                                 type="submit">
-                                <img class="w-6 h-6 float-left" src="https://img.icons8.com/matisse/100/controller.png" alt="play game icon" />
-                                <span class="float-right ml-2 font-semibold">
-                                    Join
-                                </span>
+                                <img class="w-6 h-6" src="https://img.icons8.com/matisse/100/controller.png" alt="play" />
+                                <span>Join Game</span>
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
+        <!-- Shared Footer -->
+        <FooterComponent />
     </div>
 </template>
 
@@ -106,7 +94,8 @@
     import { useStoreData } from '@/stores/store';
     import { useRouter } from 'vue-router';
     import { storeToRefs } from 'pinia';
-
+    import HeaderComponent from '@/components/HeaderComponent.vue';
+    import FooterComponent from '@/components/FooterComponent.vue';
 
     //static variable
     const state = reactive({
@@ -164,6 +153,7 @@
         }
     })
     
+    // Check validation for username and room inputs
     function checkValidInputsLogin(){
         if(!state.username){
             validate.username = true;
@@ -190,6 +180,7 @@
         }
     }
 
+    // Handle user login process
     function handleLogin(){
         resetValidated();
 
@@ -201,6 +192,7 @@
         checkValidInputsLogin();
     }
     
+    // Execute actions upon successful login
     function successLogin() {
         //save session for reconnection after refresh
         sessionStorage.setItem('lootoo_session', JSON.stringify({
@@ -218,6 +210,7 @@
         });
     }
 
+    // Reset validation states and error messages
     function resetValidated(){
         validate.username = false;
         validate.room = false;
@@ -225,3 +218,43 @@
         validate.usernameErrorMessage = "";
     }
 </script>
+
+<style scoped>
+@keyframes fade-in-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-down {
+  animation: fade-in-down 0.8s ease-out forwards;
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+</style>

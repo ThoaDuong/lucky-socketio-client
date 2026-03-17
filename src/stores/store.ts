@@ -31,6 +31,27 @@ export const useStoreData = defineStore('storeData', {
             });
             this.users = await response.json();
         },
+        async updateUsernameToAPI (oldUsername: string, newUsername: string, room: string) {
+            try {
+                const response = await fetch(`${uri}/users/${oldUsername}`, {
+                    method: 'PUT',
+                    headers: headers,
+                    body: JSON.stringify({ newUsername, room })
+                });
+                
+                if (response.status === 200) {
+                    await this.getUsersFromAPI();
+                    await this.getBoardsRoomFromAPI();
+                    return { success: true };
+                } else {
+                    const errorData = await response.json();
+                    return { success: false, error: errorData.error || 'Failed to update username' };
+                }
+            } catch (error) {
+                console.error("Error updating username:", error);
+                return { success: false, error: 'Network error' };
+            }
+        },
 
         // BOARD API
         async getBoardsFromAPI () {

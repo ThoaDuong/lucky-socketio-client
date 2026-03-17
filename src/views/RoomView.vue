@@ -1,5 +1,7 @@
 <template>
-    <div class="room_page 2xl:flex 2xl:justify-center bg-image-base background-image">
+    <div class="room_page 2xl:flex 2xl:justify-center bg-gradient-to-br from-pink-200 via-pink-50 to-yellow-200 min-h-screen relative">
+        <HeaderComponent />
+
         <!-- Responsive concept
             normal: phone
             md - lg: tablet
@@ -8,67 +10,108 @@
         -->
 
         <!-- Full screen -->
-        <div class="w-full min-h-screen xl:h-screen xl:max-h-screen 2xl:w-[80%] overflow-y-auto grid grid-cols-12 p-2 gap-2">
+        <!-- Adjusted padding (pt-24 pb-16) to account for absolute header/footer -->
+        <div class="w-full 2xl:w-[80%] grid grid-cols-12 px-2 pt-24 pb-20 gap-2 relative z-10 w-full">
             <!-- Left side -->
             <div class="
                 col-span-12 
                 md:col-span-4 
                 xl:col-span-3">
                 <div class="h-full">
-                    <!-- Logo block -->
-                    <div class="h-[80px] bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl flex mb-2 transition-all duration-300 hover:shadow-2xl">
-                        <div class="px-4 pt-1">
-                            <img class="w-16 h-16" src="https://i.imgur.com/hB1TKLR.png" alt="Lootoo"/>
-                        </div>
-                        <h1 class="font-rubik text-4xl text-yellow-500 font-bold h-full flex items-center">LooToo</h1>
-                    </div>
                     <!-- User information block -->
-                    <div class="h-[100px] w-full mb-2 flex items-center bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl relative transition-all duration-300 hover:shadow-2xl">
-                        <div class="px-4">
-                            <img class="w-16 h-16" src="https://img.icons8.com/clouds/100/corgi.png" alt="Temporary profile picture"/>
+                    <div class="h-auto min-h-[100px] w-full mb-2 flex flex-row justify-start items-center bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl relative transition-all duration-300 hover:shadow-2xl px-4 py-3 gap-4">
+                        <!-- Left: Avatar -->
+                        <div class="flex-shrink-0">
+                            <img class="w-16 h-16 rounded-full border-2 border-pink-200 p-1 bg-white object-cover shadow-sm hover:scale-105 transition-transform" 
+                                 src="https://img.icons8.com/clouds/100/corgi.png" 
+                                 alt="Profile Avatar" />
                         </div>
-                        <div class="text-left">
-                            <div class="flex gap-2">
-                                <h3 class="text-lg font-semibold drop-shadow-lg text-happy-blue">{{ route.query.username }}</h3>
+                        
+                        <!-- Right: Details (3 lines) -->
+                        <div class="flex flex-col justify-center text-left flex-1 min-w-0">
+                            <!-- Line 1: Username & Edit -->
+                            <div class="flex items-center gap-2 mb-1 group">
+                                <template v-if="!isEditingName">
+                                    <h3 class="text-lg font-bold drop-shadow-sm text-pink-600 truncate max-w-[150px]">
+                                        {{ route.query.username }}
+                                    </h3>
+                                    <button @click="startEditName" class="p-1.5 rounded-full hover:bg-pink-100 text-pink-400 transition-all focus:opacity-100" title="Edit name">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                    </button>
+                                </template>
+                                <template v-else>
+                                    <div class="flex flex-col gap-1 flex-1">
+                                        <input 
+                                            ref="nameInput"
+                                            v-model="editNameValue" 
+                                            @keyup.enter="saveEditName"
+                                            @blur="cancelEditName"
+                                            class="w-full max-w-[150px] px-2 py-1 text-sm bg-white border-2 border-pink-300 rounded focus:outline-none focus:border-pink-500 text-pink-700 font-bold shadow-sm"
+                                            type="text" 
+                                            placeholder="Enter new name..."
+                                            maxlength="15"
+                                        />
+                                        <!-- Error message below input -->
+                                        <div v-if="nameError" class="text-red-500 text-[10px] font-bold animate-fade-in-up">
+                                            {{ nameError }}
+                                        </div>
+                                    </div>
+                                </template>
                             </div>
-                            <p class="text-sm"><strong>Role:</strong>
-                                {{ isCurrentUserAdmin ? 'Host' : 'Player' }}
+                            
+                            <!-- Line 2: Role -->
+                            <p class="text-sm text-gray-700 flex items-center gap-1.5 mb-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <strong class="text-gray-500 font-medium">Role:</strong> 
+                                <span class="font-semibold" :class="isCurrentUserAdmin ? 'text-indigo-600' : 'text-gray-800'">
+                                    {{ isCurrentUserAdmin ? 'Host' : 'Player' }}
+                                </span>
                             </p>
-                            <p class="text-sm"><strong>Room Code:</strong> {{ route.query.room }}</p>
+                            
+                            <!-- Line 3: Room Code -->
+                            <p class="text-sm text-gray-700 flex items-center gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                </svg>
+                                <strong class="text-gray-500 font-medium">Code:</strong> 
+                                <span class="text-pink-500 font-bold bg-pink-50 px-2 py-0.5 rounded-md border border-pink-100">
+                                    {{ route.query.room }}
+                                </span>
+                            </p>
                         </div>
-                        <div class="absolute top-3 right-24">
+
+                        <!-- Temprarily Hidden Action Buttons (Mic & Leave) -->
+                        <div v-show="false" class="hidden items-center gap-2">
+                            <!-- Mic Button -->
                             <button v-if="agora.micMuted"
-                                @click="handleToggleMicrophone()">
+                                @click="handleToggleMicrophone()"
+                                class="p-1.5 bg-white/50 rounded-full hover:bg-white/80 transition-all duration-300 shadow-sm border border-white/60">
                                 <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/no-microphone.png" alt="no-microphone"/>
                             </button>
                             <button v-else
-                                @click="handleToggleMicrophone()">
+                                @click="handleToggleMicrophone()"
+                                class="p-1.5 bg-white/50 rounded-full hover:bg-white/80 transition-all duration-300 shadow-sm border border-white/60">
                                 <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/radio-studio.png" alt="radio-studio"/>
                             </button>
-                            <!-- Background music buttons (disabled)
-                            <button v-if="backgroundMusic.isOn"
-                                @click="handleToggleBackgroundMusic()">
-                                <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/speaker.png" alt="speaker"/>
+                            <!-- Leave Button -->
+                            <button @click="handleLeaveRoom()"
+                                class="rounded-full bg-gradient-to-r from-red-400 to-rose-500 hover:from-red-500 hover:to-rose-600 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:scale-95 text-white py-1 px-3 text-sm font-semibold flex items-center">
+                                <span>Leave</span>
+                                <img class="w-4 h-4 ml-1" src="https://img.icons8.com/external-tal-revivo-filled-tal-revivo/24/ffffff/external-exiting-from-shopping-mall-with-arrow-outside-mall-filled-tal-revivo.png" alt="leave"/>
                             </button>
-                            <button v-else
-                                @click="handleToggleBackgroundMusic()">
-                                <img class="w-5 h-5" src="https://img.icons8.com/pulsar-color/48/mute.png" alt="mute"/>
-                            </button>
-                            -->
                         </div>
-                        <button @click="handleLeaveRoom()"
-                            class="absolute top-2 right-2 rounded-full bg-gradient-to-r from-red-400 to-rose-500 hover:from-red-500 hover:to-rose-600 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:scale-95 text-white py-1 px-3 text-sm font-semibold">
-                            <span>Leave</span>
-                            <img class="w-4 h-4 mt-0.5 ml-1 float-right" src="https://img.icons8.com/external-tal-revivo-filled-tal-revivo/24/external-exiting-from-shopping-mall-with-arrow-outside-mall-filled-tal-revivo.png" alt="suicide"/>
-                        </button>
                     </div>
                     <!-- Boards list block -->
-                    <div class="h-[250px] md:h-auto min-h-[250px] xl:h-[calc(100vh-212px)] bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
-                        <h3 class="content-title">
+                    <div class="h-auto min-h-[250px] bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
+                        <h3 class="content-title text-gray-700 bg-white/50 border-b border-white/40">
                             Select board here
                         </h3>
 
-                        <div class="flex-1 overflow-y-auto w-full styled-scrollbar">
+                        <div class="w-full">
                             <div
                             v-for="board in customBoards" :key="board.id"
                             @click="board.username === null && !isGameStarted ? handleChangeBoard(board.id) : null"
@@ -105,15 +148,15 @@
             </div>
             <!-- Right side -->
             <div class="
-                col-span-12 sm:overflow-y-hidden
-                md:col-span-8 md:overflow-y-auto
+                col-span-12
+                md:col-span-8
                 xl:col-span-9">
                 <div class="h-full">
 
-                    <div class="h-auto xl:h-[100px] mb-2">
+                    <div class="h-auto mb-2">
                         <div class="h-full grid grid-cols-3 gap-2">
                             <!-- Called numbers block -->
-                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-2 bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl overflow-x-hidden flex items-center transition-all duration-300 hover:shadow-2xl">
+                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-2 bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl overflow-x-hidden flex items-center transition-all duration-300 hover:shadow-2xl">
                                 <div class="w-full mx-5 flex justify-start items-center overflow-x-auto styled-scrollbar py-2">
                                     <div class="flex items-center bg-gradient-to-r from-blue-400 to-indigo-500 shadow-md rounded-full py-2 px-4 shrink-0 transition-transform duration-300 hover:scale-105">
                                         <!-- Random number -->
@@ -143,7 +186,7 @@
                                 </div>
                             </div>
                             <!-- Admin action block -->
-                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-1 block bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl transition-all duration-300 hover:shadow-2xl">
+                            <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-1 block bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl transition-all duration-300 hover:shadow-2xl">
                                 
                                 <div class="h-full flex justify-center items-center">
                                     <!-- Take host option -->
@@ -197,9 +240,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="h-auto xl:h-[calc(100vh-124px)] grid grid-cols-3 gap-2">
+                    <div class="h-auto grid grid-cols-3 gap-2">
                             <!-- Display current board -->
-                            <div class="h-full col-span-3 xl:col-span-2 bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl flex justify-center items-center overflow-y-auto transition-all duration-300 hover:shadow-2xl">
+                            <div class="h-full col-span-3 xl:col-span-2 bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl flex justify-center items-start pt-4 transition-all duration-300 hover:shadow-2xl">
 
                                 <!-- Display current board -->
                                 <div class="my-4 xl:my-1">
@@ -215,16 +258,14 @@
                                 </div>
                             </div>
                             <!-- ChatBox block -->
-                            <div class="h-full col-span-3 xl:col-span-1 bg-white/30 backdrop-blur-md border border-white/40 shadow-xl rounded-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
-                                <h3 class="content-title pb-2 border-b border-white/20 text-indigo-900 drop-shadow-sm font-bold pt-3 bg-white/20 rounded-t-xl mb-0">
+                            <div class="h-full col-span-3 xl:col-span-1 bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
+                                <h3 class="content-title pb-2 border-b border-white/40 text-pink-600 drop-shadow-sm font-bold pt-3 bg-white/50 rounded-t-xl mb-0">
                                     Chat Box
                                 </h3>
                                 <!-- Display chat box -->
                                 <div class="
                                     relative w-full flex-1 flex flex-col overflow-hidden 
-                                    min-h-[300px] h-[320px] 
-                                    md:min-h-[300px] md:h-[calc(100vh-507px)] 
-                                    xl:min-h-[500px] xl:h-[calc(100vh-124px-44px)]">
+                                    h-[400px] md:h-[500px] xl:h-[600px]">
                                     <div id="chat-box" class="
                                         flex-1 overflow-y-auto styled-scrollbar px-2 py-4 relative z-10">
                                         
@@ -284,28 +325,28 @@
                                                 @select="handleSelectEmoji" />
                                         </div>
                                     </div>
-                                        <!-- Typing Indicator -->
-                                        <div class="absolute -top-7 left-4 text-xs font-semibold text-indigo-800 bg-white/60 px-3 py-1 rounded-full shadow-sm backdrop-blur-sm transition-opacity duration-300"
-                                             :class="typing.usernameList.length > 0 ? 'opacity-100' : 'opacity-0'">
-                                            <span v-if="typing.usernameList.length === 1">
-                                                {{ typing.usernameList[0] }} is typing...
-                                            </span>
-                                            <span v-else-if="typing.usernameList.length > 1">
-                                                {{ typing.usernameList.join(', ') }} are typing...
-                                            </span>
-                                        </div>
-                                    </div>
+                                    <!-- Typing Indicator -->
+                                    <div class="absolute -top-7 left-4 text-xs font-semibold text-indigo-800 bg-white/60 px-3 py-1 rounded-full shadow-sm backdrop-blur-sm transition-opacity duration-300"
+                                            :class="typing.usernameList.length > 0 ? 'opacity-100' : 'opacity-0'">
+                                        <span v-if="typing.usernameList.length === 1">
+                                            {{ typing.usernameList[0] }} is typing...
+                                        </span>
                                 </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <FooterComponent />
     </div>
 </template>
 
 <script setup lang="ts">
     import { ref, onMounted, computed, watch } from 'vue';
     import BoardComponent from '@/components/BoardComponent.vue';
+    import HeaderComponent from '@/components/HeaderComponent.vue';
+    import FooterComponent from '@/components/FooterComponent.vue';
     import { useStoreData } from '@/stores/store';
     import { useRoute, useRouter } from 'vue-router';
     import { storeToRefs } from 'pinia';
@@ -359,6 +400,69 @@
     const currentBoard = computed(() => {
         return customBoards.value.find(b => b.username === route.query.username);
     });
+
+    // ── Edit Name Logic ──────────────────────────────────────────
+    const isEditingName = ref(false);
+    const editNameValue = ref('');
+    const nameError = ref('');
+    const nameInput = ref<HTMLInputElement | null>(null);
+
+    const startEditName = () => {
+        isEditingName.value = true;
+        editNameValue.value = route.query.username as string;
+        nameError.value = '';
+        setTimeout(() => {
+            if (nameInput.value) nameInput.value.focus();
+        }, 50);
+    };
+
+    const cancelEditName = () => {
+        isEditingName.value = false;
+        nameError.value = '';
+    };
+
+    const saveEditName = async () => {
+        const newName = editNameValue.value.trim();
+        if (!newName) {
+            nameError.value = 'Name cannot be empty';
+            return;
+        }
+        if (newName === route.query.username) {
+            cancelEditName();
+            return;
+        }
+        
+        // Check for duplicates locally first
+        const isDuplicate = customBoards.value.some(b => b.username === newName);
+        if (isDuplicate) {
+            nameError.value = 'Username already exists';
+            // Clear error after 2 seconds
+            setTimeout(() => { nameError.value = ''; }, 2000);
+            return;
+        }
+
+        const oldName = route.query.username as string;
+        const room = route.query.room as string;
+        
+        // Call backend API to persist the change
+        const response = await store.updateUsernameToAPI(oldName, newName, room);
+        
+        if (response.success) {
+            // Update URL/Route silently or via router push
+            router.push({ query: { username: newName, room } });
+            
+            // Update Session Storage
+            sessionStorage.setItem('lootoo_session', JSON.stringify({ username: newName, room }));
+            
+            // Notify other clients via socket so they update their boards
+            socketIO.value.emit('userRename', { oldUsername: oldName, newUsername: newName, room });
+            
+            cancelEditName();
+        } else {
+            nameError.value = response.error || 'Error updating name';
+            setTimeout(() => { nameError.value = ''; }, 2000);
+        }
+    };
 
     // ── Watchers ─────────────────────────────────────────────────
 
@@ -436,6 +540,12 @@
 
         socketIO.value.on('someoneChangeMicMuted', () => {
             store.getBoardsRoomFromAPI();
+        });
+
+        socketIO.value.on('someoneRenameToAll', ({ oldUsername, newUsername }) => {
+            store.getUsersFromAPI();
+            store.getBoardsRoomFromAPI();
+            addBotMessage(`${oldUsername} renamed to ${newUsername}`);
         });
 
         /** A user's socket disconnected (grace period started). */
