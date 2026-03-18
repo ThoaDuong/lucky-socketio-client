@@ -32,7 +32,7 @@
                                     <h3 class="text-lg font-bold drop-shadow-sm text-pink-600 truncate max-w-[120px]">
                                         {{ route.query.username }}
                                     </h3>
-                                    <button @click="startEditName" class="p-1 rounded-full hover:bg-pink-100 text-pink-400 transition-all" title="Edit name">
+                                    <button @click="startEditName" class="p-1 rounded-full hover:bg-pink-100 text-pink-400 transition-all" title="Đổi tên">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
@@ -41,7 +41,7 @@
                                     <button
                                         @click="handleToggleSpeaker()"
                                         class="p-1 bg-white/50 rounded-full hover:bg-white/80 transition-all duration-300 shadow-sm border border-white/60"
-                                        :title="agora.speakerMuted ? 'Turn on speaker' : 'Turn off speaker'">
+                                        :title="agora.speakerMuted ? 'Bật loa' : 'Tắt loa'">
                                         <img v-if="agora.speakerMuted" class="w-4 h-4" src="https://img.icons8.com/pulsar-line/48/mute.png" alt="speaker muted"/>
                                         <img v-else class="w-4 h-4" src="https://img.icons8.com/pulsar-line/48/speaker.png" alt="speaker on"/>
                                     </button>
@@ -49,7 +49,7 @@
                                     <button
                                         @click="handleToggleMicrophone()"
                                         class="p-1 bg-white/50 rounded-full hover:bg-white/80 transition-all duration-300 shadow-sm border border-white/60"
-                                        :title="agora.micMuted ? 'Unmute' : 'Mute'">
+                                        :title="agora.micMuted ? 'Bật mic' : 'Tắt mic'">
                                         <img v-if="agora.micMuted" class="w-4 h-4" src="https://img.icons8.com/pulsar-color/48/no-microphone.png" alt="mic muted"/>
                                         <img v-else class="w-4 h-4" src="https://img.icons8.com/pulsar-color/48/radio-studio.png" alt="mic on"/>
                                     </button>
@@ -63,7 +63,7 @@
                                             @blur="cancelEditName"
                                             class="w-full max-w-[150px] px-2 py-1 text-sm bg-white border-2 border-pink-300 rounded focus:outline-none focus:border-pink-500 text-pink-700 font-bold shadow-sm"
                                             type="text" 
-                                            placeholder="Enter new name..."
+                                            placeholder="Nhập tên mới..."
                                             maxlength="15"
                                         />
                                         <!-- Error message below input -->
@@ -79,9 +79,9 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
-                                <strong class="text-gray-500 font-medium">Role:</strong> 
+                                <strong class="text-gray-500 font-medium">Vai trò:</strong> 
                                 <span class="font-semibold" :class="isCurrentUserAdmin ? 'text-indigo-600' : 'text-gray-800'">
-                                    {{ isCurrentUserAdmin ? 'Host' : 'Player' }}
+                                    {{ isCurrentUserAdmin ? 'Chủ phòng' : 'Người chơi' }}
                                 </span>
                             </p>
                             
@@ -90,7 +90,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                                 </svg>
-                                <strong class="text-gray-500 font-medium">Code:</strong> 
+                                <strong class="text-gray-500 font-medium">Mã phòng:</strong> 
                                 <span class="text-pink-500 font-bold bg-pink-50 px-2 py-0.5 rounded-md border border-pink-100">
                                     {{ route.query.room }}
                                 </span>
@@ -102,9 +102,9 @@
                 <div class="col-span-12 md:col-span-8 xl:col-span-9">
                     <div class="h-full grid grid-cols-3 gap-2">
                         <!-- Called numbers block -->
-                        <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-2 bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl overflow-x-hidden flex items-center transition-all duration-300 hover:shadow-2xl">
+                        <div class="h-full col-span-3 xl:col-span-2 bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl overflow-x-hidden flex items-center transition-all duration-300 hover:shadow-2xl">
                             <div class="w-full mx-5 flex justify-start items-center overflow-x-auto styled-scrollbar py-2">
-                                <div class="flex items-center bg-gradient-to-r from-blue-400 to-indigo-500 shadow-md rounded-full py-4 px-4 shrink-0 transition-transform duration-300 hover:scale-105">
+                                <div class="flex items-center bg-gradient-to-r from-blue-400 to-indigo-500 shadow-md rounded-full py-4 px-4 shrink-0 transition-transform duration-300">
                                     <!-- Random number -->
                                     <div class="block w-20">
                                         <span class="text-xl font-semibold">
@@ -132,47 +132,47 @@
                             </div>
                         </div>
                         <!-- Admin action block -->
-                        <div class="h-full col-span-3 py-3 xl:py-0 xl:col-span-1 block bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl transition-all duration-300 hover:shadow-2xl">
+                        <div class="h-full col-span-3 xl:col-span-1 block bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl transition-all duration-300 hover:shadow-2xl">
                             <div class="h-full flex flex-col justify-center items-center px-3 py-2 gap-2">
                                 <!-- Case 1: No Host -->
                                 <template v-if="!hostUsername">
-                                    <p class="text-[10px] font-bold text-gray-400 text-center uppercase tracking-tight">Host Available – Become the Host</p>
+                                    <p class="text-[10px] font-bold text-gray-400 text-center uppercase tracking-tight">Chưa có chủ phòng – Hãy làm chủ phòng</p>
                                     <button @click="handleTakeAdmin"
                                         class="rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 text-white py-1.5 px-4 text-sm font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:scale-95 flex items-center shadow-md">
                                         <img class="w-4 h-4 mr-1.5" src="https://img.icons8.com/external-yogi-aprelliyanto-glyph-yogi-aprelliyanto/32/FFFFFF/external-lock-web-programming-yogi-aprelliyanto-glyph-yogi-aprelliyanto.png" alt="host"/>
-                                        <span>Take Host</span>
+                                        <span>Làm Chủ Phòng</span>
                                     </button>
                                 </template>
 
                                 <!-- Case 2: Current User is Host -->
                                 <template v-else-if="isCurrentUserAdmin">
-                                    <p class="text-[10px] font-bold text-indigo-500 text-center uppercase tracking-tight">You’re the Current Host</p>
+                                    <p class="text-[10px] font-bold text-indigo-500 text-center uppercase tracking-tight">Bạn là Chủ Phòng</p>
                                     <div class="flex flex-col gap-2 w-full items-center">
                                         <!-- Row 1: Release & End -->
                                         <div class="flex gap-2">
                                             <button @click="handleReleaseAdmin"
                                                 class="rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 text-white py-1 px-3 text-[10px] font-bold transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg active:scale-95 flex items-center shadow-sm whitespace-nowrap">
                                                 <img class="w-3.5 h-3.5 mr-1" src="https://img.icons8.com/external-yogi-aprelliyanto-glyph-yogi-aprelliyanto/32/FFFFFF/external-unlock-web-programming-yogi-aprelliyanto-glyph-yogi-aprelliyanto.png" alt="release"/>
-                                                <span>Release</span>
+                                                <span>Nhường</span>
                                             </button>
                                             <button @click="handleStopClear"
                                                 class="rounded-full bg-gradient-to-r from-red-400 to-rose-500 text-white py-1 px-3 text-[10px] font-bold transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg active:scale-95 flex items-center shadow-sm whitespace-nowrap">
                                                 <img class="w-3.5 h-3.5 mr-1" src="https://img.icons8.com/pulsar-line/48/FFFFFF/delete-sign.png" alt="end"/>
-                                                <span>End</span>
+                                                <span>Kết thúc</span>
                                             </button>
                                         </div>
                                         <!-- Row 2: Next Number -->
                                         <button @click="handleNextNumber"
                                             class="w-full max-w-[130px] rounded-full bg-gradient-to-r from-orange-400 to-pink-500 text-white py-1.5 px-3 text-[10px] font-black transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg active:scale-95 focus:ring-2 focus:ring-orange-300 outline-none flex justify-center items-center shadow-md uppercase">
                                             <img class="w-3.5 h-3.5 mr-1.5" src="https://img.icons8.com/pulsar-line/48/FFFFFF/forward.png" alt="forward"/>
-                                            <span>Next Number</span>
+                                            <span>Số Tiếp Theo</span>
                                         </button>
                                     </div>
                                 </template>
 
                                 <!-- Case 3: Player waiting for Host -->
                                 <template v-else>
-                                    <p class="text-[10px] font-bold text-orange-400 text-center uppercase tracking-tight">Waiting for Host Actions</p>
+                                    <p class="text-[10px] font-bold text-orange-400 text-center uppercase tracking-tight">Đang chờ Chủ Phòng</p>
                                     <span class="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full border border-indigo-200 truncate max-w-full shadow-sm">
                                         {{ hostUsername }}
                                     </span>
@@ -189,8 +189,8 @@
                 <div class="col-span-12 md:col-span-4 xl:col-span-3">
                     <div class="h-full bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl flex flex-col transition-all duration-300 hover:shadow-2xl overflow-hidden">
                         <div class="content-title flex justify-between items-center text-gray-700 bg-white/50 border-b border-white/40 px-4 py-2">
-                            <h3 class="font-bold">User List</h3>
-                            <button @click="openBoardSettings" class="p-1.5 rounded-full hover:bg-gray-200/50 text-gray-500 transition-all" title="Board Settings">
+                            <h3 class="font-bold">Danh Sách Người Chơi</h3>
+                            <button @click="openBoardSettings" class="p-1.5 rounded-full hover:bg-gray-200/50 text-gray-500 transition-all" title="Cài đặt bảng">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -237,7 +237,7 @@
                         <button @click="handleLeaveRoom()"
                             class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-red-50/80 hover:bg-red-100 border-t border-red-100 text-red-500 font-semibold text-sm transition-all duration-300 rounded-b-xl">
                             <img class="w-4 h-4" src="https://img.icons8.com/external-tal-revivo-filled-tal-revivo/24/F43F5E/external-exiting-from-shopping-mall-with-arrow-outside-mall-filled-tal-revivo.png" alt="leave"/>
-                            <span>Leave Room</span>
+                            <span>Rời Phòng</span>
                         </button>
                     </div>
                 </div>
@@ -262,8 +262,8 @@
                         </div>
                         <!-- ChatBox block -->
                         <div class="h-full col-span-3 xl:col-span-1 bg-white/70 backdrop-blur-md border border-white/60 shadow-xl rounded-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
-                            <h3 class="content-title pb-2 border-b border-white/40 text-pink-600 drop-shadow-sm font-bold pt-3 bg-white/50 rounded-t-xl mb-0">
-                                Chat Box
+                            <h3 class="content-title pb-2 border-b border-white/40 text-pink-600 drop-shadow-sm font-bold pt-3 rounded-t-xl mb-0">
+                                Trò Chuyện
                             </h3>
                             <!-- Display chat box -->
                             <div class="relative w-full flex-1 flex flex-col overflow-hidden">
@@ -282,7 +282,7 @@
                                             </div>
                                             <div v-else-if="!!(m.username !== route.query.username)" 
                                             class="my-2">
-                                                <div class="text-left font-semibold text-xs text-orange-900 opacity-40 ml-3 mb-[-3px]">
+                                                <div class="text-left font-semibold text-xs text-orange-900 opacity-40 mb-[-1px]">
                                                     {{ m.username }}
                                                 </div>
                                                 <div class="w-fit px-4 py-1 text-sm bg-gradient-to-r from-teal-400 to-emerald-500 text-white shadow font-medium rounded-2xl rounded-tl-none text-left max-w-[85%] break-words">
@@ -299,7 +299,7 @@
                                     </TransitionGroup>
                                 </div>
                                 <!-- Chat Input Area -->
-                                <div class="w-full bg-white/40 backdrop-blur-md p-3 rounded-b-xl border-t border-white/50 relative z-20">
+                                <div class="w-full p-3 rounded-b-xl border-t border-white/50 relative z-20">
                                     <div class="w-full relative flex items-center bg-white/70 rounded-full shadow-inner border border-white/60">
                                         <input
                                         v-model="message"
@@ -308,7 +308,7 @@
                                         ref="typingInputRef"
                                         class="w-full py-2.5 pl-5 pr-12 bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none"
                                         type="text"
-                                        placeholder="Type a message...">
+                                        placeholder="Nhập tin nhắn...">
                                         
                                         <!-- Emoji Button Inside Input -->
                                         <button @click="isShowEmoji = !isShowEmoji" 
@@ -330,7 +330,7 @@
                                 <div class="absolute -top-7 left-4 text-xs font-semibold text-indigo-800 bg-white/60 px-3 py-1 rounded-full shadow-sm backdrop-blur-sm transition-opacity duration-300"
                                         :class="typing.usernameList.length > 0 ? 'opacity-100' : 'opacity-0'">
                                     <span v-if="typing.usernameList.length === 1">
-                                        {{ typing.usernameList[0] }} is typing...
+                                        {{ typing.usernameList[0] }} đang nhập...
                                     </span>
                                 </div>
                             </div>
@@ -442,7 +442,7 @@
         store.getUsersFromAPI();
         store.getBoardsFromAPI();
         store.getBoardsRoomFromAPI();
-        addBotMessage(`Welcome ${route.query.username}!`);
+        addBotMessage(`Chào mừng ${route.query.username}!`);
 
         // Set default text-to-speech voice
         window.responsiveVoice.setDefaultVoice('Vietnamese Female');
@@ -451,13 +451,30 @@
         // Register all socket listeners
         initSocketListeners();
     });
+    import Swal from 'sweetalert2';
 
     // ── Room-level handlers ──────────────────────────────────────
-
+    
     /**
      * Disconnects from WebRTC, clears sessions, and leaves the game room.
      */
     async function handleLeaveRoom() {
+        const result = await Swal.fire({
+            title: 'Rời phòng?',
+            text: 'Bạn có chắc chắn muốn rời khỏi phòng chơi không?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#EC4899', // pink-500
+            cancelButtonColor: '#6B7280', // gray-500
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy',
+            reverseButtons: true,
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdrop: `rgba(0,0,0,0.4)`
+        });
+
+        if (!result.isConfirmed) return;
+
         sessionStorage.removeItem('lootoo_session');
         sessionStorage.removeItem('lootoo_activeBoard');
 

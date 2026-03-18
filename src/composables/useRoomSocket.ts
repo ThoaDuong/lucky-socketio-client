@@ -57,7 +57,7 @@ export function useRoomSocket(options: RoomSocketOptions) {
             store.getUsersFromAPI();
             store.getBoardsFromAPI();
             store.getBoardsRoomFromAPI();
-            addBotMessage(`${username}, just joined`);
+            addBotMessage(`${username} vừa tham gia`);
         });
 
         socketIO.value.on('someoneChangeBoardToAll', () => {
@@ -76,24 +76,24 @@ export function useRoomSocket(options: RoomSocketOptions) {
         socketIO.value.on('someoneRenameToAll', ({ oldUsername, newUsername }: { oldUsername: string; newUsername: string }) => {
             store.getUsersFromAPI();
             store.getBoardsRoomFromAPI();
-            addBotMessage(`${oldUsername} renamed to ${newUsername}`);
+            addBotMessage(`${oldUsername} đã đổi tên thành ${newUsername}`);
         });
 
         /** A user's socket disconnected (grace period started). */
         socketIO.value.on('someoneDisconnectRoom', (username: string) => {
-            addBotMessage(`${username}, just left`);
+            addBotMessage(`${username} vừa rời đi`);
         });
 
         /** A user successfully reconnected within the grace period. */
         socketIO.value.on('someoneReconnectRoom', (username: string) => {
-            addBotMessage(`${username}, just reconnected`);
+            addBotMessage(`${username} vừa kết nối lại`);
         });
 
         /** A user permanently left the room. */
         socketIO.value.on('someoneLeaveRoom', (username: string) => {
             store.getUsersFromAPI();
             store.getBoardsRoomFromAPI();
-            addBotMessage(`${username}, just left room`);
+            addBotMessage(`${username} đã rời phòng`);
         });
 
         /** A new number was drawn. */
@@ -116,7 +116,9 @@ export function useRoomSocket(options: RoomSocketOptions) {
         });
 
         socketIO.value.on('someoneTypingMessage', (username: string) => {
-            typing.usernameList.push(username);
+            if (!typing.usernameList.includes(username)) {
+                typing.usernameList.push(username);
+            }
         });
 
         socketIO.value.on('someoneNoLongerTyping', (username: string) => {
@@ -129,10 +131,10 @@ export function useRoomSocket(options: RoomSocketOptions) {
             if (isGameEnding.value) return;
             isGameEnding.value = true;
             closePendingGonnaWinPopups();
-            addBotMessage(`${username} won!!!`);
+            addBotMessage(`${username} đã thắng!!!`);
             changeStopAndClear();
             const isWinner = route.query.username === username;
-            showWinPopup(isWinner ? 'You' : username, isWinner);
+            showWinPopup(isWinner ? 'Bạn' : username, isWinner);
         });
 
         /** Multiple winners event. */
@@ -140,7 +142,7 @@ export function useRoomSocket(options: RoomSocketOptions) {
             if (isGameEnding.value) return;
             isGameEnding.value = true;
             closePendingGonnaWinPopups();
-            addBotMessage(`${usernameList} won!!!`);
+            addBotMessage(`${usernameList} đã thắng!!!`);
             changeStopAndClear();
             const isWinner = usernameList.includes(route.query.username as string);
             showWinPopup(usernameList.toString(), isWinner);
@@ -149,7 +151,7 @@ export function useRoomSocket(options: RoomSocketOptions) {
         /** Someone is one number away from winning. */
         socketIO.value.on('someoneGonnaWinToAll', (username: string) => {
             if (isGameEnding.value) return;
-            addBotMessage(`${username} - just got 4 numbers in a row`);
+            addBotMessage(`${username} - sắp thắng rồi!`);
             gonnaWinQueue.value.push(username);
             showNextGonnaWinPopup();
         });

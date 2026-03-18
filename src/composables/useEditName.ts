@@ -44,7 +44,7 @@ export function useEditName() {
     async function saveEditName(customBoards: Board[]) {
         const newName = editNameValue.value.trim();
         if (!newName) {
-            nameError.value = 'Name cannot be empty';
+            nameError.value = 'Tên không được để trống';
             return;
         }
         if (newName === route.query.username) {
@@ -55,7 +55,7 @@ export function useEditName() {
         // Check for duplicates locally first
         const isDuplicate = customBoards.some(b => b.username === newName);
         if (isDuplicate) {
-            nameError.value = 'Username already exists';
+            nameError.value = 'Tên người chơi đã tồn tại';
             setTimeout(() => { nameError.value = ''; }, 2000);
             return;
         }
@@ -78,7 +78,7 @@ export function useEditName() {
 
             cancelEditName();
         } else {
-            nameError.value = response.error || 'Error updating name';
+            nameError.value = response.error || 'Lỗi khi cập nhật tên';
             setTimeout(() => { nameError.value = ''; }, 2000);
         }
     }

@@ -62,6 +62,10 @@ export function useChat() {
         });
         message.value = '';
         isShowEmoji.value = false;
+
+        // Clear typing state immediately
+        clearTimeout(typing.timeout);
+        timeoutFunction();
     }
 
     /**

@@ -1,21 +1,21 @@
 <template>
-    <div class="home_page relative h-screen w-full overflow-hidden bg-gradient-to-br from-pink-200 via-pink-50 to-yellow-200">
+    <div class="home_page relative min-h-screen w-full flex flex-col bg-gradient-to-br from-pink-200 via-pink-50 to-yellow-200">
         
         <!-- Shared Header -->
         <HeaderComponent />
 
         <!-- Main Content (Centered) -->
-        <div class="relative z-10 flex h-full justify-center items-center p-4">
+        <div class="relative z-10 flex-1 flex justify-center items-center p-4 pt-24 pb-20">
             <!-- Glassmorphism Card -->
             <div class="w-full max-w-md p-8 md:p-10 bg-white/70 backdrop-blur-xl border border-white/60 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.05)] animate-fade-in-up">
                 
                 <!-- Display main title -->
                 <div class="text-center mb-8">
                     <h1 class="font-rubik text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-500 drop-shadow-sm mb-2">
-                        Loo Too
+                        LooToo
                     </h1>
                     <p class="text-base text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-500 drop-shadow-sm font-medium tracking-wide">
-                        Get away from my lucky seat
+                        Không xét trình độ, chỉ cần trời độ!
                     </p>
                 </div>
 
@@ -26,7 +26,7 @@
                         <div class="mb-5">
                             <label class="flex items-center gap-2 mb-2 text-gray-700 font-semibold" for="name">
                                 <img class="w-5 h-5" src="https://img.icons8.com/3d-fluency/94/user-female--v4.png" alt="user"/>
-                                <span>Username</span>
+                                <span>Tên người chơi</span>
                             </label>
                             <input
                                 v-model="state.username"
@@ -46,7 +46,7 @@
                         <div class="mb-8">
                             <label class="flex items-center gap-2 mb-2 text-gray-700 font-semibold" for="room">
                                 <img class="w-5 h-5" src="https://img.icons8.com/3d-fluency/94/room.png" alt="room"/>
-                                <span>Room</span>
+                                <span>Phòng</span>
                             </label>
                             <input
                                 v-model="state.room"
@@ -76,7 +76,7 @@
                                 class="flex items-center justify-center gap-2 w-full rounded-full bg-gradient-to-r from-pink-500 to-yellow-400 hover:from-pink-400 hover:to-yellow-300 shadow-[0_4px_14px_0_rgba(236,72,153,0.39)] text-white py-3 px-8 transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 font-bold text-lg"
                                 type="submit">
                                 <img class="w-6 h-6" src="https://img.icons8.com/matisse/100/controller.png" alt="play" />
-                                <span>Join Game</span>
+                                <span>Vào Chơi</span>
                             </button>
                         </div>
                     </form>
@@ -124,12 +124,12 @@
         let isUsernameExist = newUsers.findIndex(user => user.username === state.username);
         if(isUsernameExist !== -1){
             validate.username = true;
-            validate.usernameErrorMessage = "This username already exist";
+            validate.usernameErrorMessage = "Tên người chơi đã tồn tại";
        }
        //current user is not in users list yet => + 1
         if(newUsers.length + 1 > 11){
             validate.room = true;
-            validate.roomErrorMessage = "This room was full";
+            validate.roomErrorMessage = "Phòng đã đầy";
         }
         isLoading.users = false;
     })
@@ -138,7 +138,7 @@
     watch(listStartedRoom, (newList => {
         if(newList && newList.findIndex(room => room === state.room) !== -1){
             validate.room = true;
-            validate.roomErrorMessage = "Game in progress";
+            validate.roomErrorMessage = "Trò chơi đang diễn ra";
         }
         isLoading.listStartedRoom = false;
     }))
@@ -157,25 +157,25 @@
     function checkValidInputsLogin(){
         if(!state.username){
             validate.username = true;
-            validate.usernameErrorMessage = "The username field is required";
+            validate.usernameErrorMessage = "Vui lòng nhập tên người chơi";
             return;
         }
 
         if(state.username.length > 15){
             validate.username = true;
-            validate.usernameErrorMessage = "This username's length is too long";
+            validate.usernameErrorMessage = "Tên người chơi quá dài";
             return;
         }
 
         if(!state.room){
             validate.room = true;
-            validate.roomErrorMessage = "The room field is required";
+            validate.roomErrorMessage = "Vui lòng nhập mã phòng";
             return;
         }
 
         if(state.room.length > 10){
             validate.room = true;
-            validate.roomErrorMessage = "This room's length is too long";
+            validate.roomErrorMessage = "Mã phòng quá dài";
             return;
         }
     }

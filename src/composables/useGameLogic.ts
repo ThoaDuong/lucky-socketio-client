@@ -82,13 +82,13 @@ export function useGameLogic() {
      */
     function handleStopClear() {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this action',
+            title: 'Bạn có chắc không?',
+            text: 'Bạn sẽ không thể hoàn tác hành động này',
             icon: 'warning',
             showCloseButton: true,
             showCancelButton: true,
-            confirmButtonText: 'Yes, I am sure!',
-            cancelButtonText: 'No, cancel it!',
+            confirmButtonText: 'Có, tôi chắc chắn!',
+            cancelButtonText: 'Không, hủy bỏ!',
         }).then((result) => {
             if (result.isConfirmed) {
                 socketIO.value.emit('changeStopAndClear', route.query.room);
@@ -133,7 +133,7 @@ export function useGameLogic() {
 
         await Swal.fire({
             position: 'top-end',
-            text: `${username} - just got 4 numbers in a row`,
+            text: `${username} - sắp thắng rồi!`,
             showConfirmButton: false,
             backdrop: false,
             timer: 3000,
@@ -160,18 +160,18 @@ export function useGameLogic() {
     async function showWinPopup(title: string, isWinner: boolean) {
         if (isWinner) {
             await Swal.fire({
-                title: `Congratulations! ${title} won`,
-                confirmButtonText: 'End Game',
-                imageUrl: 'https://img.icons8.com/external-filled-outline-geotatah/64/external-best-friend-best-friend-forever-filled-outline-filled-outline-geotatah-6.png',
+                title: `Chúc mừng! ${title.toLocaleUpperCase()} ĐÃ KINHHHHHH`,
+                confirmButtonText: 'Kết Thúc',
+                imageUrl: 'https://img.icons8.com/3d-fluency/94/money-mouth-face-1.png',
                 imageWidth: 100,
                 imageHeight: 100,
                 padding: '1rem',
             });
         } else {
             await Swal.fire({
-                title: `${title} won! Better luck next time.`,
-                confirmButtonText: 'End Game',
-                imageUrl: 'https://img.icons8.com/external-wanicon-lineal-color-wanicon/64/external-shamrock-st-patrick-day-wanicon-lineal-color-wanicon.png',
+                title: `${title} đã kinh! Chúc may mắn lần sau.`,
+                confirmButtonText: 'Kết Thúc',
+                imageUrl: 'https://img.icons8.com/3d-fluency/94/crying-face.png',
                 imageWidth: 100,
                 imageHeight: 100,
                 padding: '1rem',

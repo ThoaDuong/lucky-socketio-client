@@ -147,12 +147,12 @@
      */
     function  alertInValidCalledNumbers(missingNumbers: number[]){
         Swal.fire({
-            title: 'Oh no!',
-            text: `Misunderstanding! The numbers: ${missingNumbers.toString()} have not being called`,
+            title: 'Bậy nha!',
+            text: `Các số: ${missingNumbers.toString()} còn chưa được gọi nha`,
             icon: 'error',
             imageWidth: 60,
             imageHeight: 60,
-            confirmButtonText: 'Continue'
+            confirmButtonText: 'Tiếp tục'
         })
     }
 

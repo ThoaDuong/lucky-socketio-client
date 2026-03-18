@@ -8,7 +8,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
-                    Board Settings
+                    Cài Đặt Bảng
                 </h2>
                 <button @click="$emit('close')" class="text-white hover:bg-white/20 p-1 rounded-full transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -19,7 +19,7 @@
 
             <!-- Modal Content -->
             <div class="p-6">
-                <p class="text-gray-500 mb-4 text-sm font-medium">Select a new board from the list below:</p>
+                <p class="text-gray-500 mb-4 text-sm font-medium">Chọn một bảng mới từ danh sách bên dưới:</p>
                 <div class="grid grid-cols-1 gap-3 max-h-[400px] overflow-y-auto pr-2 styled-scrollbar">
                     <div 
                         v-for="board in boards" :key="board.id"
@@ -40,9 +40,9 @@
 
                         <!-- Board Info -->
                         <div class="flex-1">
-                            <h4 class="font-bold text-gray-700">{{ board.title || `Board #${board.id}` }}</h4>
+                            <h4 class="font-bold text-gray-700">{{ board.title || `Bảng #${board.id}` }}</h4>
                             <p class="text-xs text-gray-400">
-                                {{ board.username ? `Occupied by ${board.username}` : 'Available' }}
+                                {{ board.username ? `Đang được ${board.username} sử dụng` : 'Có sẵn' }}
                             </p>
                         </div>
 
@@ -66,7 +66,7 @@
             <!-- Footer -->
             <div class="px-6 py-4 bg-gray-50 text-right">
                 <button @click="$emit('close')" class="px-5 py-2 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors">
-                    Cancel
+                    Đóng
                 </button>
             </div>
         </div>
